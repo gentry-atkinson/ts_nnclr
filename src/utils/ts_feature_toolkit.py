@@ -7,7 +7,7 @@ import scipy
 from scipy.fft import fft
 from scipy import signal
 import numpy as np
-#from tsfresh.feature_extraction import feature_calculators as fc
+from tsfresh.feature_extraction import feature_calculators as fc
 #from tsfresh.utilities.dataframe_functions import impute
 from sklearn.metrics import confusion_matrix
 from joblib import Parallel, delayed

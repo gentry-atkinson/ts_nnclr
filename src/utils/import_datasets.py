@@ -3,12 +3,12 @@ from scipy.io import loadmat
 
 def get_unimib_data(s="acc"):
     print("Loading UniMiB set ", s)
-    X_flat = loadmat("data/UniMiB-SHAR/data/" + s + "_data.mat")[s + "_data"]
-    y = loadmat("data/UniMiB-SHAR/data/" + s + "_labels.mat")[s + "_labels"][:,0]
+    X_flat = loadmat("src/data/UniMiB-SHAR/data/" + s + "_data.mat")[s + "_data"]
+    y = loadmat("src/data/UniMiB-SHAR/data/" + s + "_labels.mat")[s + "_labels"][:,0]
     if(s=="acc"):
-        labels = loadmat("data/UniMiB-SHAR/data/" + s + "_names.mat")[s + "_names"][0,:]
+        labels = loadmat("src/data/UniMiB-SHAR/data/" + s + "_names.mat")[s + "_names"][0,:]
     else:
-        labels = loadmat("data/UniMiB-SHAR/data/" + s + "_names.mat")[s + "_names"][:,0]
+        labels = loadmat("src/data/UniMiB-SHAR/data/" + s + "_names.mat")[s + "_names"][:,0]
     print("Num instances: ", len(X_flat))
     print("Instance length: ", len(X_flat[0]))
 
@@ -17,7 +17,7 @@ def get_unimib_data(s="acc"):
     X[:,0,0:151]=X_flat[:,0:151]
     X[:,1,0:151]=X_flat[:,151:302]
     X[:,2,0:151]=X_flat[:,302:453]
-    print(labels)
+    #print(labels)
     return X, y, labels
 
 def get_uci_data():
