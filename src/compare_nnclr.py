@@ -16,8 +16,8 @@
 import umap
 import numpy as np
 from utils.import_datasets import get_unimib_data
-from utils.ts_feature_toolkit import get_features_for_set
-from utils.build_AE import build_AE, get_trained_AE
+from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
+from utils.build_AE import get_features_for_set as get_ae_features
 
 if __name__ == '__main__':
     X, y, labels = get_unimib_data()
@@ -26,11 +26,10 @@ if __name__ == '__main__':
     flattened_X = np.array([np.linalg.norm(i, axis=0) for i in X])
     print('Shape of flattened X: ', flattened_X.shape)
 
-    #trad_features = get_features_for_set(flattened_X)
+    #trad_features = get_trad_features(flattened_X)
     #print('Shape of computed features: ', trad_features.shape)
 
-    auto_enc = build_AE(flattened_X)
-    ae_features = auto_enc.predict(flattened_X)
+    ae_features = get_ae_features(flattened_X)
     print('Shape of autoencoded features: ', ae_features.shape)
 
 
