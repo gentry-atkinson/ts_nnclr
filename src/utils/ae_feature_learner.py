@@ -5,37 +5,45 @@
 #  a convolutional autoencoder
 
 import tensorflow as tf
+from gen_ts_data import generate_pattern_data_as_array
 
 latent_dim = 64
-kernel_size = 16 
+kernel_size = 16
+output_size = 4
+input_size = (128,128) 
 
-class Autoencoder(tf.keras.Model):
-  def __init__(self, latent_dim):
-    super(Autoencoder, self).__init__()
-    self.latent_dim = latent_dim   
-    self.encoder = tf.keras.Sequential([
-      tf.keras.layers.Flatten(),
-      tf.keras.layers.Conv1D(filters = 32, kernel_size=kernel_size),
-      tf.keras.layers.Dense(latent_dim, activation='relu'),
-    ])
-    self.decoder = tf.keras.Sequential([
-        tf.keras.layers.Conv1DTranspose(filters = 32, kernel_size=kernel_size),
-        tf.keras.layers.Dense(784, activation='linear'),
-        tf.keras.layers.Flatten()
-    ])
+encoder = tf.keras.models.Sequential()
+encoder.add(tf.keras.layers.Input(input_size))
+encoder.add(tf.keras.layers.Conv1D(64, kernel_size, activation='relu'))
+encoder.add(tf.keras.layers.Conv1D(64, kernel_size, activation='relu'))
+encoder.add(tf.keras.layers.MaxPooling1D(kernel_size))
+encoder.add(tf.keras.layers.Flatten())
+encoder.add(tf.keras.layers.Dense(latent_dim))
 
-  def call(self, x):
-    encoded = self.encoder(x)
-    decoded = self.decoder(encoded)
-    return decoded
+print(encoder.output.shape[1:])
 
-autoencoder = Autoencoder(latent_dim)
+decoder = tf.keras.models.Sequential()
+decoder.add(tf.keras.layers.Input(input_shape=(latent_dim)))
+decoder.add(tf.keras.layers.Reshape((1,latent_dim)))
+decoder.add(tf.keras.layers.Conv1DTranspose(64, kernel_size, activation='relu'))
+decoder.add(tf.keras.layers.Conv1DTranspose(64, kernel_size, activation='relu'))
+decoder.add(tf.keras.layers.MaxPooling1D(kernel_size))
+decoder.add(tf.keras.layers.Flatten())
+decoder.add(tf.keras.layers.Dense(output_size, activation='linear'))
+
+conv_autoencoder = tf.keras.Model(inputs=encoder.input, outputs=decoder(encoder.outputs))
+conv_autoencoder.compile(optimizer='adam', loss='mse')
+
 
 def get_features_for_set(X):
-    global kernel_size
-    if len(X[0]) < 100: kernel_size = 8
-    elif len(X[0]) < 32: kernel_size = 4
+    pass
 
-    autoencoder.compile()
-    autoencoder.fit(X, X, epochs =10, shuffle=True)
-    return
+if __name__ == '__main__':
+  print('Verifying AutoEncoder')
+  X = [
+    generate_pattern_data_as_array(128) for _ in range(128)
+  ]
+  
+  conv_autoencoder.summary()
+  history = conv_autoencoder.fit(X, X, batch_size=64, epochs=40, shuffle=True, validation_split=0.1)
+  
