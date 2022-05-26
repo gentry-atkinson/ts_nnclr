@@ -14,6 +14,9 @@ width = 128
 input_shape = (128,1)
 kernel_size = 16
 
+temperature = 0.1
+queue_size = 10000
+
 contrastive_augmenter = {
     "name": "contrastive_augmenter",
     "drop_chance": 0.1,
@@ -66,7 +69,14 @@ class RandomDropout(keras.layers.Layer):
             self.drop_chance = drop_chance
 
         def call(self, signals):
-            return [rand_signal_drop(s, self.drop_chance) for s in signals]
+            print(signals)
+            batch_size = tf.shape(signals)[0]
+            signal_length = tf.shape(signals)[1]
+            num_channels = tf.shape(signals)[2]
+            sess = tf.compat.v1.Session()
+            with sess.as_default():
+                print('Samples in first signal: ', signals.eval())
+            return signals
 
 class TimeShift(keras.layers.Layer):
         def __init__(self, shift):
@@ -77,13 +87,13 @@ class TimeShift(keras.layers.Layer):
             return [time_shift(s, self.shift) for s in signals]
 
 
-def augmenter(name='None'):
+def augmenter(name='None', drop_chance=0.1, shift=10):
     return keras.Sequential(
         [
             keras.layers.Input(shape=input_shape),
             keras.layers.Rescaling(1 / 255),
             RandomDropout(drop_chance=0.1),
-            TimeShift(shift=5)
+            #TimeShift(shift=5)
         ],
         name=name,
     )
@@ -298,5 +308,7 @@ class NNCLR(keras.Model):
         self.probe_accuracy.update_state(labels, class_logits)
         return {"p_loss": probe_loss, "p_acc": self.probe_accuracy.result()}
 
-if __name__ == '__main__':
-    print('Verifying NNCLR')
+def get_features_for_set(X, with_visual=False, with_summary=False):
+    global temperature
+    global queue_size
+    nnclr = NNCLR(temperature, queue_size)

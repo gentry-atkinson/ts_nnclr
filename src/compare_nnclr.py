@@ -18,6 +18,7 @@ import numpy as np
 from utils.import_datasets import get_unimib_data
 from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
 from utils.ae_feature_learner import get_features_for_set as get_ae_features
+from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
 
 run_trad = False
 run_ae = False
@@ -41,6 +42,6 @@ if __name__ == '__main__':
         print('Shape of autoencoded features: ', ae_features.shape)
 
     if run_nnclr:
-        pass
+        nnclr_feature = get_nnclr_features(flattened_X)
 
 
