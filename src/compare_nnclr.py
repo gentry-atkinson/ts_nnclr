@@ -17,13 +17,15 @@ import umap
 import numpy as np
 from utils.import_datasets import get_unimib_data
 from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
-from utils.build_AE import get_features_for_set as get_ae_features
+from utils.ae_feature_learner import get_features_for_set as get_ae_features
 
 if __name__ == '__main__':
     X, y, labels = get_unimib_data()
     X, y = map(np.array, [X, y])
     print('Shape of X: ', X.shape)
     flattened_X = np.array([np.linalg.norm(i, axis=0) for i in X])
+    old_shape = flattened_X.shape
+    flattened_X = np.reshape(flattened_X, (old_shape[0], old_shape[1], 1))
     print('Shape of flattened X: ', flattened_X.shape)
 
     #trad_features = get_trad_features(flattened_X)

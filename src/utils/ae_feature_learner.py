@@ -5,45 +5,72 @@
 #  a convolutional autoencoder
 
 import tensorflow as tf
-from gen_ts_data import generate_pattern_data_as_array
+import numpy as np
+#from utils.gen_ts_data import generate_pattern_data_as_array
 
-latent_dim = 64
+latent_dim = 32
 kernel_size = 16
-output_size = 4
-input_size = (128,128) 
+input_size = (128,1) 
 
-encoder = tf.keras.models.Sequential()
-encoder.add(tf.keras.layers.Input(input_size))
-encoder.add(tf.keras.layers.Conv1D(64, kernel_size, activation='relu'))
-encoder.add(tf.keras.layers.Conv1D(64, kernel_size, activation='relu'))
-encoder.add(tf.keras.layers.MaxPooling1D(kernel_size))
-encoder.add(tf.keras.layers.Flatten())
-encoder.add(tf.keras.layers.Dense(latent_dim))
+def make_encoder():
+  encoder = tf.keras.models.Sequential()
+  encoder.add(tf.keras.layers.Input(input_size))
+  encoder.add(tf.keras.layers.Conv1D(64, kernel_size, activation='relu', data_format='channels_last'))
+  encoder.add(tf.keras.layers.Conv1D(64, kernel_size, activation='relu'))
+  encoder.add(tf.keras.layers.MaxPooling1D(kernel_size))
+  encoder.add(tf.keras.layers.Flatten())
+  encoder.add(tf.keras.layers.Dense(latent_dim))
 
-print(encoder.output.shape[1:])
+  return encoder
 
-decoder = tf.keras.models.Sequential()
-decoder.add(tf.keras.layers.Input(input_shape=(latent_dim)))
-decoder.add(tf.keras.layers.Reshape((1,latent_dim)))
-decoder.add(tf.keras.layers.Conv1DTranspose(64, kernel_size, activation='relu'))
-decoder.add(tf.keras.layers.Conv1DTranspose(64, kernel_size, activation='relu'))
-decoder.add(tf.keras.layers.MaxPooling1D(kernel_size))
-decoder.add(tf.keras.layers.Flatten())
-decoder.add(tf.keras.layers.Dense(output_size, activation='linear'))
+def make_decoder(encoder):
+  decoder = tf.keras.models.Sequential()
+  decoder.add(tf.keras.layers.Input(encoder.output.shape[1:]))
+  decoder.add(tf.keras.layers.Reshape((latent_dim,1)))
+  decoder.add(tf.keras.layers.Conv1DTranspose(64, kernel_size, activation='relu', data_format='channels_last'))
+  decoder.add(tf.keras.layers.Conv1DTranspose(64, kernel_size, activation='relu'))
+  decoder.add(tf.keras.layers.MaxPooling1D(kernel_size))
+  decoder.add(tf.keras.layers.Flatten())
+  decoder.add(tf.keras.layers.Dense(input_size[0], activation='linear'))
+  decoder.add(tf.keras.layers.Reshape(input_size))
 
-conv_autoencoder = tf.keras.Model(inputs=encoder.input, outputs=decoder(encoder.outputs))
-conv_autoencoder.compile(optimizer='adam', loss='mse')
+  return decoder
+
+def make_cae():
+  encoder = make_encoder()
+  decoder = make_decoder(encoder)
+  conv_autoencoder = tf.keras.Model(inputs=encoder.input, outputs=decoder(encoder.outputs))
+  conv_autoencoder.compile(optimizer='adam', loss='mse')
+
+  return conv_autoencoder
 
 
 def get_features_for_set(X):
-    pass
+    global latent_dim
+    global kernel_size
+    global input_size
+    input_size = X[0].shape
+    
+    if len(X[0]) <= 32:
+      kernal_size = 4
+    elif len(X[0]) <= 128:
+      kernel_size = 8
+
+    ae = make_cae()
+    ae.summary()
+    history = ae.fit(X, X, batch_size=16, epochs=5, shuffle=True, validation_split=0.1)
+    feature_encoder = tf.keras.models.Sequential(ae.layers[:-1])
+    feature_encoder.summary()
+
+    return feature_encoder.predict(X)
 
 if __name__ == '__main__':
   print('Verifying AutoEncoder')
-  X = [
-    generate_pattern_data_as_array(128) for _ in range(128)
-  ]
+  # X = np.array([
+  #   generate_pattern_data_as_array(128) for _ in range(128)
+  # ])
   
-  conv_autoencoder.summary()
-  history = conv_autoencoder.fit(X, X, batch_size=64, epochs=40, shuffle=True, validation_split=0.1)
-  
+  # X = np.reshape(X, (128,128,1))
+  # print(X.shape)
+
+  # encoded_X = get_features_for_set(X)
