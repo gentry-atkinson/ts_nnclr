@@ -4,8 +4,10 @@
 #Build and trained an unsupervised feature extractor using
 #  a convolutional autoencoder
 
+from gc import callbacks
 import tensorflow as tf
 import numpy as np
+from matplotlib import pyplot as plt
 #from utils.gen_ts_data import generate_pattern_data_as_array
 
 latent_dim = 32
@@ -45,22 +47,32 @@ def make_cae():
   return conv_autoencoder
 
 
-def get_features_for_set(X):
+def get_features_for_set(X, with_visual=False, with_summary=False):
     global latent_dim
     global kernel_size
     global input_size
     input_size = X[0].shape
     
     if len(X[0]) <= 32:
-      kernal_size = 4
+      kernel_size = 4
     elif len(X[0]) <= 128:
       kernel_size = 8
 
     ae = make_cae()
-    ae.summary()
-    history = ae.fit(X, X, batch_size=16, epochs=5, shuffle=True, validation_split=0.1)
+    if with_summary: ae.summary()
+
+    es = tf.keras.callbacks.EarlyStopping(monitor='val_loss',patience=4,verbose=1)
+
+    history = ae.fit(X, X, batch_size=16, epochs=100, shuffle=True, validation_split=0.1, callbacks=es)
+    if with_visual:
+      plt.figure()
+      reconstructed_signal = ae.predict(X)[0]
+      plt.plot(range(len(X[0])), X[0])
+      plt.plot(range(len(X[0])), reconstructed_signal)
+      plt.show()
+
     feature_encoder = tf.keras.models.Sequential(ae.layers[:-1])
-    feature_encoder.summary()
+    if with_summary: feature_encoder.summary()
 
     return feature_encoder.predict(X)
 
