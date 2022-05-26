@@ -63,28 +63,28 @@ classification_augmenter = {
 #         )
 #         return images
 
-class RandomDropout(keras.layers.Layer):
-        def __init__(self, drop_chance):
-            super(RandomDropout, self).__init__()
-            self.drop_chance = drop_chance
+# class RandomDropout(keras.layers.Layer):
+#         def __init__(self, drop_chance):
+#             super(RandomDropout, self).__init__()
+#             self.drop_chance = drop_chance
 
-        def call(self, signals):
-            print(signals)
-            batch_size = tf.shape(signals)[0]
-            signal_length = tf.shape(signals)[1]
-            num_channels = tf.shape(signals)[2]
-            sess = tf.compat.v1.Session()
-            with sess.as_default():
-                print('Samples in first signal: ', signals.eval())
-            return signals
+#         def call(self, signals):
+#             print(signals)
+#             batch_size = tf.shape(signals)[0]
+#             signal_length = tf.shape(signals)[1]
+#             num_channels = tf.shape(signals)[2]
+#             sess = tf.compat.v1.Session()
+#             with sess.as_default():
+#                 print('Samples in first signal: ', signals.eval())
+#             return signals
 
-class TimeShift(keras.layers.Layer):
-        def __init__(self, shift):
-            super(TimeShift, self).__init__()
-            self.shift = shift
+# class TimeShift(keras.layers.Layer):
+#         def __init__(self, shift):
+#             super(TimeShift, self).__init__()
+#             self.shift = shift
 
-        def call(self, signals):
-            return [time_shift(s, self.shift) for s in signals]
+#         def call(self, signals):
+#             return [time_shift(s, self.shift) for s in signals]
 
 
 def augmenter(name='None', drop_chance=0.1, shift=10):
@@ -92,8 +92,9 @@ def augmenter(name='None', drop_chance=0.1, shift=10):
         [
             keras.layers.Input(shape=input_shape),
             keras.layers.Rescaling(1 / 255),
-            RandomDropout(drop_chance=0.1),
-            #TimeShift(shift=5)
+            keras.layers.RandomFlip(mode='vertical')
+            #RandomDropout(drop_chance=drop_chance),
+            #TimeShift(shift=shift)
         ],
         name=name,
     )
@@ -312,3 +313,6 @@ def get_features_for_set(X, with_visual=False, with_summary=False):
     global temperature
     global queue_size
     nnclr = NNCLR(temperature, queue_size)
+    opti = keras.optimizers.Adam()
+    nnclr.compile(contrastive_optimizer=opti, probe_optimizer=opti,loss='mse')
+    nnclr.fit(X, epochs=5, shuffle=True, validation_split=0.1)
