@@ -7,6 +7,7 @@
 #Source: https://keras.io/examples/vision/nnclr/
 
 import tensorflow as tf
+import numpy as np
 from tensorflow import keras
 from utils.augmentation import  rand_signal_drop, time_shift
 
@@ -15,7 +16,7 @@ input_shape = (128,1)
 kernel_size = 16
 
 temperature = 0.1
-queue_size = 10000
+queue_size = 1000
 
 contrastive_augmenter = {
     "name": "contrastive_augmenter",
@@ -91,7 +92,6 @@ def augmenter(name='None', drop_chance=0.1, shift=10):
     return keras.Sequential(
         [
             keras.layers.Input(shape=input_shape),
-            keras.layers.Rescaling(1 / 255),
             keras.layers.RandomFlip(mode='vertical')
             #RandomDropout(drop_chance=drop_chance),
             #TimeShift(shift=shift)
@@ -315,4 +315,12 @@ def get_features_for_set(X, with_visual=False, with_summary=False):
     nnclr = NNCLR(temperature, queue_size)
     opti = keras.optimizers.Adam()
     nnclr.compile(contrastive_optimizer=opti, probe_optimizer=opti,loss='mse')
-    nnclr.fit(X, epochs=5, shuffle=True, validation_split=0.1)
+    unlabeled_train_dataset = tf.convert_to_tensor(X)
+    labels = tf.convert_to_tensor(np.zeros(len(X), dtype='int16'))
+    labeled_train_dataset = tf.data.Dataset.zip(
+        tf.data.Dataset.from_tensors(unlabeled_train_dataset), tf.data.Dataset.from_tensors(labels)
+    ).prefetch(buffer_size=tf.data.AUTOTUNE)
+    zipped_X = tf.data.Dataset.zip(
+        (tf.data.Dataset.from_tensors(unlabeled_train_dataset), tf.data.Dataset.from_tensors(labeled_train_dataset))
+    ).prefetch(buffer_size=tf.data.AUTOTUNE)
+    nnclr.fit(zipped_X, epochs=5)
