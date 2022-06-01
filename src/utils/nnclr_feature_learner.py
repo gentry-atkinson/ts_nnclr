@@ -64,20 +64,25 @@ classification_augmenter = {
 #         )
 #         return images
 
-# class RandomDropout(keras.layers.Layer):
-#         def __init__(self, drop_chance):
-#             super(RandomDropout, self).__init__()
-#             self.drop_chance = drop_chance
+# def random_invert(factor=0.5):
+#   return layers.Lambda(lambda x: random_invert_img(x, factor))
 
-#         def call(self, signals):
-#             print(signals)
-#             batch_size = tf.shape(signals)[0]
-#             signal_length = tf.shape(signals)[1]
-#             num_channels = tf.shape(signals)[2]
-#             sess = tf.compat.v1.Session()
-#             with sess.as_default():
-#                 print('Samples in first signal: ', signals.eval())
-#             return signals
+# random_invert = random_invert()
+
+def random_dropout(chance=0.1):
+    return keras.layers.Lambda(lambda x: rand_signal_drop(x, chance))
+
+random_dropout = random_dropout()
+
+
+class RandomDropout(keras.layers.Layer):
+        def __init__(self, drop_chance):
+            super(RandomDropout, self).__init__()
+            self.drop_chance = drop_chance
+
+        def call(self, signals):
+            return random_dropout(x)
+
 
 # class TimeShift(keras.layers.Layer):
 #         def __init__(self, shift):
