@@ -23,7 +23,7 @@ from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_featur
 
 run_trad = False
 run_ae = False
-run_nnclr = True
+run_nnclr = False
 
 umap_neighbors = 15
 umap_dim = 3
@@ -32,6 +32,9 @@ if __name__ == '__main__':
     X, y, labels = get_unimib_data()
     X, y = map(np.array, [X, y])
     print('Shape of X: ', X.shape)
+    print('Shape of y: ', y.shape)
+    print('Labels in UniMiB: ')
+    for l in labels: print(l)
     flattened_X = np.array([np.linalg.norm(i, axis=0) for i in X])
     old_shape = flattened_X.shape
     flattened_X = np.reshape(flattened_X, (old_shape[0], old_shape[1], 1))
@@ -62,6 +65,6 @@ if __name__ == '__main__':
         plt.show()
 
     if run_nnclr:
-        nnclr_feature = get_nnclr_features(flattened_X)
+        nnclr_feature = get_nnclr_features(flattened_X, y=y)
 
 

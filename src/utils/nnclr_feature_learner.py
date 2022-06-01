@@ -9,7 +9,10 @@
 import tensorflow as tf
 import numpy as np
 from tensorflow import keras
-from utils.augmentation import  rand_signal_drop, time_shift
+try:
+    from utils.augmentation import  rand_signal_drop, time_shift
+except:
+    from augmentation import  rand_signal_drop, time_shift
 
 width = 128
 input_shape = (128,1)
@@ -262,10 +265,12 @@ class NNCLR(keras.Model):
         return loss
 
     def train_step(self, data):
-        #(unlabeled_images, _), (labeled_images, labels) = data
+        (X, y) = data
+        print('Size of X in train: ', X.shape)
+        print('Size of y in train: ', y.shape)
         #images = tf.concat((unlabeled_images, labeled_images), axis=0)
-        augmented_images_1 = self.contrastive_augmenter(data)
-        augmented_images_2 = self.contrastive_augmenter(data)
+        augmented_images_1 = self.contrastive_augmenter(X)
+        augmented_images_2 = self.contrastive_augmenter(X)
 
         with tf.GradientTape() as tape:
             features_1 = self.encoder(augmented_images_1)
@@ -285,17 +290,17 @@ class NNCLR(keras.Model):
         )
         self.update_contrastive_accuracy(features_1, features_2)
         self.update_correlation_accuracy(features_1, features_2)
-        preprocessed_images = self.classification_augmenter(labeled_images)
+        preprocessed_images = self.classification_augmenter(X)
 
         with tf.GradientTape() as tape:
             features = self.encoder(preprocessed_images)
             class_logits = self.linear_probe(features)
-            probe_loss = self.probe_loss(labels, class_logits)
+            probe_loss = self.probe_loss(y, class_logits)
         gradients = tape.gradient(probe_loss, self.linear_probe.trainable_weights)
         self.probe_optimizer.apply_gradients(
             zip(gradients, self.linear_probe.trainable_weights)
         )
-        self.probe_accuracy.update_state(labels, class_logits)
+        self.probe_accuracy.update_state(y, class_logits)
 
         return {
             "c_loss": contrastive_loss,
@@ -318,24 +323,27 @@ class NNCLR(keras.Model):
         self.probe_accuracy.update_state(labels, class_logits)
         return {"p_loss": probe_loss, "p_acc": self.probe_accuracy.result()}
 
-def get_features_for_set(X, with_visual=False, with_summary=False):
+def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
+    assert y is not None, "Gotta have labels for NNCLR, chief"
     global temperature
     global queue_size
     global width
     global input_shape
 
+    print(y)
+
+    if y.ndim == 1:
+        y = keras.utils.to_categorical(y)
+
+    print('Shape of labels passed to nnclr: ', y.shape)
+
     width = len(X[0])
     input_shape = (width,1)
+
+    train_dataset = tf.data.Dataset.from_tensor_slices((X, y))
+
 
     nnclr = NNCLR(temperature, queue_size)
     opti = keras.optimizers.Adam()
     nnclr.compile(contrastive_optimizer=opti, probe_optimizer=opti,loss='mse')
-    # unlabeled_train_dataset = tf.convert_to_tensor(X)
-    # labels = tf.convert_to_tensor(np.zeros(len(X), dtype='int16'))
-    # labeled_train_dataset = tf.data.Dataset.zip(
-    #     tf.data.Dataset.from_tensors(unlabeled_train_dataset), tf.data.Dataset.from_tensors(labels)
-    # ).prefetch(buffer_size=tf.data.AUTOTUNE)
-    # zipped_X = tf.data.Dataset.zip(
-    #     (tf.data.Dataset.from_tensors(unlabeled_train_dataset), tf.data.Dataset.from_tensors(labeled_train_dataset))
-    # ).prefetch(buffer_size=tf.data.AUTOTUNE)
-    nnclr.fit(X, epochs=5)
+    nnclr.fit(train_dataset, epochs=5)
