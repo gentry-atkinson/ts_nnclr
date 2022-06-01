@@ -186,9 +186,13 @@ class NNCLR(keras.Model):
             features_2 - tf.reduce_mean(features_2, axis=0)
         ) / tf.math.reduce_std(features_2, axis=0)
 
-        batch_size = tf.shape(features_1, out_type=tf.float32)[0]
+        #batch_size = tf.shape(features_1, out_type=tf.float32)[0] original line
+        batch_size = tf.shape(features_1, out_type=tf.int32)[0]
+        print(type(features_1))
+        print(type(features_2))
         cross_correlation = (
-            tf.matmul(features_1, features_2, transpose_a=True) / batch_size
+            tf.matmul(
+                tf.cast(features_1, dtype=tf.int32), tf.cast(features_2, dtype=tf.int32), transpose_a=True) / batch_size
         )
 
         feature_dim = tf.shape(features_1)[1]
@@ -258,10 +262,10 @@ class NNCLR(keras.Model):
         return loss
 
     def train_step(self, data):
-        (unlabeled_images, _), (labeled_images, labels) = data
-        images = tf.concat((unlabeled_images, labeled_images), axis=0)
-        augmented_images_1 = self.contrastive_augmenter(images)
-        augmented_images_2 = self.contrastive_augmenter(images)
+        #(unlabeled_images, _), (labeled_images, labels) = data
+        #images = tf.concat((unlabeled_images, labeled_images), axis=0)
+        augmented_images_1 = self.contrastive_augmenter(data)
+        augmented_images_2 = self.contrastive_augmenter(data)
 
         with tf.GradientTape() as tape:
             features_1 = self.encoder(augmented_images_1)
@@ -317,15 +321,21 @@ class NNCLR(keras.Model):
 def get_features_for_set(X, with_visual=False, with_summary=False):
     global temperature
     global queue_size
+    global width
+    global input_shape
+
+    width = len(X[0])
+    input_shape = (width,1)
+
     nnclr = NNCLR(temperature, queue_size)
     opti = keras.optimizers.Adam()
     nnclr.compile(contrastive_optimizer=opti, probe_optimizer=opti,loss='mse')
-    unlabeled_train_dataset = tf.convert_to_tensor(X)
-    labels = tf.convert_to_tensor(np.zeros(len(X), dtype='int16'))
-    labeled_train_dataset = tf.data.Dataset.zip(
-        tf.data.Dataset.from_tensors(unlabeled_train_dataset), tf.data.Dataset.from_tensors(labels)
-    ).prefetch(buffer_size=tf.data.AUTOTUNE)
-    zipped_X = tf.data.Dataset.zip(
-        (tf.data.Dataset.from_tensors(unlabeled_train_dataset), tf.data.Dataset.from_tensors(labeled_train_dataset))
-    ).prefetch(buffer_size=tf.data.AUTOTUNE)
-    nnclr.fit(zipped_X, epochs=5)
+    # unlabeled_train_dataset = tf.convert_to_tensor(X)
+    # labels = tf.convert_to_tensor(np.zeros(len(X), dtype='int16'))
+    # labeled_train_dataset = tf.data.Dataset.zip(
+    #     tf.data.Dataset.from_tensors(unlabeled_train_dataset), tf.data.Dataset.from_tensors(labels)
+    # ).prefetch(buffer_size=tf.data.AUTOTUNE)
+    # zipped_X = tf.data.Dataset.zip(
+    #     (tf.data.Dataset.from_tensors(unlabeled_train_dataset), tf.data.Dataset.from_tensors(labeled_train_dataset))
+    # ).prefetch(buffer_size=tf.data.AUTOTUNE)
+    nnclr.fit(X, epochs=5)
