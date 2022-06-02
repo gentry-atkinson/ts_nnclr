@@ -23,7 +23,7 @@ from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_featur
 
 run_trad = False
 run_ae = False
-run_nnclr = False
+run_nnclr = True
 
 umap_neighbors = 15
 umap_dim = 3

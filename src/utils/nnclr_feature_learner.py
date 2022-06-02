@@ -83,8 +83,8 @@ class RandomDropout(keras.layers.Layer):
             super(RandomDropout, self).__init__()
             self.drop_chance = drop_chance
 
-        def call(self, signals):
-            return random_dropout(x)
+        def call(self, X):
+            return random_dropout(X)
 
 
 # class TimeShift(keras.layers.Layer):
@@ -111,6 +111,7 @@ def augmenter(name='None', drop_chance=0.1, shift=10):
 def encoder():
     return keras.Sequential(
         [
+            keras.layers.Reshape((input_shape)),
             keras.layers.Input(shape=input_shape),
             keras.layers.Conv1D(64, kernel_size, activation='relu', data_format='channels_last'),
             keras.layers.Conv1D(64, kernel_size, activation='relu'),
@@ -147,7 +148,9 @@ class NNCLR(keras.Model):
         )
         self.temperature = temperature
 
+        ### feature_dimensions = self.encoder.output_shape[1] original line
         feature_dimensions = self.encoder.output_shape[1]
+
         self.feature_queue = tf.Variable(
             tf.math.l2_normalize(
                 tf.random.normal(shape=(queue_size, feature_dimensions)), axis=1
@@ -266,6 +269,8 @@ class NNCLR(keras.Model):
 
     def train_step(self, data):
         (X, y) = data
+        if keras.backend.ndim(X) > 2:
+            X = tf.reshape(X, (X.shape[0], X.shape[1]))
         print('Size of X in train: ', X.shape)
         print('Size of y in train: ', y.shape)
         #images = tf.concat((unlabeled_images, labeled_images), axis=0)
@@ -330,15 +335,13 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     global width
     global input_shape
 
-    print(y)
-
     if y.ndim == 1:
         y = keras.utils.to_categorical(y)
 
     print('Shape of labels passed to nnclr: ', y.shape)
 
-    width = len(X[0])
-    input_shape = (width,1)
+    width = len(y[0])
+    input_shape = X[0].shape
 
     train_dataset = tf.data.Dataset.from_tensor_slices((X, y))
 
@@ -346,4 +349,4 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     nnclr = NNCLR(temperature, queue_size)
     opti = keras.optimizers.Adam()
     nnclr.compile(contrastive_optimizer=opti, probe_optimizer=opti,loss='mse')
-    nnclr.fit(train_dataset, epochs=5)
+    nnclr.fit(train_dataset, epochs=5, shuffle=True)
