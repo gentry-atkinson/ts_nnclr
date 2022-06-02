@@ -100,19 +100,20 @@ def augmenter(name='None', drop_chance=0.1, shift=10):
     return keras.Sequential(
         [
             keras.layers.Input(shape=input_shape),
-            keras.layers.RandomFlip(mode='vertical')
+            #keras.layers.RandomFlip(mode='vertical')
             #RandomDropout(drop_chance=drop_chance),
-            #TimeShift(shift=shift)
+            #TimeShift(shift=shift),
+            keras.layers.Flatten(),
+            keras.layers.Reshape((151, 1))
         ],
         name=name,
     )
 
 
-def encoder():
+def encoder(train_instance):
     return keras.Sequential(
         [
-            keras.layers.Reshape((input_shape)),
-            keras.layers.Input(shape=input_shape),
+            keras.layers.Input(shape=train_instance.shape),
             keras.layers.Conv1D(64, kernel_size, activation='relu', data_format='channels_last'),
             keras.layers.Conv1D(64, kernel_size, activation='relu'),
             keras.layers.MaxPooling1D(kernel_size),
@@ -124,7 +125,7 @@ def encoder():
 
 class NNCLR(keras.Model):
     def __init__(
-        self, temperature, queue_size,
+        self, temperature, queue_size, train_instance
     ):
         super(NNCLR, self).__init__()
         self.probe_accuracy = keras.metrics.SparseCategoricalAccuracy()
@@ -134,7 +135,7 @@ class NNCLR(keras.Model):
 
         self.contrastive_augmenter = augmenter(**contrastive_augmenter)
         self.classification_augmenter = augmenter(**classification_augmenter)
-        self.encoder = encoder()
+        self.encoder = encoder(train_instance)
         self.projection_head = keras.Sequential(
             [
                 keras.layers.Input(shape=(width,)),
@@ -276,7 +277,8 @@ class NNCLR(keras.Model):
         #images = tf.concat((unlabeled_images, labeled_images), axis=0)
         augmented_images_1 = self.contrastive_augmenter(X)
         augmented_images_2 = self.contrastive_augmenter(X)
-
+        print('Size of augmented data1: ', augmented_images_1)
+        print('Size of augmented data2: ', augmented_images_2)
         with tf.GradientTape() as tape:
             features_1 = self.encoder(augmented_images_1)
             features_2 = self.encoder(augmented_images_2)
@@ -346,7 +348,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     train_dataset = tf.data.Dataset.from_tensor_slices((X, y))
 
 
-    nnclr = NNCLR(temperature, queue_size)
+    nnclr = NNCLR(temperature, queue_size, X[0])
     opti = keras.optimizers.Adam()
     nnclr.compile(contrastive_optimizer=opti, probe_optimizer=opti,loss='mse')
     nnclr.fit(train_dataset, epochs=5, shuffle=True)
