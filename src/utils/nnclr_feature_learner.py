@@ -103,8 +103,8 @@ def augmenter(name='None', drop_chance=0.1, shift=10):
             #keras.layers.RandomFlip(mode='vertical')
             #RandomDropout(drop_chance=drop_chance),
             #TimeShift(shift=shift),
-            keras.layers.Flatten(),
-            keras.layers.Reshape((151, 1))
+            #keras.layers.Flatten(),
+            keras.layers.Reshape(input_shape)
         ],
         name=name,
     )
@@ -270,15 +270,15 @@ class NNCLR(keras.Model):
 
     def train_step(self, data):
         (X, y) = data
-        if keras.backend.ndim(X) > 2:
-            X = tf.reshape(X, (X.shape[0], X.shape[1]))
+        #if keras.backend.ndim(X) > 2:
+        #    X = tf.reshape(X, (X.shape[0], X.shape[1]))
         print('Size of X in train: ', X.shape)
         print('Size of y in train: ', y.shape)
         #images = tf.concat((unlabeled_images, labeled_images), axis=0)
         augmented_images_1 = self.contrastive_augmenter(X)
         augmented_images_2 = self.contrastive_augmenter(X)
-        print('Size of augmented data1: ', augmented_images_1)
-        print('Size of augmented data2: ', augmented_images_2)
+        print('Size of augmented data1: ', augmented_images_1.shape)
+        print('Size of augmented data2: ', augmented_images_2.shape)
         with tf.GradientTape() as tape:
             features_1 = self.encoder(augmented_images_1)
             features_2 = self.encoder(augmented_images_2)
