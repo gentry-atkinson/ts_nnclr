@@ -1,7 +1,7 @@
 #Author: Gentry Atkinson
 #Organization: Texas University
 #Data: 24 May, 2022
-#Build and trained a self-supervise feature extractor using
+#Build and trained a self-supervised feature extractor using
 #  nearest neighbor clr
 
 #Source: https://keras.io/examples/vision/nnclr/
