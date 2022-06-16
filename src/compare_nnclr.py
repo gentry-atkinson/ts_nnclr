@@ -20,10 +20,12 @@ from utils.import_datasets import get_unimib_data
 from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
 from utils.ae_feature_learner import get_features_for_set as get_ae_features
 from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
+from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
 
 run_trad = False
 run_ae = False
-run_nnclr = True
+run_nnclr = False
+run_simclr = True
 
 umap_neighbors = 15
 umap_dim = 3
@@ -65,6 +67,9 @@ if __name__ == '__main__':
         plt.show()
 
     if run_nnclr:
-        nnclr_feature = get_nnclr_features(flattened_X, y=y)
+        nnclr_features = get_nnclr_features(flattened_X, y=y)
+
+    if run_simclr:
+        simclr_features = get_simclr_features(flattened_X, y)
 
 
