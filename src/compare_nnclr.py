@@ -13,8 +13,9 @@
 #Hypothesis: NNCLR will produce better separation between classes
 #  in the feature space.
 
-import umap
+import umap.umap_ as umap
 import numpy as np
+from utils import clustering_metrics
 from matplotlib import pyplot as plt
 from utils.import_datasets import get_unimib_data
 from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
@@ -55,6 +56,7 @@ if __name__ == '__main__':
             ax = plt.axes(projection ="3d")
             ax.scatter(embedding[:,0], embedding[:,1], embedding[:,2], c=y)
         plt.show()
+        print("Dunn index of traditional features: ", clustering_metrics.dunn_index(trad_features, y))
 
     if run_ae:
         ae_features = get_ae_features(flattened_X, with_visual=False)
