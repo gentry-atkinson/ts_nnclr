@@ -1102,11 +1102,11 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     optimizer = tf.keras.optimizers.SGD(lr_decayed_fn)
     # transformation_function = simclr_utitlities.generate_combined_transform_function(trasnform_funcs_vectorized, indices=trasnformation_indices)
 
-    base_model = simclr_models.create_base_model(input_shape, model_name="base_model")
-    simclr_model = simclr_models.attach_simclr_head(base_model)
+    base_model = create_base_model(input_shape, model_name="base_model")
+    simclr_model = attach_simclr_head(base_model)
     simclr_model.summary()
 
-    trained_simclr_model, epoch_losses = simclr_utitlities.simclr_train_model(simclr_model, np_train[0], optimizer, batch_size, transformation_function, temperature=temperature, epochs=epochs, is_trasnform_function_vectorized=True, verbose=1)
+    trained_simclr_model, epoch_losses = simclr_train_model(simclr_model, np_train[0], optimizer, batch_size, transformation_function, temperature=temperature, epochs=epochs, is_trasnform_function_vectorized=True, verbose=1)
 
     simclr_model_save_path = f"{working_directory}{start_time_str}_simclr.hdf5"
     trained_simclr_model.save(simclr_model_save_path)
