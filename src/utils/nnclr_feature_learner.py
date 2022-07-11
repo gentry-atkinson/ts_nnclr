@@ -10,6 +10,7 @@
 import tensorflow as tf
 import numpy as np
 from tensorflow import keras
+from random import choice
 try:
     from utils.augmentation import  rand_signal_drop, time_shift
 except:
@@ -108,7 +109,7 @@ def augmenter(name='None', drop_chance=0.1, shift=10):
             #keras.layers.RandomFlip(mode='vertical')
             #RandomDropout(drop_chance=drop_chance),
             #TimeShift(shift=shift),
-            #keras.layers.Flatten(),
+            keras.layers.Flatten(),
             keras.layers.Reshape(input_shape)
         ],
         name=name,
@@ -350,22 +351,24 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     width = len(y[0])
     input_shape = X[0].shape
 
-    train_dataset = tf.data.Dataset.from_tensor_slices((X, y))
+    #train_dataset = tf.data.Dataset.from_tensor_slices((X, y))
 
 
     nnclr = NNCLR(temperature, queue_size, X[0])
     opti = keras.optimizers.Adam()
     nnclr.compile(contrastive_optimizer=opti, probe_optimizer=opti,loss='mse')
-    nnclr.fit(train_dataset, epochs=5, shuffle=True)
+    # nnclr.fit(train_dataset, epochs=5, shuffle=True)
+    nnclr.fit(X, y, epochs=5, shuffle=True)
 
 if __name__ == '__main__':
   print('Verifying NNCLR')
   X = np.array([
-    generate_pattern_data_as_array(128) for _ in range(128)
+    generate_pattern_data_as_array(128) for _ in range(100)
   ])
   
-  X = np.reshape(X, (128,128,1))
+  X = np.reshape(X, (100,128,1))
+  y = np.array([choice([0,1]) for _ in range(100)])
   print(X.shape)
 
-  encoded_X = get_features_for_set(X)
+  encoded_X = get_features_for_set(X, y)
   print(encoded_X.shape)
