@@ -6,6 +6,7 @@
 
 #Source: https://keras.io/examples/vision/nnclr/
 
+
 import tensorflow as tf
 import numpy as np
 from tensorflow import keras
@@ -13,6 +14,10 @@ try:
     from utils.augmentation import  rand_signal_drop, time_shift
 except:
     from augmentation import  rand_signal_drop, time_shift
+try:
+    from utils.gen_ts_data import generate_pattern_data_as_array
+except:
+    from gen_ts_data import generate_pattern_data_as_array
 
 width = 128
 input_shape = (128,1)
@@ -352,3 +357,15 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     opti = keras.optimizers.Adam()
     nnclr.compile(contrastive_optimizer=opti, probe_optimizer=opti,loss='mse')
     nnclr.fit(train_dataset, epochs=5, shuffle=True)
+
+if __name__ == '__main__':
+  print('Verifying NNCLR')
+  X = np.array([
+    generate_pattern_data_as_array(128) for _ in range(128)
+  ])
+  
+  X = np.reshape(X, (128,128,1))
+  print(X.shape)
+
+  encoded_X = get_features_for_set(X)
+  print(encoded_X.shape)
