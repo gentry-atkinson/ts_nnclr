@@ -343,12 +343,12 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     global width
     global input_shape
 
-    if y.ndim == 1:
-        y = keras.utils.to_categorical(y)
+    # if y.ndim == 1:
+    #     y = keras.utils.to_categorical(y)
 
     print('Shape of labels passed to nnclr: ', y.shape)
 
-    width = len(y[0])
+    #width = len(y[0])
     input_shape = X[0].shape
 
     #train_dataset = tf.data.Dataset.from_tensor_slices((X, y))
