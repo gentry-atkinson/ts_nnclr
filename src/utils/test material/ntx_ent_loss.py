@@ -7,8 +7,8 @@ import torch
 from torch import nn
 
 from memory_bank import MemoryBankModule
-#from utils import dist
-import torch.distributed as dist
+import dist
+#import torch.distributed as dist
 
 
 class NTXentLoss(MemoryBankModule):
