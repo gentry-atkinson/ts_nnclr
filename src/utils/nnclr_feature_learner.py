@@ -360,6 +360,8 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     # nnclr.fit(train_dataset, epochs=5, shuffle=True)
     nnclr.fit(X, y, epochs=5, shuffle=True)
 
+    return np.array([1, 2, 3])
+
 if __name__ == '__main__':
   print('Verifying NNCLR')
   X = np.array([
