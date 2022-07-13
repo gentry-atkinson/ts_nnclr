@@ -18,14 +18,15 @@ import numpy as np
 from utils import clustering_metrics
 from matplotlib import pyplot as plt
 from utils.import_datasets import get_unimib_data
-from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
-from utils.ae_feature_learner import get_features_for_set as get_ae_features
-from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
-from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
+
+
+
+
+from lightly_plus_time.lightly.models.nnclr import NNCLR
 
 run_trad = False
 run_ae = False
-run_nnclr = True
+run_nnclr = False
 run_simclr = False
 
 umap_neighbors = 15
@@ -44,6 +45,7 @@ if __name__ == '__main__':
     print('Shape of flattened X: ', flattened_X.shape)
 
     if run_trad:
+        from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
         trad_features = get_trad_features(np.reshape(flattened_X, (flattened_X.shape[0], flattened_X.shape[1])))
         print('Shape of computed features: ', trad_features.shape)
         reducer = umap.UMAP(n_neighbors=umap_neighbors, n_components=umap_dim)
@@ -59,6 +61,7 @@ if __name__ == '__main__':
         print("Dunn index of traditional features: ", clustering_metrics.dunn_index(trad_features, y))
 
     if run_ae:
+        from utils.ae_feature_learner import get_features_for_set as get_ae_features
         ae_features = get_ae_features(flattened_X, with_visual=False)
         print('Shape of autoencoded features: ', ae_features.shape)
         reducer = umap.UMAP()
@@ -69,9 +72,11 @@ if __name__ == '__main__':
         plt.show()
 
     if run_nnclr:
+        from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
         nnclr_features = get_nnclr_features(flattened_X, y=y)
 
     if run_simclr:
+        from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
         simclr_features = get_simclr_features(flattened_X, y)
 
 
