@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: lightly
+Version: 1.2.23
+Summary: A deep learning package for self-supervised learning
+Home-page: UNKNOWN
+Author: Philipp Wirth & Igor Susmelj
+Author-email: philipp@lightly.ai
+License: MIT
+Project-URL: Homepage, https://www.lightly.ai
+Project-URL: Web-App, https://app.lightly.ai
+Project-URL: Documentation, https://docs.lightly.ai
+Project-URL: Github, https://github.com/lightly-ai/lightly
+Project-URL: Discord, https://discord.gg/xvNJW94
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Provides-Extra: video
+Provides-Extra: dev
+Provides-Extra: all
+License-File: LICENSE.txt
+
+# Lightly
+
+Lightly is a PIP package for self-supervised learning.
+
+> We, at [Lightly](https://www.lightly.ai), are passionate engineers who want to make deep learning more efficient. We want to help popularize the use of self-supervised methods to understand and filter raw image data. Our solution can be applied before any data annotation step and the learned representations can be used to analyze and visualize datasets as well as for selecting a core set of samples.
+
+If you are curious to learn more about our work - check out [Lightly](https://www.lightly.ai)!
+
+## Installation
+
+```
+pip install lightly
+```
+
+
+## Links
+- [Homepage](https://www.lightly.ai)
+- [Web-App](https://app.lightly.ai)
+- [Documentation](https://docs.lightly.ai)
+- [Github](https://github.com/lightly-ai/lightly)
+- [Discord](https://discord.gg/xvNJW94)
+

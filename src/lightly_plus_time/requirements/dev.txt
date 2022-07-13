@@ -1,0 +1,16 @@
+tox
+sphinx
+pytest
+pytest-forked
+pytest-xdist
+responses
+sphinx-copybutton
+sphinx-gallery
+sphinx-tabs
+sphinx_rtd_theme
+matplotlib
+pre-commit
+opencv-python
+scikit-learn
+pandas
+torchmetrics
