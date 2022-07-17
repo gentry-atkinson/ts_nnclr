@@ -5,7 +5,9 @@ import torch
 from torch import nn
 from torch import Tensor
 
-from lightly.utils import dist
+#Updated for TS project -GA
+# from lightly.utils import dist
+from lightly_plus_time.lightly.utils import dist
 
 def negative_mises_fisher_weights(
     out0: Tensor, 

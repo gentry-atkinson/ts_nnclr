@@ -3,10 +3,19 @@
 # Copyright (c) 2020. Lightly AG and its affiliates.
 # All Rights Reserved
 
-from lightly.loss.barlow_twins_loss import BarlowTwinsLoss
-from lightly.loss.dcl_loss import DCLLoss, DCLWLoss
-from lightly.loss.dino_loss import DINOLoss
-from lightly.loss.negative_cosine_similarity import NegativeCosineSimilarity
-from lightly.loss.ntx_ent_loss import NTXentLoss
-from lightly.loss.swav_loss import SwaVLoss
-from lightly.loss.sym_neg_cos_sim_loss import SymNegCosineSimilarityLoss
+#Updated for TS project -GA
+# from lightly.loss.barlow_twins_loss import BarlowTwinsLoss
+# from lightly.loss.dcl_loss import DCLLoss, DCLWLoss
+# from lightly.loss.dino_loss import DINOLoss
+# from lightly.loss.negative_cosine_similarity import NegativeCosineSimilarity
+# from lightly.loss.ntx_ent_loss import NTXentLoss
+# from lightly.loss.swav_loss import SwaVLoss
+# from lightly.loss.sym_neg_cos_sim_loss import SymNegCosineSimilarityLoss
+
+from lightly_plus_time.lightly.loss.barlow_twins_loss import BarlowTwinsLoss
+from lightly_plus_time.lightly.loss.dcl_loss import DCLLoss, DCLWLoss
+from lightly_plus_time.lightly.loss.dino_loss import DINOLoss
+from lightly_plus_time.lightly.loss.negative_cosine_similarity import NegativeCosineSimilarity
+from lightly_plus_time.lightly.loss.ntx_ent_loss import NTXentLoss
+from lightly_plus_time.lightly.loss.swav_loss import SwaVLoss
+from lightly_plus_time.lightly.loss.sym_neg_cos_sim_loss import SymNegCosineSimilarityLoss

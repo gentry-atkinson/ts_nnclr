@@ -17,7 +17,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from lightly.models.batchnorm import get_norm_layer
+#Updated for TS project -GA
+# from lightly.models.batchnorm import get_norm_layer
+from lightly_plus_time.lightly.models.batchnorm import get_norm_layer
 
 class BasicBlock(nn.Module):
     """ Implementation of the ResNet Basic Block.

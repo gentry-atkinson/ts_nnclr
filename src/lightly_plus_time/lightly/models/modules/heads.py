@@ -8,8 +8,9 @@ from typing import List, Optional, Tuple
 import torch
 import torch.nn as nn
 
-from lightly.models import utils
-
+#Updated for TS project -GA
+#from lightly.models import utils
+from lightly_plus_time.lightly.models import utils
 
 class ProjectionHead(nn.Module):
     """Base class for all projection and prediction heads.

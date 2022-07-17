@@ -15,10 +15,16 @@ from torch._C import Value
 import torchvision.datasets as datasets
 from torchvision import transforms
 
-from lightly.data._helpers import _load_dataset_from_folder
-from lightly.data._helpers import DatasetFolder
-from lightly.data._video import VideoDataset
-from lightly.utils.io import check_filenames
+#updated for TS project -GA
+# from lightly.data._helpers import _load_dataset_from_folder
+# from lightly.data._helpers import DatasetFolder
+# from lightly.data._video import VideoDataset
+# from lightly.utils.io import check_filenames
+
+from lightly_plus_time.lightly.data._helpers import _load_dataset_from_folder
+from lightly_plus_time.lightly.data._helpers import DatasetFolder
+from lightly_plus_time.lightly.data._video import VideoDataset
+from lightly_plus_time.lightly.utils.io import check_filenames
 
 
 def _get_filename_by_index(dataset, index):

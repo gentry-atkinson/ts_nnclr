@@ -8,5 +8,8 @@ dataset instance.
 # Copyright (c) 2020. Lightly AG and its affiliates.
 # All Rights Reserved
 
-from lightly.embedding._base import BaseEmbedding
-from lightly.embedding.embedding import SelfSupervisedEmbedding
+#Updated for TS project- GA
+# from lightly.embedding._base import BaseEmbedding
+# from lightly.embedding.embedding import SelfSupervisedEmbedding
+from lightly_plus_time.lightly.embedding._base import BaseEmbedding
+from lightly_plus_time.lightly.embedding.embedding import SelfSupervisedEmbedding

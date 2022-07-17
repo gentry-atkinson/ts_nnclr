@@ -4,7 +4,9 @@ from typing import Callable, Optional
 
 import torch
 import torch.nn as nn
-from lightly.models import utils
+#Updated for TS project- GA
+#from lightly.models import utils
+from lightly_plus_time.lightly.models import utils
 
 # vision_transformer requires torchvision >= 0.12
 from torchvision.models import vision_transformer

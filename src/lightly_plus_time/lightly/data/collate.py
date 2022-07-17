@@ -12,10 +12,16 @@ from PIL import Image
 import torchvision
 import torchvision.transforms as T
 
-from lightly.transforms import GaussianBlur
-from lightly.transforms import Jigsaw
-from lightly.transforms import RandomRotate
-from lightly.transforms import RandomSolarization
+#Updated for TS project -GA
+# from lightly.transforms import GaussianBlur
+# from lightly.transforms import Jigsaw
+# from lightly.transforms import RandomRotate
+# from lightly.transforms import RandomSolarization
+
+from lightly_plus_time.lightly.transforms import GaussianBlur
+from lightly_plus_time.lightly.transforms import Jigsaw
+from lightly_plus_time.lightly.transforms import RandomRotate
+from lightly_plus_time.lightly.transforms import RandomSolarization
 
 imagenet_normalize = {
     'mean': [0.485, 0.456, 0.406],

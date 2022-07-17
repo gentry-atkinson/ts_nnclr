@@ -9,7 +9,9 @@ import os
 import torchvision.datasets as datasets
 from torchvision import transforms
 
-from lightly.data._image_loaders import default_loader
+#Updated for TS project -GA
+# from lightly.data._image_loaders import default_loader
+from lightly_plus_time.lightly.data._image_loaders import default_loader
 
 
 def _make_dataset(directory, extensions=None, is_valid_file=None) -> List[Tuple[str, int]]:

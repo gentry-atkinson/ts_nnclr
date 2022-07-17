@@ -8,8 +8,11 @@ import warnings
 import torch
 import torch.nn as nn
 
-from lightly.models.modules import NNCLRProjectionHead
-from lightly.models.modules import NNCLRPredictionHead
+#Updated for TS projectg - GA
+# from lightly.models.modules import NNCLRProjectionHead
+# from lightly.models.modules import NNCLRPredictionHead
+from lightly_plus_time.lightly.models.modules import NNCLRProjectionHead
+from lightly_plus_time.lightly.models.modules import NNCLRPredictionHead
 
 
 def _prediction_mlp(in_dims: int, 

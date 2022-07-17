@@ -8,8 +8,9 @@ import warnings
 import torch
 import torch.nn as nn
 
-from lightly.models.modules import SimCLRProjectionHead
-
+#Updated for TS project -GA
+# from lightly.models.modules import SimCLRProjectionHead
+from lightly_plus_time.lightly.models.modules import SimCLRProjectionHead
 
 class SimCLR(nn.Module):
     """Implementation of the SimCLR[0] architecture

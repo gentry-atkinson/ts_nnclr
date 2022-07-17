@@ -6,9 +6,11 @@
 import torch
 from torch import nn
 
-from lightly.loss.memory_bank import MemoryBankModule
-from lightly.utils import dist
-
+#Updated for TS project -GA
+# from lightly.loss.memory_bank import MemoryBankModule
+# from lightly.utils import dist
+from lightly_plus_time.lightly.loss.memory_bank import MemoryBankModule
+from lightly_plus_time.lightly.utils import dist
 
 class NTXentLoss(MemoryBankModule):
     """Implementation of the Contrastive Cross Entropy Loss.

@@ -10,7 +10,9 @@ import warnings
 import torch
 import torch.nn as nn
 
-from lightly.models.modules import BarlowTwinsProjectionHead
+#Updated for TS project -GA
+# from lightly.models.modules import BarlowTwinsProjectionHead
+from lightly_plus_time.lightly.models.modules import BarlowTwinsProjectionHead
 
 
 class BarlowTwins(nn.Module):

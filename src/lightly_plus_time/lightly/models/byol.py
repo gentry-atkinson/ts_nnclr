@@ -8,8 +8,11 @@ import warnings
 import torch
 import torch.nn as nn
 
-from lightly.models.modules import BYOLProjectionHead
-from lightly.models._momentum import _MomentumEncoderMixin
+#Updated for TS project
+# from lightly.models.modules import BYOLProjectionHead
+# from lightly.models._momentum import _MomentumEncoderMixin
+from lightly_plus_time.lightly.models.modules import BYOLProjectionHead
+from lightly_plus_time.lightly.models._momentum import _MomentumEncoderMixin
 
 
 def _get_byol_mlp(num_ftrs: int, hidden_dim: int, out_dim: int):

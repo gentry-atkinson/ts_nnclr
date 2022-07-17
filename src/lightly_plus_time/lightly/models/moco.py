@@ -8,9 +8,11 @@ import warnings
 import torch
 import torch.nn as nn
 
-from lightly.models._momentum import _MomentumEncoderMixin
-from lightly.models.modules import MoCoProjectionHead
-
+#Updated for TS project -GA
+# from lightly.models._momentum import _MomentumEncoderMixin
+# from lightly.models.modules import MoCoProjectionHead
+from lightly_plus_time.lightly.models._momentum import _MomentumEncoderMixin
+from lightly_plus_time.lightly.models.modules import MoCoProjectionHead
 
 class MoCo(nn.Module, _MomentumEncoderMixin):
     """Implementation of the MoCo (Momentum Contrast)[0] architecture.

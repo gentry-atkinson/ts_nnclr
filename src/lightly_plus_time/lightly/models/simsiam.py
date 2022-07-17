@@ -8,9 +8,11 @@ import warnings
 import torch
 import torch.nn as nn
 
-from lightly.models.modules import SimSiamProjectionHead
-from lightly.models.modules import SimSiamPredictionHead
-
+#Updated for TS project
+# from lightly.models.modules import SimSiamProjectionHead
+# from lightly.models.modules import SimSiamPredictionHead
+from lightly_plus_time.lightly.models.modules import SimSiamProjectionHead
+from lightly_plus_time.lightly.models.modules import SimSiamPredictionHead
 
 class SimSiam(nn.Module):
     """Implementation of SimSiam[0] network

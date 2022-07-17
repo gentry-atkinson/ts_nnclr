@@ -18,14 +18,27 @@ checkpoints.
 # Copyright (c) 2020. Lightly AG and its affiliates.
 # All Rights Reserved
 
-from lightly.models.resnet import ResNetGenerator
-from lightly.models.barlowtwins import BarlowTwins
-from lightly.models.simclr import SimCLR
-from lightly.models.simsiam import SimSiam
-from lightly.models.byol import BYOL
-from lightly.models.moco import MoCo
-from lightly.models.nnclr import NNCLR
-from lightly.models.zoo import ZOO
-from lightly.models.zoo import checkpoints
+#Updated for TS project -GA
+# from lightly.models.resnet import ResNetGenerator
+# from lightly.models.barlowtwins import BarlowTwins
+# from lightly.models.simclr import SimCLR
+# from lightly.models.simsiam import SimSiam
+# from lightly.models.byol import BYOL
+# from lightly.models.moco import MoCo
+# from lightly.models.nnclr import NNCLR
+# from lightly.models.zoo import ZOO
+# from lightly.models.zoo import checkpoints
 
-from lightly.models import utils
+# from lightly.models import utils
+
+from lightly_plus_time.lightly.models.resnet import ResNetGenerator
+from lightly_plus_time.lightly.models.barlowtwins import BarlowTwins
+from lightly_plus_time.lightly.models.simclr import SimCLR
+from lightly_plus_time.lightly.models.simsiam import SimSiam
+from lightly_plus_time.lightly.models.byol import BYOL
+from lightly_plus_time.lightly.models.moco import MoCo
+from lightly_plus_time.lightly.models.nnclr import NNCLR
+from lightly_plus_time.lightly.models.zoo import ZOO
+from lightly_plus_time.lightly.models.zoo import checkpoints
+
+from lightly_plus_time.lightly.models import utils
