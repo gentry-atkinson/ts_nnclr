@@ -84,7 +84,9 @@ try:
     # This variable is injected in the __builtins__ by the build
     # process. It used to enable importing subpackages of skimage when
     # the binaries are not built
-    __LIGHTLY_SETUP__
+
+    #I'm setting this true to keep things running -GA
+    __LIGHTLY_SETUP__ = True
 except NameError:
     __LIGHTLY_SETUP__ = False
 
