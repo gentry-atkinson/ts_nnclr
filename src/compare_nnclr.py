@@ -26,7 +26,7 @@ from lightly_plus_time.lightly.models.nnclr import NNCLR
 
 run_trad = False
 run_ae = False
-run_nnclr = True
+run_nnclr = False
 run_simclr = False
 
 umap_neighbors = 15

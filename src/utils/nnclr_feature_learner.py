@@ -4,11 +4,29 @@
 #Build and trained a self-supervised feature extractor using Lightly's
 #  nearest neighbor clr
 
-from lightly_plus_time.lightly.models.nnclr import NNCLR
-
 import torch
 from torch import nn
-import torchvision
+#import torchvision
+
+import numpy as np
+from random import choice
+
+import sys 
+
+
+
+try:
+    from utils.gen_ts_data import generate_pattern_data_as_array
+except:
+    from gen_ts_data import generate_pattern_data_as_array
+
+try:
+  from lightly_plus_time.lightly.models.nnclr import NNCLR
+except:
+  sys.path.append('../lightly_plus_time')
+  import os
+  print(os.getcwd())
+  from src.lightly_plus_time.lightly.models.nnclr import NNCLR
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     #resnet = torchvision.models.resnet18()
@@ -20,3 +38,16 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
           nn.ReLU()
         )
     model = NNCLR(backbone)
+
+if __name__ == '__main__':
+  print('Verifying NNCLR')
+  X = np.array([
+    generate_pattern_data_as_array(128) for _ in range(100)
+  ])
+  
+  X = np.reshape(X, (100,128,1))
+  y = np.array([choice([0,1]) for _ in range(100)])
+  print(X.shape)
+
+  encoded_X = get_features_for_set(X, y)
+  print(encoded_X.shape)

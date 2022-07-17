@@ -6,10 +6,16 @@ from typing import Tuple, List
 
 import numpy as np
 
-from lightly.cli.train_cli import _train_cli
-from lightly.cli.embed_cli import _embed_cli
-from lightly.cli.lightly_cli import _lightly_cli
-import lightly.cli as cli
+#Updated for TS project -GA
+# from lightly.cli.train_cli import _train_cli
+# from lightly.cli.embed_cli import _embed_cli
+# from lightly.cli.lightly_cli import _lightly_cli
+# import lightly.cli as cli
+
+from lightly_plus_time.lightly.cli.train_cli import _train_cli
+from lightly_plus_time.lightly.cli.embed_cli import _embed_cli
+from lightly_plus_time.lightly.cli.lightly_cli import _lightly_cli
+import lightly_plus_time.lightly.cli as cli
 
 import yaml
 import os

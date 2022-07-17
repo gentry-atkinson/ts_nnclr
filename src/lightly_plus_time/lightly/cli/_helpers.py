@@ -13,13 +13,22 @@ from hydra import utils
 from torch import nn as nn
 from torch.utils.hipify.hipify_python import bcolors
 
-from lightly.utils import version_compare
+#Updated for TS project -GA
+# from lightly.utils import version_compare
 
-from lightly.cli._cli_simclr import _SimCLR
-from lightly.embedding import SelfSupervisedEmbedding
+# from lightly.cli._cli_simclr import _SimCLR
+# from lightly.embedding import SelfSupervisedEmbedding
 
-from lightly.models import ZOO as model_zoo, ResNetGenerator
-from lightly.models.batchnorm import get_norm_layer
+# from lightly.models import ZOO as model_zoo, ResNetGenerator
+# from lightly.models.batchnorm import get_norm_layer
+
+from lightly_plus_time.lightly.utils import version_compare
+
+from lightly_plus_time.lightly.cli._cli_simclr import _SimCLR
+from lightly_plus_time.lightly.embedding import SelfSupervisedEmbedding
+
+from lightly_plus_time.lightly.models import ZOO as model_zoo, ResNetGenerator
+from lightly_plus_time.lightly.models.batchnorm import get_norm_layer
 
 
 def _custom_formatwarning(msg, *args, **kwargs):

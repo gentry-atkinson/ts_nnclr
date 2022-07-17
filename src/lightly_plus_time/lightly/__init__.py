@@ -112,18 +112,30 @@ else:
     except ImportError:
         _torchvision_vit_available = False
 
-    from lightly.core import *
-    from lightly import active_learning
-    from lightly import api
-    from lightly import data
-    from lightly import embedding
-    from lightly import loss
-    from lightly import models
-    from lightly import openapi_generated
-    from lightly import transforms
-    from lightly import utils
+    #Updated for TS project -GA
+    #from lightly.core import *
+    # from lightly import active_learning
+    # from lightly import api
+    # from lightly import data
+    # from lightly import embedding
+    # from lightly import loss
+    # from lightly import models
+    # from lightly import openapi_generated
+    # from lightly import transforms
+    # from lightly import utils
+    from lightly_plus_time.lightly.core import *
+    from lightly_plus_time.lightly import active_learning
+    from lightly_plus_time.lightly import api
+    from lightly_plus_time.lightly import data
+    from lightly_plus_time.lightly import embedding
+    from lightly_plus_time.lightly import loss
+    from lightly_plus_time.lightly import models
+    from lightly_plus_time.lightly import openapi_generated
+    from lightly_plus_time.lightly import transforms
+    from lightly_plus_time.lightly import utils
     
-    from lightly.api.version_checking import do_version_check
+    #from lightly.api.version_checking import do_version_check
+    from api.version_checking import do_version_check
 
     if os.getenv('LIGHTLY_DID_VERSION_CHECK', 'False') == 'False':
         os.environ['LIGHTLY_DID_VERSION_CHECK'] = 'True'
