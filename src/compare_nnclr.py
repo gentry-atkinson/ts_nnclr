@@ -26,7 +26,7 @@ from lightly_plus_time.lightly.models.nnclr import NNCLR
 
 run_trad = False
 run_ae = False
-run_nnclr = False
+run_nnclr = True
 run_simclr = False
 
 umap_neighbors = 15
@@ -74,6 +74,7 @@ if __name__ == '__main__':
     if run_nnclr:
         from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
         nnclr_features = get_nnclr_features(flattened_X, y=y)
+        print(nnclr_features.shape)
 
     if run_simclr:
         from utils.simclr_feature_learner import get_features_for_set as get_simclr_features

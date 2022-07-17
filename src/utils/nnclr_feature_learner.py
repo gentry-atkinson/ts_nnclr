@@ -15,18 +15,15 @@ import sys
 
 
 
-try:
-    from utils.gen_ts_data import generate_pattern_data_as_array
-except:
-    from gen_ts_data import generate_pattern_data_as_array
+# try:
+#     from utils.gen_ts_data import generate_pattern_data_as_array
+# except:
+#     from gen_ts_data import generate_pattern_data_as_array
 
-try:
-  from lightly_plus_time.lightly.models.nnclr import NNCLR
-except:
-  sys.path.append('../lightly_plus_time')
-  import os
-  print(os.getcwd())
-  from src.lightly_plus_time.lightly.models.nnclr import NNCLR
+
+from lightly_plus_time.lightly.models.nnclr import NNCLR
+
+from lightly_plus_time.lightly.models.modules import NNMemoryBankModule
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     #resnet = torchvision.models.resnet18()
@@ -39,15 +36,23 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
         )
     model = NNCLR(backbone)
 
-if __name__ == '__main__':
-  print('Verifying NNCLR')
-  X = np.array([
-    generate_pattern_data_as_array(128) for _ in range(100)
-  ])
-  
-  X = np.reshape(X, (100,128,1))
-  y = np.array([choice([0,1]) for _ in range(100)])
-  print(X.shape)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model.to(device)
 
-  encoded_X = get_features_for_set(X, y)
-  print(encoded_X.shape)
+    memory_bank = NNMemoryBankModule(size=4096)
+    memory_bank.to(device)
+
+    return(np.zeros(X.shape))
+
+# if __name__ == '__main__':
+#   print('Verifying NNCLR')
+#   X = np.array([
+#     generate_pattern_data_as_array(128) for _ in range(100)
+#   ])
+  
+#   X = np.reshape(X, (100,128,1))
+#   y = np.array([choice([0,1]) for _ in range(100)])
+#   print(X.shape)
+
+#   encoded_X = get_features_for_set(X, y)
+#   print(encoded_X.shape)
