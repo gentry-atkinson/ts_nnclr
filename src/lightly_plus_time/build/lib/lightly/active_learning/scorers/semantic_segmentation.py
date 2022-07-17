@@ -8,8 +8,8 @@ from typing import Callable, Union, Generator, List, Dict
 
 import numpy as np
 
-from lightly.active_learning.scorers.scorer import Scorer
-from lightly.active_learning.scorers import ScorerClassification
+from lightly_plus_time.lightly.active_learning.scorers.scorer import Scorer
+from lightly_plus_time.lightly.active_learning.scorers import ScorerClassification
 
 
 def _reduce_classification_scores_over_pixels(scores: np.ndarray,

@@ -8,7 +8,7 @@ from typing import *
 from PIL import Image
 from PIL import UnidentifiedImageError
 import tqdm.contrib.concurrent as concurrent
-from lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import LightlyDataset
 
 
 def check_images(data_dir: str) -> Tuple[List[str], List[str]]:

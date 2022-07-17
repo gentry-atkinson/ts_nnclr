@@ -9,12 +9,12 @@ from typing import List
 import numpy as np
 import torchvision
 
-from lightly.api.api_workflow_upload_metadata import \
+from lightly_plus_time.lightly.api.api_workflow_upload_metadata import \
     InvalidCustomMetadataWarning
-from lightly.api.utils import MAXIMUM_FILENAME_LENGTH
-from lightly.data.dataset import LightlyDataset
-from lightly.openapi_generated.swagger_client import SampleData
-from lightly.utils.io import COCO_ANNOTATION_KEYS
+from lightly_plus_time.lightly.api.utils import MAXIMUM_FILENAME_LENGTH
+from lightly_plus_time.lightly.data.dataset import LightlyDataset
+from lightly_plus_time.lightly.openapi_generated.swagger_client import SampleData
+from lightly_plus_time.lightly.utils.io import COCO_ANNOTATION_KEYS
 
 from tests.api_workflow.mocked_api_workflow_client import \
     MockedApiWorkflowSetup

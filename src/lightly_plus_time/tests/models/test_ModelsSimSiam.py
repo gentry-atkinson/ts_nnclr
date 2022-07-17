@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torchvision
 
-from lightly.models import SimSiam
+from lightly_plus_time.lightly.models import SimSiam
 
 
 def resnet_generator(name: str):

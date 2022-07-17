@@ -1,9 +1,9 @@
 import time
 
 import lightly
-lightly.api.utils.RETRY_MAX_RETRIES = 1
+lightly_plus_time.lightly.api.utils.RETRY_MAX_RETRIES = 1
 
-from lightly.api.download import download_image
+from lightly_plus_time.lightly.api.download import download_image
 
 url_33MB = "https://cdn.eso.org/images/original/potw1130a.tif"
 url_5MB = "https://cdn.eso.org/images/large/potw1130a.jpg"

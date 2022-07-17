@@ -68,9 +68,9 @@ Follow these steps to start contributing:
 2. Clone your fork to your local disk, and add the base repository as a remote:
 
    ```bash
-   $ git clone git@github.com:lightly-ai/lightly.git
+   $ git clone git@github.com:lightly-ai/lightly_plus_time.lightly.git
    $ cd lightly
-   $ git remote add upstream https://github.com/lightly-ai/lightly.git
+   $ git remote add upstream https://github.com/lightly-ai/lightly_plus_time.lightly.git
    ```
 
 3. Create a new branch to hold your development changes:

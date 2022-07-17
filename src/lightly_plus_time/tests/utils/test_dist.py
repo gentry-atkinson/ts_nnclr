@@ -3,7 +3,7 @@ from unittest import mock
 
 import torch
 
-from lightly.utils import dist
+from lightly_plus_time.lightly.utils import dist
 
 
 
@@ -19,8 +19,8 @@ class TestDist(unittest.TestCase):
         for world_size in [1, 3]:
             for rank in range(0, world_size):
                 with mock.patch('torch.distributed.is_initialized', lambda: True),\
-                    mock.patch('lightly.utils.dist.world_size', lambda: world_size),\
-                    mock.patch('lightly.utils.dist.rank', lambda: rank):
+                    mock.patch('lightly_plus_time.lightly.utils.dist.world_size', lambda: world_size),\
+                    mock.patch('lightly_plus_time.lightly.utils.dist.rank', lambda: rank):
                     expected = []
                     for _ in range(0, rank):
                         expected.append(zeros)

@@ -1,7 +1,7 @@
 import unittest
 import torch
 
-from lightly.loss.hypersphere_loss import HypersphereLoss
+from lightly_plus_time.lightly.loss.hypersphere_loss import HypersphereLoss
 
 
 class TestHyperSphereLoss(unittest.TestCase):

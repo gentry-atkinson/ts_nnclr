@@ -6,9 +6,9 @@ from PIL import Image
 from PIL import Image
 
 import lightly
-from lightly.api.utils import retry
-from lightly.api.utils import getenv
-from lightly.api.utils import PIL_to_bytes
+from lightly_plus_time.lightly.api.utils import retry
+from lightly_plus_time.lightly.api.utils import getenv
+from lightly_plus_time.lightly.api.utils import PIL_to_bytes
 
 class TestUtils(unittest.TestCase):
 

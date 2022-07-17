@@ -9,10 +9,10 @@ import numpy as np
 import torchvision
 
 import lightly
-from lightly.data.dataset import LightlyDataset
+from lightly_plus_time.lightly.data.dataset import LightlyDataset
 
 from tests.api_workflow.mocked_api_workflow_client import MockedApiWorkflowSetup
-from lightly.openapi_generated.swagger_client.models.dataset_data import DatasetData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.dataset_data import DatasetData
 
 
 
@@ -37,7 +37,7 @@ class TestApiWorkflowDownloadDataset(MockedApiWorkflowSetup):
         def my_func(read_url):
             return PIL.Image.fromarray(np.zeros((32, 32))).convert('RGB')
         #mock_get_image_from_readurl.return_value = PIL.Image.fromarray(np.zeros((32, 32)))
-        lightly.api.api_workflow_download_dataset._get_image_from_read_url = my_func
+        lightly_plus_time.lightly.api.api_workflow_download_dataset._get_image_from_read_url = my_func
         self.api_workflow_client.download_dataset('path-to-dir-remove-me', tag_name='initial-tag')
         shutil.rmtree('path-to-dir-remove-me')
 

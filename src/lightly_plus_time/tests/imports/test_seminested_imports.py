@@ -49,7 +49,7 @@ class TestSemiNestedImports(unittest.TestCase):
         loss.sym_neg_cos_sim_loss.SymNegCosineSimilarityLoss
         loss.memory_bank.MemoryBankModule
 
-        from lightly.loss import regularizer
+        from lightly_plus_time.lightly.loss import regularizer
         regularizer.CO2Regularizer
         regularizer.co2.CO2Regularizer
 

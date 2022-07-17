@@ -9,26 +9,26 @@ from concurrent.futures.thread import ThreadPoolExecutor
 import tqdm
 from lightly_utils import image_processing
 
-from lightly.data.dataset import LightlyDataset
-from lightly.api.utils import check_filename
-from lightly.api.utils import MAXIMUM_FILENAME_LENGTH
-from lightly.api.utils import retry
-from lightly.api.utils import build_azure_signed_url_write_headers
-from lightly.openapi_generated.swagger_client import TagCreator
-from lightly.openapi_generated.swagger_client import SampleWriteUrls
-from lightly.openapi_generated.swagger_client.models.sample_create_request \
+from lightly_plus_time.lightly.data.dataset import LightlyDataset
+from lightly_plus_time.lightly.api.utils import check_filename
+from lightly_plus_time.lightly.api.utils import MAXIMUM_FILENAME_LENGTH
+from lightly_plus_time.lightly.api.utils import retry
+from lightly_plus_time.lightly.api.utils import build_azure_signed_url_write_headers
+from lightly_plus_time.lightly.openapi_generated.swagger_client import TagCreator
+from lightly_plus_time.lightly.openapi_generated.swagger_client import SampleWriteUrls
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.sample_create_request \
     import SampleCreateRequest
-from lightly.openapi_generated.swagger_client.models.tag_upsize_request \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.tag_upsize_request \
     import TagUpsizeRequest
-from lightly.openapi_generated.swagger_client.models.initial_tag_create_request\
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.initial_tag_create_request\
     import InitialTagCreateRequest
-from lightly.openapi_generated.swagger_client.models.job_status_meta \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.job_status_meta \
     import JobStatusMeta
-from lightly.openapi_generated.swagger_client.models.job_status_upload_method \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.job_status_upload_method \
     import JobStatusUploadMethod
 
-from lightly.openapi_generated.swagger_client.models.datasource_config_base import DatasourceConfigBase
-from lightly.openapi_generated.swagger_client.rest import ApiException
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.datasource_config_base import DatasourceConfigBase
+from lightly_plus_time.lightly.openapi_generated.swagger_client.rest import ApiException
 
 
 class _UploadDatasetMixin:

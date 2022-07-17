@@ -29,7 +29,7 @@ exclude_parent_tag: False     # If true, only the samples in the defined tag, bu
 pre_trained: True             # Whether to use a pre-trained model or not
 crop_padding: 0.1             # The padding to use when cropping
 
-# model namespace: Passed to lightly.models.ResNetGenerator.
+# model namespace: Passed to lightly_plus_time.lightly.models.ResNetGenerator.
 model:
   name: 'resnet-18'           # Name of the model, currently supports popular variants:
                               # resnet-18, resnet-34, resnet-50, resnet-101, resnet-152.
@@ -37,7 +37,7 @@ model:
   num_ftrs: 32                # Dimensionality of feature vectors (embedding size).
   width: 1                    # Width of the resnet.
 
-# criterion namespace: Passed to lightly.loss.NTXentLoss.
+# criterion namespace: Passed to lightly_plus_time.lightly.loss.NTXentLoss.
 criterion:            
   temperature: 0.5            # Number by which logits are divided.
   memory_bank_size: 0         # Size of the memory bank to use (e.g. for MoCo). 0 means no memory bank.
@@ -48,7 +48,7 @@ optimizer:
   lr: 1.                      # Learning rate of the optimizer.
   weight_decay: 0.00001       # L2 penalty.
 
-# collate namespace: Passed to lightly.data.ImageCollateFunction.
+# collate namespace: Passed to lightly_plus_time.lightly.data.ImageCollateFunction.
 collate:
   input_size: 64              # Size of the input images in pixels.
   cj_prob: 0.8                # Probability that color jitter is applied.
@@ -171,5 +171,5 @@ hydra:
 
       Use self-supervised methods to understand and filter raw image data:
 
-      Website: https://www.lightly.ai
-      Documentation: https://docs.lightly.ai/getting_started/command_line_tool.html
+      Website: https://www.lightly_plus_time.lightly.ai
+      Documentation: https://docs.lightly_plus_time.lightly.ai/getting_started/command_line_tool.html

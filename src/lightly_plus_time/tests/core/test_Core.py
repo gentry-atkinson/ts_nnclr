@@ -8,7 +8,7 @@ import torchvision
 import tempfile
 import pytest
 
-from lightly.core import train_model_and_embed_images
+from lightly_plus_time.lightly.core import train_model_and_embed_images
 
 
 class TestCore(unittest.TestCase):

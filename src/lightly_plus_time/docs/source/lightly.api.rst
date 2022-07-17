@@ -1,28 +1,28 @@
-lightly.api
+lightly_plus_time.lightly.api
 ===================
 
-.. automodule:: lightly.api
+.. automodule:: lightly_plus_time.lightly.api
 
 .api_workflow_client
 ---------------------
-.. automodule:: lightly.api.api_workflow_client
+.. automodule:: lightly_plus_time.lightly.api.api_workflow_client
    :members:
    :inherited-members:
 
-.. automodule:: lightly.api.api_workflow_datasets
+.. automodule:: lightly_plus_time.lightly.api.api_workflow_datasets
    :members:
 
-.. automodule:: lightly.api.api_workflow_download_dataset
+.. automodule:: lightly_plus_time.lightly.api.api_workflow_download_dataset
    :members:
 
-.. automodule:: lightly.api.api_workflow_selection
+.. automodule:: lightly_plus_time.lightly.api.api_workflow_selection
    :members:
 
-.. automodule:: lightly.api.api_workflow_upload_dataset
+.. automodule:: lightly_plus_time.lightly.api.api_workflow_upload_dataset
    :members:
 
-.. automodule:: lightly.api.api_workflow_upload_embeddings
+.. automodule:: lightly_plus_time.lightly.api.api_workflow_upload_embeddings
    :members:
 
-.. automodule:: lightly.api.api_workflow_upload_metadata
+.. automodule:: lightly_plus_time.lightly.api.api_workflow_upload_metadata
    :members:

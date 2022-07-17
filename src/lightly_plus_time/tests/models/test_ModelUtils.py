@@ -4,14 +4,14 @@ import copy
 import torch
 import torch.nn as nn
 
-from lightly.models import utils
-from lightly.models.utils import batch_shuffle
-from lightly.models.utils import batch_unshuffle
-from lightly.models.utils import activate_requires_grad
-from lightly.models.utils import deactivate_requires_grad
-from lightly.models.utils import update_momentum
-from lightly.models.utils import normalize_weight
-from lightly.models.utils import _no_grad_trunc_normal
+from lightly_plus_time.lightly.models import utils
+from lightly_plus_time.lightly.models.utils import batch_shuffle
+from lightly_plus_time.lightly.models.utils import batch_unshuffle
+from lightly_plus_time.lightly.models.utils import activate_requires_grad
+from lightly_plus_time.lightly.models.utils import deactivate_requires_grad
+from lightly_plus_time.lightly.models.utils import update_momentum
+from lightly_plus_time.lightly.models.utils import normalize_weight
+from lightly_plus_time.lightly.models.utils import _no_grad_trunc_normal
 
 
 def has_grad(model: nn.Module):

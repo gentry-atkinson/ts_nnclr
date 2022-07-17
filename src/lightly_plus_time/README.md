@@ -8,11 +8,11 @@
 
 Lightly is a computer vision framework for self-supervised learning.
 
-> We, at [Lightly](https://www.lightly.ai), are passionate engineers who want to make deep learning more efficient. That's why - together with our community - we want to popularize the use of self-supervised methods to understand and curate raw image data. Our solution can be applied before any data annotation step and the learned representations can be used to visualize and analyze datasets. This allows to select the best core set of samples for model training through advanced filtering.
+> We, at [Lightly](https://www.lightly_plus_time.lightly.ai), are passionate engineers who want to make deep learning more efficient. That's why - together with our community - we want to popularize the use of self-supervised methods to understand and curate raw image data. Our solution can be applied before any data annotation step and the learned representations can be used to visualize and analyze datasets. This allows to select the best core set of samples for model training through advanced filtering.
 
-- [Homepage](https://www.lightly.ai)
-- [Web-App](https://app.lightly.ai)
-- [Documentation](https://docs.lightly.ai)
+- [Homepage](https://www.lightly_plus_time.lightly.ai)
+- [Web-App](https://app.lightly_plus_time.lightly.ai)
+- [Documentation](https://docs.lightly_plus_time.lightly.ai)
 - [Github](https://github.com/lightly-ai/lightly)
 - [Discord](https://discord.gg/xvNJW94)
 
@@ -43,14 +43,14 @@ Lightly offers features like
 
 Want to jump to the tutorials and see lightly in action?
 
-- [Train MoCo on CIFAR-10](https://docs.lightly.ai/tutorials/package/tutorial_moco_memory_bank.html)
-- [Train SimCLR on clothing data](https://docs.lightly.ai/tutorials/package/tutorial_simclr_clothing.html)
-- [Train SimSiam on satellite images](https://docs.lightly.ai/tutorials/package/tutorial_simsiam_esa.html)
-- [Use lightly with custom augmentations](https://docs.lightly.ai/tutorials/package/tutorial_custom_augmentations.html)
+- [Train MoCo on CIFAR-10](https://docs.lightly_plus_time.lightly.ai/tutorials/package/tutorial_moco_memory_bank.html)
+- [Train SimCLR on clothing data](https://docs.lightly_plus_time.lightly.ai/tutorials/package/tutorial_simclr_clothing.html)
+- [Train SimSiam on satellite images](https://docs.lightly_plus_time.lightly.ai/tutorials/package/tutorial_simsiam_esa.html)
+- [Use lightly with custom augmentations](https://docs.lightly_plus_time.lightly.ai/tutorials/package/tutorial_custom_augmentations.html)
 
 Tutorials of using the lightly packge together with the Lightly Platform:
 
-- [Active Learning using Detectron2 on Comma10k](https://docs.lightly.ai/tutorials/platform/tutorial_active_learning_detectron2.html)
+- [Active Learning using Detectron2 on Comma10k](https://docs.lightly_plus_time.lightly.ai/tutorials/platform/tutorial_active_learning_detectron2.html)
 - [Active Learning with the Nvidia TLT](https://github.com/lightly-ai/NvidiaTLTActiveLearning)
 
 Community and partner projects:
@@ -90,9 +90,9 @@ from the ground up.
 ```python
 import torch
 import torchvision
-import lightly.models as models
-import lightly.loss as loss
-import lightly.data as data
+import lightly_plus_time.lightly.models as models
+import lightly_plus_time.lightly.loss as loss
+import lightly_plus_time.lightly.data as data
 
 # the collate function applies random transforms to the input images
 collate_fn = data.ImageCollateFunction(input_size=32, cj_prob=0.5)
@@ -156,7 +156,7 @@ trainer.fit(
 
 We provide proper multi-GPU training with distributed gather and synchronized BatchNorm
 
-[Have a look at our docs regarding distributed training](https://docs.lightly.ai/getting_started/distributed_training.html)
+[Have a look at our docs regarding distributed training](https://docs.lightly_plus_time.lightly.ai/getting_started/distributed_training.html)
 
 
 
@@ -177,13 +177,13 @@ lightly-embed input_dir=/mydataset checkpoint=/mycheckpoint
 ```
 
 The embeddings with the corresponding filename are stored in a 
-[human-readable .csv file](https://docs.lightly.ai/getting_started/command_line_tool.html#create-embeddings-using-the-cli).
+[human-readable .csv file](https://docs.lightly_plus_time.lightly.ai/getting_started/command_line_tool.html#create-embeddings-using-the-cli).
 
 
 ### Benchmarks
 
 Currently implemented models and their accuracy on cifar10 and imagenette. All models have been evaluated using kNN. We report the max test accuracy over the epochs as well as the maximum GPU memory consumption. All models in this benchmark use the same augmentations as well as the same ResNet-18 backbone. Training precision is set to FP32 and SGD is used as an optimizer with cosineLR.
-One epoch on cifar10 takes ~35 seconds on a V100 GPU. [Learn more about the cifar10 and imagenette benchmark here](https://docs.lightly.ai/getting_started/benchmarks.html)
+One epoch on cifar10 takes ~35 seconds on a V100 GPU. [Learn more about the cifar10 and imagenette benchmark here](https://docs.lightly_plus_time.lightly.ai/getting_started/benchmarks.html)
 
 #### ImageNette
 
@@ -218,13 +218,13 @@ One epoch on cifar10 takes ~35 seconds on a V100 GPU. [Learn more about the cifa
 
 ## Terminology
 
-Below you can see a schematic overview of the different concepts present in the lightly Python package. The terms in bold are explained in more detail in our [documentation](https://docs.lightly.ai).
+Below you can see a schematic overview of the different concepts present in the lightly Python package. The terms in bold are explained in more detail in our [documentation](https://docs.lightly_plus_time.lightly.ai).
 
 <img src="/docs/source/getting_started/images/lightly_overview.png" alt="Overview of the lightly pip package"/></a>
 
 
 ### Next Steps
-Head to the [documentation](https://docs.lightly.ai) and see the things you can achieve with Lightly!
+Head to the [documentation](https://docs.lightly_plus_time.lightly.ai) and see the things you can achieve with Lightly!
 
 
 ## Development

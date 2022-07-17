@@ -27,7 +27,7 @@ class Jigsaw(object):
             Transformation to apply on each crop.
     
     Examples:
-        >>> from lightly.transforms import Jigsaw
+        >>> from lightly_plus_time.lightly.transforms import Jigsaw
         >>>
         >>> jigsaw_crop = Jigsaw(n_grid=3, img_size=255, crop_size=64, transform=transforms.ToTensor())
         >>>

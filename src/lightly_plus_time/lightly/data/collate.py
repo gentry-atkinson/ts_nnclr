@@ -13,10 +13,10 @@ import torchvision
 import torchvision.transforms as T
 
 #Updated for TS project -GA
-# from lightly.transforms import GaussianBlur
-# from lightly.transforms import Jigsaw
-# from lightly.transforms import RandomRotate
-# from lightly.transforms import RandomSolarization
+# from lightly_plus_time.lightly.transforms import GaussianBlur
+# from lightly_plus_time.lightly.transforms import Jigsaw
+# from lightly_plus_time.lightly.transforms import RandomRotate
+# from lightly_plus_time.lightly.transforms import RandomSolarization
 
 from lightly_plus_time.lightly.transforms import GaussianBlur
 from lightly_plus_time.lightly.transforms import Jigsaw

@@ -14,8 +14,8 @@ import PIL
 import torch
 import torchvision
 
-from lightly.data import LightlyDataset, NonIncreasingTimestampError
-from lightly.data._video import (
+from lightly_plus_time.lightly.data import LightlyDataset, NonIncreasingTimestampError
+from lightly_plus_time.lightly.data._video import (
     VideoDataset, 
     _make_dataset,
     _find_non_increasing_timestamps,
@@ -220,7 +220,7 @@ class TestVideoDataset(unittest.TestCase):
             timestamps[0][3] = timestamps[0][1]
             return video_instances, timestamps, offsets, fpss
 
-        with mock.patch('lightly.data._video._make_dataset', _make_dataset_with_non_increasing_timestamps):
+        with mock.patch('lightly_plus_time.lightly.data._video._make_dataset', _make_dataset_with_non_increasing_timestamps):
             for backend in VIDEO_BACKENDS:
                 torchvision.set_video_backend(backend)
 

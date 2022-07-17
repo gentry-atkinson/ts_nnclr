@@ -1,7 +1,7 @@
 import unittest
 import torch
 
-from lightly.loss.dcl_loss import DCLLoss, DCLWLoss, negative_mises_fisher_weights
+from lightly_plus_time.lightly.loss.dcl_loss import DCLLoss, DCLWLoss, negative_mises_fisher_weights
 
 
 class TestDCL(unittest.TestCase):

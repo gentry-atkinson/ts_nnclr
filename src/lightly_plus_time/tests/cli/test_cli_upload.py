@@ -10,11 +10,11 @@ import torchvision
 from hydra.experimental import compose, initialize
 
 import lightly
-from lightly.api.api_workflow_upload_embeddings import \
+from lightly_plus_time.lightly.api.api_workflow_upload_embeddings import \
     EmbeddingDoesNotExistError
-from lightly.cli.upload_cli import SUCCESS_RETURN_VALUE
-from lightly.openapi_generated.swagger_client import DatasetEmbeddingData
-from lightly.utils import save_embeddings
+from lightly_plus_time.lightly.cli.upload_cli import SUCCESS_RETURN_VALUE
+from lightly_plus_time.lightly.openapi_generated.swagger_client import DatasetEmbeddingData
+from lightly_plus_time.lightly.utils import save_embeddings
 from tests.api_workflow.mocked_api_workflow_client import \
     MockedApiWorkflowSetup, MockedApiWorkflowClient, N_FILES_ON_SERVER
 
@@ -23,7 +23,7 @@ class TestCLIUpload(MockedApiWorkflowSetup):
 
     @classmethod
     def setUpClass(cls) -> None:
-        sys.modules["lightly.cli.upload_cli"].ApiWorkflowClient = MockedApiWorkflowClient
+        sys.modules["lightly_plus_time.lightly.cli.upload_cli"].ApiWorkflowClient = MockedApiWorkflowClient
 
 
     def set_tags(self, zero_tags: bool=True):
@@ -131,12 +131,12 @@ class TestCLIUpload(MockedApiWorkflowSetup):
         self.parse_cli_string(cli_string)
         self.cfg['token'] = ''
         with self.assertWarns(UserWarning):
-            lightly.cli.upload_cli(self.cfg)
+            lightly_plus_time.lightly.cli.upload_cli(self.cfg)
 
     def test_upload_new_dataset_name(self):
         cli_string = "lightly-upload new_dataset_name='new_dataset_name_xyz'"
         self.parse_cli_string(cli_string)
-        result = lightly.cli.upload_cli(self.cfg)
+        result = lightly_plus_time.lightly.cli.upload_cli(self.cfg)
         self.assertEqual(result, SUCCESS_RETURN_VALUE)
         self.assertGreater(len(os.getenv(
             self.cfg['environment_variable_names'][
@@ -180,36 +180,36 @@ class TestCLIUpload(MockedApiWorkflowSetup):
                         self.parse_cli_string(cli_string)
                         if n_dims_embeddings != n_dims_embeddings_server and append:
                             with self.assertRaises(RuntimeError):
-                                lightly.cli.upload_cli(self.cfg)
+                                lightly_plus_time.lightly.cli.upload_cli(self.cfg)
                         elif not append:
                             with self.assertWarns(UserWarning):
-                                lightly.cli.upload_cli(self.cfg)
+                                lightly_plus_time.lightly.cli.upload_cli(self.cfg)
                         else:
-                            result = lightly.cli.upload_cli(self.cfg)
+                            result = lightly_plus_time.lightly.cli.upload_cli(self.cfg)
                             self.assertEqual(result, SUCCESS_RETURN_VALUE)
 
     def test_upload_new_dataset_id(self):
         cli_string = "lightly-upload dataset_id='xyz'"
         self.parse_cli_string(cli_string)
-        result = lightly.cli.upload_cli(self.cfg)
+        result = lightly_plus_time.lightly.cli.upload_cli(self.cfg)
         self.assertEqual(result, SUCCESS_RETURN_VALUE)
 
     def test_upload_no_dataset(self):
         cli_string = "lightly-upload input_dir=data/ token='123'"
         self.parse_cli_string(cli_string)
         with self.assertWarns(UserWarning):
-            lightly.cli.upload_cli(self.cfg)
+            lightly_plus_time.lightly.cli.upload_cli(self.cfg)
 
     def test_upload_both_dataset(self):
         cli_string = "lightly-upload new_dataset_name='new_dataset_name_xyz' dataset_id='xyz'"
         self.parse_cli_string(cli_string)
         with self.assertWarns(UserWarning):
-            lightly.cli.upload_cli(self.cfg)
+            lightly_plus_time.lightly.cli.upload_cli(self.cfg)
 
     def test_upload_custom_metadata(self):
         cli_string = f"lightly-upload token='123' dataset_id='xyz' custom_metadata='{self.tfile.name}'"
         self.parse_cli_string(cli_string)
-        result = lightly.cli.upload_cli(self.cfg)
+        result = lightly_plus_time.lightly.cli.upload_cli(self.cfg)
         self.assertEqual(result, SUCCESS_RETURN_VALUE)
 
     def check_upload_dataset_and_embedding(
@@ -239,12 +239,12 @@ class TestCLIUpload(MockedApiWorkflowSetup):
 
             if not append and existing_dataset and input_dir:
                 with self.assertWarns(UserWarning):
-                    lightly.cli.upload_cli(self.cfg)
+                    lightly_plus_time.lightly.cli.upload_cli(self.cfg)
             elif not append and existing_embedding and embeddings_path:
                 with self.assertWarns(UserWarning):
-                    lightly.cli.upload_cli(self.cfg)
+                    lightly_plus_time.lightly.cli.upload_cli(self.cfg)
             else:
-                result = lightly.cli.upload_cli(self.cfg)
+                result = lightly_plus_time.lightly.cli.upload_cli(self.cfg)
                 self.assertEqual(result, SUCCESS_RETURN_VALUE)
 
     def test_upload_dataset_and_embedding(self):

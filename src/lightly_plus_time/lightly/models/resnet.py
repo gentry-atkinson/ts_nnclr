@@ -18,7 +18,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 #Updated for TS project -GA
-# from lightly.models.batchnorm import get_norm_layer
+# from lightly_plus_time.lightly.models.batchnorm import get_norm_layer
 from lightly_plus_time.lightly.models.batchnorm import get_norm_layer
 
 class BasicBlock(nn.Module):
@@ -259,7 +259,7 @@ def ResNetGenerator(name: str = 'resnet-18',
 
     Examples:
         >>> # binary classifier with ResNet-34
-        >>> from lightly.models import ResNetGenerator
+        >>> from lightly_plus_time.lightly.models import ResNetGenerator
         >>> resnet = ResNetGenerator('resnet-34', num_classes=2)
 
     """

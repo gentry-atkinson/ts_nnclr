@@ -8,13 +8,13 @@ import torchvision
 import copy
 import pytorch_lightning as pl
 
-from lightly.data import LightlyDataset
-from lightly.data import SimCLRCollateFunction
-from lightly.loss import NegativeCosineSimilarity
-from lightly.models.modules import BYOLProjectionHead
-from lightly.models.modules.heads import BYOLPredictionHead
-from lightly.models.utils import deactivate_requires_grad
-from lightly.models.utils import update_momentum
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import SimCLRCollateFunction
+from lightly_plus_time.lightly.loss import NegativeCosineSimilarity
+from lightly_plus_time.lightly.models.modules import BYOLProjectionHead
+from lightly_plus_time.lightly.models.modules.heads import BYOLPredictionHead
+from lightly_plus_time.lightly.models.utils import deactivate_requires_grad
+from lightly_plus_time.lightly.models.utils import update_momentum
 
 class BYOL(pl.LightningModule):
     def __init__(self):

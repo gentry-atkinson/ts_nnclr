@@ -23,11 +23,11 @@ import lightly
 project = 'lightly'
 copyright_year = '2020'
 copyright = "Lightly AG"
-website_url = 'https://www.lightly.ai/'
+website_url = 'https://www.lightly_plus_time.lightly.ai/'
 author = 'Philipp Wirth, Igor Susmelj'
 
 # The full version, including alpha/beta/rc tags
-release = lightly.__version__
+release = lightly_plus_time.lightly.__version__
 master_doc = 'index'
 
 

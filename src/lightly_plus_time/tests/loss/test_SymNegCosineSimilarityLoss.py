@@ -1,7 +1,7 @@
 import unittest
 import torch
 
-from lightly.loss import SymNegCosineSimilarityLoss
+from lightly_plus_time.lightly.loss import SymNegCosineSimilarityLoss
 
 
 class TestSymNegCosineSimilarityLoss(unittest.TestCase):

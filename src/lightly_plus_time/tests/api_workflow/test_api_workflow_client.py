@@ -3,12 +3,12 @@ from unittest import mock
 
 import requests
 
-from lightly.api import ApiWorkflowClient
+from lightly_plus_time.lightly.api import ApiWorkflowClient
 
 class TestApiWorkflowClient(unittest.TestCase):
 
     def test_upload_file_with_signed_url(self):
-        with mock.patch('lightly.api.api_workflow_client.requests') as requests:
+        with mock.patch('lightly_plus_time.lightly.api.api_workflow_client.requests') as requests:
             client = ApiWorkflowClient(token="")
             file = mock.Mock()
             signed_write_url = mock.Mock()
@@ -34,7 +34,7 @@ class TestApiWorkflowClient(unittest.TestCase):
         def raise_connection_error(*args, **kwargs):
             raise requests.exceptions.ConnectionError()
 
-        with mock.patch('lightly.api.api_workflow_client.requests.put', raise_connection_error):
+        with mock.patch('lightly_plus_time.lightly.api.api_workflow_client.requests.put', raise_connection_error):
             client = ApiWorkflowClient(token="")
             with self.assertRaises(requests.exceptions.ConnectionError):
                 client.upload_file_with_signed_url(

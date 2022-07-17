@@ -12,11 +12,11 @@ Example:
 import hydra
 import lightly
 
-from lightly.cli._helpers import fix_hydra_arguments
+from lightly_plus_time.lightly.cli._helpers import fix_hydra_arguments
 
 
 def _version_cli():
-    version = lightly.__version__
+    version = lightly_plus_time.lightly.__version__
     print(f'lightly version {version}', flush=True)
 
 

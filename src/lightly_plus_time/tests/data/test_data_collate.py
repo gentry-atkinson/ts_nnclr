@@ -5,13 +5,13 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 
-from lightly.data import BaseCollateFunction
-from lightly.data import ImageCollateFunction
-from lightly.data import SimCLRCollateFunction
-from lightly.data import MultiCropCollateFunction
-from lightly.data import SwaVCollateFunction
-from lightly.data import PIRLCollateFunction
-from lightly.data.collate import DINOCollateFunction, MAECollateFunction, MultiViewCollateFunction
+from lightly_plus_time.lightly.data import BaseCollateFunction
+from lightly_plus_time.lightly.data import ImageCollateFunction
+from lightly_plus_time.lightly.data import SimCLRCollateFunction
+from lightly_plus_time.lightly.data import MultiCropCollateFunction
+from lightly_plus_time.lightly.data import SwaVCollateFunction
+from lightly_plus_time.lightly.data import PIRLCollateFunction
+from lightly_plus_time.lightly.data.collate import DINOCollateFunction, MAECollateFunction, MultiViewCollateFunction
 
 
 class TestDataCollate(unittest.TestCase):

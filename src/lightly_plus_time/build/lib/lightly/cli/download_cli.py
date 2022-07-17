@@ -16,15 +16,15 @@ import hydra
 from torch.utils.hipify.hipify_python import bcolors
 from tqdm import tqdm
 
-import lightly.data as data
-from lightly.cli._helpers import fix_input_path
-from lightly.cli._helpers import print_as_warning
-from lightly.cli._helpers import fix_hydra_arguments
+import lightly_plus_time.lightly.data as data
+from lightly_plus_time.lightly.cli._helpers import fix_input_path
+from lightly_plus_time.lightly.cli._helpers import print_as_warning
+from lightly_plus_time.lightly.cli._helpers import fix_hydra_arguments
 
-from lightly.api.utils import getenv
-from lightly.api.api_workflow_client import ApiWorkflowClient
-from lightly.api.bitmask import BitMask
-from lightly.openapi_generated.swagger_client import TagData, TagArithmeticsRequest, TagArithmeticsOperation, \
+from lightly_plus_time.lightly.api.utils import getenv
+from lightly_plus_time.lightly.api.api_workflow_client import ApiWorkflowClient
+from lightly_plus_time.lightly.api.bitmask import BitMask
+from lightly_plus_time.lightly.openapi_generated.swagger_client import TagData, TagArithmeticsRequest, TagArithmeticsOperation, \
     TagBitMaskResponse
 
 

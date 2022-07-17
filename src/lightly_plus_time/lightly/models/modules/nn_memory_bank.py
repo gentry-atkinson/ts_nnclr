@@ -5,7 +5,7 @@
 
 import torch
 #Updated for TS project -GA
-# from lightly.loss.memory_bank import MemoryBankModule
+# from lightly_plus_time.lightly.loss.memory_bank import MemoryBankModule
 from lightly_plus_time.lightly.loss.memory_bank import MemoryBankModule
 
 class NNMemoryBankModule(MemoryBankModule):

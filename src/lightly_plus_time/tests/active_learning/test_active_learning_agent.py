@@ -1,10 +1,10 @@
 import numpy as np
 
-from lightly.active_learning.agents.agent import ActiveLearningAgent
-from lightly.active_learning.config.selection_config import SelectionConfig
-from lightly.active_learning.scorers import ScorerSemanticSegmentation
-from lightly.active_learning.scorers.classification import ScorerClassification
-from lightly.openapi_generated.swagger_client import SamplingMethod
+from lightly_plus_time.lightly.active_learning.agents.agent import ActiveLearningAgent
+from lightly_plus_time.lightly.active_learning.config.selection_config import SelectionConfig
+from lightly_plus_time.lightly.active_learning.scorers import ScorerSemanticSegmentation
+from lightly_plus_time.lightly.active_learning.scorers.classification import ScorerClassification
+from lightly_plus_time.lightly.openapi_generated.swagger_client import SamplingMethod
 from tests.api_workflow.mocked_api_workflow_client import MockedApiWorkflowSetup
 
 

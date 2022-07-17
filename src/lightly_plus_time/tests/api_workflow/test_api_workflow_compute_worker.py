@@ -1,5 +1,5 @@
-from lightly.openapi_generated.swagger_client.models.docker_run_data import DockerRunData
-from lightly.openapi_generated.swagger_client.models.docker_run_scheduled_data import DockerRunScheduledData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.docker_run_data import DockerRunData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.docker_run_scheduled_data import DockerRunScheduledData
 from tests.api_workflow.mocked_api_workflow_client import MockedApiWorkflowSetup
 
 

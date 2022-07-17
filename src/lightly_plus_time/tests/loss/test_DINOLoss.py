@@ -7,8 +7,8 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-from lightly.loss import DINOLoss
-from lightly.models.utils import deactivate_requires_grad
+from lightly_plus_time.lightly.loss import DINOLoss
+from lightly_plus_time.lightly.models.utils import deactivate_requires_grad
 
 
 class OriginalDINOLoss(nn.Module):

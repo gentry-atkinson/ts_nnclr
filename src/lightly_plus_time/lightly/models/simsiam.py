@@ -9,15 +9,15 @@ import torch
 import torch.nn as nn
 
 #Updated for TS project
-# from lightly.models.modules import SimSiamProjectionHead
-# from lightly.models.modules import SimSiamPredictionHead
+# from lightly_plus_time.lightly.models.modules import SimSiamProjectionHead
+# from lightly_plus_time.lightly.models.modules import SimSiamPredictionHead
 from lightly_plus_time.lightly.models.modules import SimSiamProjectionHead
 from lightly_plus_time.lightly.models.modules import SimSiamPredictionHead
 
 class SimSiam(nn.Module):
     """Implementation of SimSiam[0] network
 
-    Recommended loss: :py:class:`lightly.loss.sym_neg_cos_sim_loss.SymNegCosineSimilarityLoss`
+    Recommended loss: :py:class:`lightly_plus_time.lightly.loss.sym_neg_cos_sim_loss.SymNegCosineSimilarityLoss`
 
     [0] SimSiam, 2020, https://arxiv.org/abs/2011.10566
 
@@ -67,7 +67,7 @@ class SimSiam(nn.Module):
         warnings.warn(Warning(
             'The high-level building block SimSiam will be deprecated in version 1.3.0. '
             + 'Use low-level building blocks instead. '
-            + 'See https://docs.lightly.ai/lightly.models.html for more information'),
+            + 'See https://docs.lightly_plus_time.lightly.ai/lightly_plus_time.lightly.models.html for more information'),
             PendingDeprecationWarning)
         
     def forward(self, 

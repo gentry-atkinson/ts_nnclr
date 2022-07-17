@@ -1,7 +1,7 @@
 from PIL import Image
 import unittest
 
-from lightly.transforms import RandomRotate
+from lightly_plus_time.lightly.transforms import RandomRotate
 
 
 class TestGaussianBlur(unittest.TestCase):

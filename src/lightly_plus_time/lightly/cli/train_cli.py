@@ -16,23 +16,40 @@ import warnings
 
 from torch.utils.hipify.hipify_python import bcolors
 
-from lightly.cli._cli_simclr import _SimCLR
-from lightly.data import ImageCollateFunction
-from lightly.data import LightlyDataset
-from lightly.embedding import SelfSupervisedEmbedding
-from lightly.loss import NTXentLoss
+#Updated for ts project -GA
+# from lightly_plus_time.lightly.cli._cli_simclr import _SimCLR
+# from lightly_plus_time.lightly.data import ImageCollateFunction
+# from lightly_plus_time.lightly.data import LightlyDataset
+# from lightly_plus_time.lightly.embedding import SelfSupervisedEmbedding
+# from lightly_plus_time.lightly.loss import NTXentLoss
 
-from lightly.models import ResNetGenerator
-from lightly.models.batchnorm import get_norm_layer
+# from lightly_plus_time.lightly.models import ResNetGenerator
+# from lightly_plus_time.lightly.models.batchnorm import get_norm_layer
 
-from lightly.cli._helpers import is_url
-from lightly.cli._helpers import get_ptmodel_from_config
-from lightly.cli._helpers import fix_input_path
-from lightly.cli._helpers import load_state_dict_from_url
-from lightly.cli._helpers import load_from_state_dict
-from lightly.cli._helpers import cpu_count
-from lightly.cli._helpers import fix_hydra_arguments
+# from lightly_plus_time.lightly.cli._helpers import is_url
+# from lightly_plus_time.lightly.cli._helpers import get_ptmodel_from_config
+# from lightly_plus_time.lightly.cli._helpers import fix_input_path
+# from lightly_plus_time.lightly.cli._helpers import load_state_dict_from_url
+# from lightly_plus_time.lightly.cli._helpers import load_from_state_dict
+# from lightly_plus_time.lightly.cli._helpers import cpu_count
+# from lightly_plus_time.lightly.cli._helpers import fix_hydra_arguments
 
+from lightly_plus_time.lightly.cli._cli_simclr import _SimCLR
+from lightly_plus_time.lightly.data import ImageCollateFunction
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.embedding import SelfSupervisedEmbedding
+from lightly_plus_time.lightly.loss import NTXentLoss
+
+from lightly_plus_time.lightly.models import ResNetGenerator
+from lightly_plus_time.lightly.models.batchnorm import get_norm_layer
+
+from lightly_plus_time.lightly.cli._helpers import is_url
+from lightly_plus_time.lightly.cli._helpers import get_ptmodel_from_config
+from lightly_plus_time.lightly.cli._helpers import fix_input_path
+from lightly_plus_time.lightly.cli._helpers import load_state_dict_from_url
+from lightly_plus_time.lightly.cli._helpers import load_from_state_dict
+from lightly_plus_time.lightly.cli._helpers import cpu_count
+from lightly_plus_time.lightly.cli._helpers import fix_hydra_arguments
 
 def _train_cli(cfg, is_cli_call=True):
 

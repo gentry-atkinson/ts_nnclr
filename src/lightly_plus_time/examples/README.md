@@ -18,4 +18,4 @@ The examples should also run on [Google Colab](https://colab.research.google.com
 ```
 
 
-You can find additional information for each model in our [Documentation](https://docs.lightly.ai//examples/models.html#)
+You can find additional information for each model in our [Documentation](https://docs.lightly_plus_time.lightly.ai//examples/models.html#)

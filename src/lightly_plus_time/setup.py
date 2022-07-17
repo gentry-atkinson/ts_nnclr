@@ -44,22 +44,22 @@ def load_requirements(path_dir=PATH_ROOT, filename='base.txt', comment_char='#')
 if __name__ == '__main__':
     
     name = 'lightly'
-    version = lightly.__version__
-    description = lightly.__doc__
+    version = lightly_plus_time.lightly.__version__
+    description = lightly_plus_time.lightly.__doc__
 
     author = 'Philipp Wirth & Igor Susmelj'
-    author_email = 'philipp@lightly.ai'
+    author_email = 'philipp@lightly_plus_time.lightly.ai'
     description = "A deep learning package for self-supervised learning"
 
     entry_points = {
         "console_scripts": [
-            "lightly-crop = lightly.cli.crop_cli:entry",
-            "lightly-train = lightly.cli.train_cli:entry",
-            "lightly-embed = lightly.cli.embed_cli:entry",
-            "lightly-magic = lightly.cli.lightly_cli:entry",
-            "lightly-upload = lightly.cli.upload_cli:entry",
-            "lightly-download = lightly.cli.download_cli:entry",
-            "lightly-version = lightly.cli.version_cli:entry",
+            "lightly-crop = lightly_plus_time.lightly.cli.crop_cli:entry",
+            "lightly-train = lightly_plus_time.lightly.cli.train_cli:entry",
+            "lightly-embed = lightly_plus_time.lightly.cli.embed_cli:entry",
+            "lightly-magic = lightly_plus_time.lightly.cli.lightly_cli:entry",
+            "lightly-upload = lightly_plus_time.lightly.cli.upload_cli:entry",
+            "lightly-download = lightly_plus_time.lightly.cli.download_cli:entry",
+            "lightly-version = lightly_plus_time.lightly.cli.version_cli:entry",
         ]
     }
 
@@ -78,33 +78,33 @@ if __name__ == '__main__':
 
     packages = [
         'lightly',
-        'lightly.api',
-        'lightly.cli',
-        'lightly.cli.config',
-        'lightly.data',
-        'lightly.embedding',
-        'lightly.loss',
-        'lightly.loss.regularizer',
-        'lightly.models',
-        'lightly.models.modules',
-        'lightly.transforms',
-        'lightly.utils',
-        'lightly.utils.cropping',
-        'lightly.active_learning',
-        'lightly.active_learning.agents',
-        'lightly.active_learning.config',
-        'lightly.active_learning.scorers',
-        'lightly.active_learning.utils',
-        'lightly.openapi_generated',
-        'lightly.openapi_generated.swagger_client',
-        'lightly.openapi_generated.swagger_client.api',
-        'lightly.openapi_generated.swagger_client.models'
+        'lightly_plus_time.lightly.api',
+        'lightly_plus_time.lightly.cli',
+        'lightly_plus_time.lightly.cli.config',
+        'lightly_plus_time.lightly.data',
+        'lightly_plus_time.lightly.embedding',
+        'lightly_plus_time.lightly.loss',
+        'lightly_plus_time.lightly.loss.regularizer',
+        'lightly_plus_time.lightly.models',
+        'lightly_plus_time.lightly.models.modules',
+        'lightly_plus_time.lightly.transforms',
+        'lightly_plus_time.lightly.utils',
+        'lightly_plus_time.lightly.utils.cropping',
+        'lightly_plus_time.lightly.active_learning',
+        'lightly_plus_time.lightly.active_learning.agents',
+        'lightly_plus_time.lightly.active_learning.config',
+        'lightly_plus_time.lightly.active_learning.scorers',
+        'lightly_plus_time.lightly.active_learning.utils',
+        'lightly_plus_time.lightly.openapi_generated',
+        'lightly_plus_time.lightly.openapi_generated.swagger_client',
+        'lightly_plus_time.lightly.openapi_generated.swagger_client.api',
+        'lightly_plus_time.lightly.openapi_generated.swagger_client.models'
     ]
 
     project_urls = {
-        'Homepage': 'https://www.lightly.ai',
-        'Web-App': 'https://app.lightly.ai',
-        'Documentation': 'https://docs.lightly.ai',
+        'Homepage': 'https://www.lightly_plus_time.lightly.ai',
+        'Web-App': 'https://app.lightly_plus_time.lightly.ai',
+        'Documentation': 'https://docs.lightly_plus_time.lightly.ai',
         'Github': 'https://github.com/lightly-ai/lightly',
         'Discord': 'https://discord.gg/xvNJW94',
     }

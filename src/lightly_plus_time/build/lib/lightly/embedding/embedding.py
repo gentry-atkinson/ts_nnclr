@@ -9,12 +9,12 @@ from typing import List, Union, Tuple
 import numpy as np
 import torch
 import lightly
-from lightly.embedding._base import BaseEmbedding
+from lightly_plus_time.lightly.embedding._base import BaseEmbedding
 from tqdm import tqdm
 
-from lightly.utils.reordering import sort_items_by_keys
+from lightly_plus_time.lightly.utils.reordering import sort_items_by_keys
 
-if lightly._is_prefetch_generator_available():
+if lightly_plus_time.lightly._is_prefetch_generator_available():
     from prefetch_generator import BackgroundGenerator
 
 
@@ -46,7 +46,7 @@ class SelfSupervisedEmbedding(BaseEmbedding):
 
     Examples:
         >>> # define a model, criterion, optimizer, and dataloader above
-        >>> import lightly.embedding as embedding
+        >>> import lightly_plus_time.lightly.embedding as embedding
         >>> encoder = SelfSupervisedEmbedding(
         >>>     model,
         >>>     criterion,
@@ -107,7 +107,7 @@ class SelfSupervisedEmbedding(BaseEmbedding):
         embeddings, labels, filenames = None, None, []
 
         dataset = dataloader.dataset
-        if lightly._is_prefetch_generator_available():
+        if lightly_plus_time.lightly._is_prefetch_generator_available():
             dataloader = BackgroundGenerator(dataloader, max_prefetch=3)
         
         pbar = tqdm(

@@ -15,10 +15,10 @@ from torch._C import Value
 import torchvision.datasets as datasets
 from torchvision import transforms
 
-from lightly.data._helpers import _load_dataset_from_folder
-from lightly.data._helpers import DatasetFolder
-from lightly.data._video import VideoDataset
-from lightly.utils.io import check_filenames
+from lightly_plus_time.lightly.data._helpers import _load_dataset_from_folder
+from lightly_plus_time.lightly.data._helpers import DatasetFolder
+from lightly_plus_time.lightly.data._video import VideoDataset
+from lightly_plus_time.lightly.utils.io import check_filenames
 
 
 def _get_filename_by_index(dataset, index):
@@ -131,7 +131,7 @@ class LightlyDataset:
         >>> # `- img1.png
         >>> # `- img2.png
         >>> # `- ...
-        >>> import lightly.data as data
+        >>> import lightly_plus_time.lightly.data as data
         >>> dataset = data.LightlyDataset(input_dir='path/to/mydata/')
         >>> sample, target, fname = dataset[0]
         >>>
@@ -219,7 +219,7 @@ class LightlyDataset:
         Examples:
             >>> # load cifar10 from torchvision
             >>> import torchvision
-            >>> import lightly.data as data
+            >>> import lightly_plus_time.lightly.data as data
             >>> base = torchvision.datasets.CIFAR10(root='./')
             >>> dataset = data.LightlyDataset.from_torch_dataset(base)
 

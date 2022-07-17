@@ -1,52 +1,52 @@
-lightly.loss
+lightly_plus_time.lightly.loss
 ===================
 
-.. automodule:: lightly.loss
+.. automodule:: lightly_plus_time.lightly.loss
 
 .barlow_twins_loss
 ------------------
-.. autoclass:: lightly.loss.barlow_twins_loss.BarlowTwinsLoss
+.. autoclass:: lightly_plus_time.lightly.loss.barlow_twins_loss.BarlowTwinsLoss
    :members:
 
 .dcl_loss
 ------------------
-.. autoclass:: lightly.loss.dcl_loss.DCLLoss
+.. autoclass:: lightly_plus_time.lightly.loss.dcl_loss.DCLLoss
    :members:
 
-.. autoclass:: lightly.loss.dcl_loss.DCLWLoss
+.. autoclass:: lightly_plus_time.lightly.loss.dcl_loss.DCLWLoss
    :members:
 
 .dino_loss
 ----------
-.. autoclass:: lightly.loss.dino_loss.DINOLoss
+.. autoclass:: lightly_plus_time.lightly.loss.dino_loss.DINOLoss
    :members:
 
 .hypersphere_loss
 -----------------
-.. autoclass:: lightly.loss.hypersphere_loss.HypersphereLoss
+.. autoclass:: lightly_plus_time.lightly.loss.hypersphere_loss.HypersphereLoss
    :members:
 
 .memory_bank
 -------------
-.. autoclass:: lightly.loss.memory_bank.MemoryBankModule
+.. autoclass:: lightly_plus_time.lightly.loss.memory_bank.MemoryBankModule
    :members:
 
 .negative_cosine_similarity
 ---------------------------
-.. autoclass:: lightly.loss.negative_cosine_similarity.NegativeCosineSimilarity
+.. autoclass:: lightly_plus_time.lightly.loss.negative_cosine_similarity.NegativeCosineSimilarity
    :members:
 
 .ntx_ent_loss
 ---------------
-.. autoclass:: lightly.loss.ntx_ent_loss.NTXentLoss
+.. autoclass:: lightly_plus_time.lightly.loss.ntx_ent_loss.NTXentLoss
    :members:
 
 .regularizer.co2
 -----------------
-.. autoclass:: lightly.loss.regularizer.co2.CO2Regularizer
+.. autoclass:: lightly_plus_time.lightly.loss.regularizer.co2.CO2Regularizer
    :members:
 
 .sym_neg_cos_sim_loss
 ----------------------
-.. autoclass:: lightly.loss.sym_neg_cos_sim_loss.SymNegCosineSimilarityLoss
+.. autoclass:: lightly_plus_time.lightly.loss.sym_neg_cos_sim_loss.SymNegCosineSimilarityLoss
    :members:

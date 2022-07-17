@@ -4,7 +4,7 @@ from PIL import Image
 import torch
 import torchvision
 
-from lightly.data.collate import BaseCollateFunction, MultiViewCollateFunction
+from lightly_plus_time.lightly.data.collate import BaseCollateFunction, MultiViewCollateFunction
 
 try:
     import matplotlib.pyplot as plt

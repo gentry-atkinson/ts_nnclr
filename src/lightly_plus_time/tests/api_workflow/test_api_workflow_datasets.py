@@ -1,5 +1,5 @@
-from lightly.active_learning.config.selection_config import SelectionConfig
-from lightly.openapi_generated.swagger_client import TagData
+from lightly_plus_time.lightly.active_learning.config.selection_config import SelectionConfig
+from lightly_plus_time.lightly.openapi_generated.swagger_client import TagData
 from tests.api_workflow.mocked_api_workflow_client import MockedApiWorkflowSetup
 
 

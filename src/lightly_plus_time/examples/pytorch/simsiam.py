@@ -6,11 +6,11 @@ import torch
 from torch import nn
 import torchvision
 
-from lightly.data import LightlyDataset
-from lightly.data import SimCLRCollateFunction
-from lightly.loss import NegativeCosineSimilarity
-from lightly.models.modules import SimSiamProjectionHead
-from lightly.models.modules import SimSiamPredictionHead
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import SimCLRCollateFunction
+from lightly_plus_time.lightly.loss import NegativeCosineSimilarity
+from lightly_plus_time.lightly.models.modules import SimSiamProjectionHead
+from lightly_plus_time.lightly.models.modules import SimSiamPredictionHead
 
 
 class SimSiam(nn.Module):

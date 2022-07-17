@@ -3,13 +3,13 @@ import random
 from typing import Tuple, List
 import unittest
 
-from lightly.data.dataset import LightlyDataset
-from lightly.data.lightly_subset import LightlySubset
+from lightly_plus_time.lightly.data.dataset import LightlyDataset
+from lightly_plus_time.lightly.data.lightly_subset import LightlySubset
 
 from tests.data.test_LightlyDataset import TestLightlyDataset
 
 try:
-    from lightly.data._video import VideoDataset    
+    from lightly_plus_time.lightly.data._video import VideoDataset    
     import av
     import cv2
     VIDEO_DATASET_AVAILABLE = True

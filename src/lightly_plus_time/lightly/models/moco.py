@@ -9,15 +9,15 @@ import torch
 import torch.nn as nn
 
 #Updated for TS project -GA
-# from lightly.models._momentum import _MomentumEncoderMixin
-# from lightly.models.modules import MoCoProjectionHead
+# from lightly_plus_time.lightly.models._momentum import _MomentumEncoderMixin
+# from lightly_plus_time.lightly.models.modules import MoCoProjectionHead
 from lightly_plus_time.lightly.models._momentum import _MomentumEncoderMixin
 from lightly_plus_time.lightly.models.modules import MoCoProjectionHead
 
 class MoCo(nn.Module, _MomentumEncoderMixin):
     """Implementation of the MoCo (Momentum Contrast)[0] architecture.
 
-    Recommended loss: :py:class:`lightly.loss.ntx_ent_loss.NTXentLoss` with 
+    Recommended loss: :py:class:`lightly_plus_time.lightly.loss.ntx_ent_loss.NTXentLoss` with 
     a memory bank.
 
     [0] MoCo, 2020, https://arxiv.org/abs/1911.05722
@@ -57,7 +57,7 @@ class MoCo(nn.Module, _MomentumEncoderMixin):
         warnings.warn(Warning(
             'The high-level building block MoCo will be deprecated in version 1.3.0. '
             + 'Use low-level building blocks instead. '
-            + 'See https://docs.lightly.ai/lightly.models.html for more information'),
+            + 'See https://docs.lightly_plus_time.lightly.ai/lightly_plus_time.lightly.models.html for more information'),
             PendingDeprecationWarning)
 
     def forward(self,

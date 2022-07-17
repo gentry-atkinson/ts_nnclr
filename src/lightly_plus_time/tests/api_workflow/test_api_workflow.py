@@ -5,14 +5,14 @@ from urllib3 import Timeout
 import numpy as np
 
 import lightly
-from lightly.api.api_workflow_client import set_api_client_request_timeout
-from lightly.openapi_generated.swagger_client.api_client import ApiClient
+from lightly_plus_time.lightly.api.api_workflow_client import set_api_client_request_timeout
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api_client import ApiClient
 from tests.api_workflow.mocked_api_workflow_client import MockedApiWorkflowClient, MockedApiWorkflowSetup
 
 class TestApiWorkflow(MockedApiWorkflowSetup):
 
     def setUp(self) -> None:
-        lightly.api.api_workflow_client.__version__ = lightly.__version__
+        lightly_plus_time.lightly.api.api_workflow_client.__version__ = lightly_plus_time.lightly.__version__
         self.api_workflow_client = MockedApiWorkflowClient(token="token_xyz")
 
     @mock.patch.dict(os.environ, {'LIGHTLY_TOKEN': 'token_xyz'})
@@ -26,10 +26,10 @@ class TestApiWorkflow(MockedApiWorkflowSetup):
             MockedApiWorkflowClient()
 
     def test_error_if_version_is_incompatible(self):
-        lightly.api.api_workflow_client.__version__ = "0.0.0"
+        lightly_plus_time.lightly.api.api_workflow_client.__version__ = "0.0.0"
         with self.assertRaises(ValueError):
             MockedApiWorkflowClient(token="token_xyz")
-        lightly.api.api_workflow_client.__version__ = lightly.__version__
+        lightly_plus_time.lightly.api.api_workflow_client.__version__ = lightly_plus_time.lightly.__version__
 
     def test_dataset_id_nonexisting(self):
         self.api_workflow_client._datasets_api.reset()

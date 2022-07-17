@@ -14,7 +14,7 @@ class TestCLITrain(MockedApiWorkflowSetup):
 
     @classmethod
     def setUpClass(cls) -> None:
-        sys.modules["lightly.cli.upload_cli"].ApiWorkflowClient = MockedApiWorkflowClient
+        sys.modules["lightly_plus_time.lightly.cli.upload_cli"].ApiWorkflowClient = MockedApiWorkflowClient
 
     def setUp(self):
         MockedApiWorkflowSetup.setUp(self)
@@ -65,7 +65,7 @@ class TestCLITrain(MockedApiWorkflowSetup):
             cli_string = f"lightly-train trainer.weights_summary={weights_summary}"
             with self.subTest(cli_string):
                 self.parse_cli_string(cli_string)
-                lightly.cli.train_cli(self.cfg)
+                lightly_plus_time.lightly.cli.train_cli(self.cfg)
 
                 self.assertGreater(len(os.getenv(
                     self.cfg['environment_variable_names'][

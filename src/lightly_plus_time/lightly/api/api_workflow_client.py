@@ -4,44 +4,82 @@ from typing import *
 import platform
 
 import requests
-from lightly.api.api_workflow_tags import _TagsMixin
+#Updated for TS project -GA
+# from lightly_plus_time.lightly.api.api_workflow_tags import _TagsMixin
+from lightly_plus_time.lightly.api.api_workflow_tags import _TagsMixin
 from requests import Response
 
-from lightly.__init__ import __version__
-from lightly.api.api_workflow_compute_worker import _ComputeWorkerMixin
-from lightly.api.api_workflow_datasets import _DatasetsMixin
-from lightly.api.api_workflow_datasources import _DatasourcesMixin
-from lightly.api.api_workflow_download_dataset import _DownloadDatasetMixin
-from lightly.api.api_workflow_selection import _SelectionMixin
-from lightly.api.api_workflow_upload_dataset import _UploadDatasetMixin
-from lightly.api.api_workflow_upload_embeddings import _UploadEmbeddingsMixin
-from lightly.api.api_workflow_upload_metadata import _UploadCustomMetadataMixin
-from lightly.api.bitmask import BitMask
-from lightly.api.utils import getenv
-from lightly.api.version_checking import get_minimum_compatible_version, \
+# from lightly_plus_time.lightly.__init__ import __version__
+# from lightly_plus_time.lightly.api.api_workflow_compute_worker import _ComputeWorkerMixin
+# from lightly_plus_time.lightly.api.api_workflow_datasets import _DatasetsMixin
+# from lightly_plus_time.lightly.api.api_workflow_datasources import _DatasourcesMixin
+# from lightly_plus_time.lightly.api.api_workflow_download_dataset import _DownloadDatasetMixin
+# from lightly_plus_time.lightly.api.api_workflow_selection import _SelectionMixin
+# from lightly_plus_time.lightly.api.api_workflow_upload_dataset import _UploadDatasetMixin
+# from lightly_plus_time.lightly.api.api_workflow_upload_embeddings import _UploadEmbeddingsMixin
+# from lightly_plus_time.lightly.api.api_workflow_upload_metadata import _UploadCustomMetadataMixin
+# from lightly_plus_time.lightly.api.bitmask import BitMask
+# from lightly_plus_time.lightly.api.utils import getenv
+# from lightly_plus_time.lightly.api.version_checking import get_minimum_compatible_version, \
+#     version_compare
+# from lightly_plus_time.lightly.openapi_generated.swagger_client import ScoresApi, \
+#     QuotaApi, MetaDataConfigurationsApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api.datasets_api import \
+#     DatasetsApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api.datasources_api import \
+#     DatasourcesApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api.docker_api import DockerApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api.embeddings_api import \
+#     EmbeddingsApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api.jobs_api import JobsApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api.mappings_api import \
+#     MappingsApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api.samples_api import SamplesApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api.samplings_api import \
+#     SamplingsApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api.tags_api import TagsApi
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.api_client import ApiClient
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.configuration import \
+#     Configuration
+# from lightly_plus_time.lightly.openapi_generated.swagger_client.models.dataset_data import \
+#     DatasetData
+# from lightly_plus_time.lightly.utils.reordering import sort_items_by_keys
+
+from lightly_plus_time.lightly.__init__ import __version__
+from lightly_plus_time.lightly.api.api_workflow_compute_worker import _ComputeWorkerMixin
+from lightly_plus_time.lightly.api.api_workflow_datasets import _DatasetsMixin
+from lightly_plus_time.lightly.api.api_workflow_datasources import _DatasourcesMixin
+from lightly_plus_time.lightly.api.api_workflow_download_dataset import _DownloadDatasetMixin
+from lightly_plus_time.lightly.api.api_workflow_selection import _SelectionMixin
+from lightly_plus_time.lightly.api.api_workflow_upload_dataset import _UploadDatasetMixin
+from lightly_plus_time.lightly.api.api_workflow_upload_embeddings import _UploadEmbeddingsMixin
+from lightly_plus_time.lightly.api.api_workflow_upload_metadata import _UploadCustomMetadataMixin
+from lightly_plus_time.lightly.api.bitmask import BitMask
+from lightly_plus_time.lightly.api.utils import getenv
+from lightly_plus_time.lightly.api.version_checking import get_minimum_compatible_version, \
     version_compare
-from lightly.openapi_generated.swagger_client import ScoresApi, \
+from lightly_plus_time.lightly.openapi_generated.swagger_client import ScoresApi, \
     QuotaApi, MetaDataConfigurationsApi
-from lightly.openapi_generated.swagger_client.api.datasets_api import \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api.datasets_api import \
     DatasetsApi
-from lightly.openapi_generated.swagger_client.api.datasources_api import \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api.datasources_api import \
     DatasourcesApi
-from lightly.openapi_generated.swagger_client.api.docker_api import DockerApi
-from lightly.openapi_generated.swagger_client.api.embeddings_api import \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api.docker_api import DockerApi
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api.embeddings_api import \
     EmbeddingsApi
-from lightly.openapi_generated.swagger_client.api.jobs_api import JobsApi
-from lightly.openapi_generated.swagger_client.api.mappings_api import \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api.jobs_api import JobsApi
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api.mappings_api import \
     MappingsApi
-from lightly.openapi_generated.swagger_client.api.samples_api import SamplesApi
-from lightly.openapi_generated.swagger_client.api.samplings_api import \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api.samples_api import SamplesApi
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api.samplings_api import \
     SamplingsApi
-from lightly.openapi_generated.swagger_client.api.tags_api import TagsApi
-from lightly.openapi_generated.swagger_client.api_client import ApiClient
-from lightly.openapi_generated.swagger_client.configuration import \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api.tags_api import TagsApi
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api_client import ApiClient
+from lightly_plus_time.lightly.openapi_generated.swagger_client.configuration import \
     Configuration
-from lightly.openapi_generated.swagger_client.models.dataset_data import \
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.dataset_data import \
     DatasetData
-from lightly.utils.reordering import sort_items_by_keys
+from lightly_plus_time.lightly.utils.reordering import sort_items_by_keys
 
 class ApiWorkflowClient(_UploadEmbeddingsMixin,
                         _SelectionMixin,
@@ -77,7 +115,7 @@ class ApiWorkflowClient(_UploadEmbeddingsMixin,
         self.check_version_compatibility()
 
         configuration = Configuration()
-        configuration.host = getenv('LIGHTLY_SERVER_LOCATION', 'https://api.lightly.ai')
+        configuration.host = getenv('LIGHTLY_SERVER_LOCATION', 'https://api.lightly_plus_time.lightly.ai')
         if token is None:
             token = getenv('LIGHTLY_TOKEN', None)
             if token is None:

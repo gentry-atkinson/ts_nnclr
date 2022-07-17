@@ -3,12 +3,12 @@ from typing import Dict, List, Optional, Tuple, Union
 
 import tqdm
 
-from lightly.openapi_generated.swagger_client.models.datasource_config import DatasourceConfig
-from lightly.openapi_generated.swagger_client.models.datasource_purpose import DatasourcePurpose
-from lightly.openapi_generated.swagger_client.models.datasource_processed_until_timestamp_request import DatasourceProcessedUntilTimestampRequest
-from lightly.openapi_generated.swagger_client.models.datasource_processed_until_timestamp_response import DatasourceProcessedUntilTimestampResponse
-from lightly.openapi_generated.swagger_client.models.datasource_raw_samples_data import DatasourceRawSamplesData
-from lightly.openapi_generated.swagger_client.models.datasource_raw_samples_predictions_data import DatasourceRawSamplesPredictionsData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.datasource_config import DatasourceConfig
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.datasource_purpose import DatasourcePurpose
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.datasource_processed_until_timestamp_request import DatasourceProcessedUntilTimestampRequest
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.datasource_processed_until_timestamp_response import DatasourceProcessedUntilTimestampResponse
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.datasource_raw_samples_data import DatasourceRawSamplesData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.datasource_raw_samples_predictions_data import DatasourceRawSamplesPredictionsData
 
 
 class _DatasourcesMixin:
@@ -246,7 +246,7 @@ class _DatasourcesMixin:
         """Sets the Azure configuration for the datasource of the current dataset.
         
         Find a detailed explanation on how to setup Lightly with 
-        Azure Blob Storage in our docs: https://docs.lightly.ai/getting_started/dataset_creation/dataset_creation_azure_storage.html#
+        Azure Blob Storage in our docs: https://docs.lightly_plus_time.lightly.ai/getting_started/dataset_creation/dataset_creation_azure_storage.html#
 
         Args:
             container_name:
@@ -291,7 +291,7 @@ class _DatasourcesMixin:
         current dataset.
 
         Find a detailed explanation on how to setup Lightly with 
-        Google Cloud Storage in our docs: https://docs.lightly.ai/getting_started/dataset_creation/dataset_creation_gcloud_bucket.html
+        Google Cloud Storage in our docs: https://docs.lightly_plus_time.lightly.ai/getting_started/dataset_creation/dataset_creation_gcloud_bucket.html
         
         Args:
             resource_path:
@@ -333,7 +333,7 @@ class _DatasourcesMixin:
         """Sets the local configuration for the datasource of the current dataset.
 
         Find a detailed explanation on how to setup Lightly with a local file
-        server in our docs: https://docs.lightly.ai/getting_started/dataset_creation/dataset_creation_local_server.html
+        server in our docs: https://docs.lightly_plus_time.lightly.ai/getting_started/dataset_creation/dataset_creation_local_server.html
         
         Args:
             resource_path:

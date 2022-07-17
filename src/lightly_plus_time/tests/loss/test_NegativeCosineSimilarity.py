@@ -1,7 +1,7 @@
 import unittest
 import torch
 
-from lightly.loss import NegativeCosineSimilarity
+from lightly_plus_time.lightly.loss import NegativeCosineSimilarity
 
 
 class TestNegativeCosineSimilarity(unittest.TestCase):

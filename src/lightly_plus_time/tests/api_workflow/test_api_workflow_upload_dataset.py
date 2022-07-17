@@ -7,8 +7,8 @@ import pathlib
 import numpy as np
 import torchvision
 
-from lightly.api.utils import MAXIMUM_FILENAME_LENGTH
-from lightly.data.dataset import LightlyDataset
+from lightly_plus_time.lightly.api.utils import MAXIMUM_FILENAME_LENGTH
+from lightly_plus_time.lightly.data.dataset import LightlyDataset
 
 from tests.api_workflow.mocked_api_workflow_client import MockedApiWorkflowSetup
 

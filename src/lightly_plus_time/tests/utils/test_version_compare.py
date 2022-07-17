@@ -1,6 +1,6 @@
 import unittest
 
-from lightly.utils import version_compare
+from lightly_plus_time.lightly.utils import version_compare
 
 
 class TestVersionCompare(unittest.TestCase):

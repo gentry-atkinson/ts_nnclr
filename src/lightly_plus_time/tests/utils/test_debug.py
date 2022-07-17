@@ -4,8 +4,8 @@ import math
 import numpy as np
 from PIL import Image
 
-from lightly.utils import debug
-from lightly.data import collate
+from lightly_plus_time.lightly.utils import debug
+from lightly_plus_time.lightly.data import collate
 
 try:
     import matplotlib.pyplot as plt

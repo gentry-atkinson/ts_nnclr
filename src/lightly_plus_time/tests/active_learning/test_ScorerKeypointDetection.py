@@ -2,10 +2,10 @@ import unittest
 
 import numpy as np
 
-from lightly.active_learning.scorers.keypoint_detection import \
+from lightly_plus_time.lightly.active_learning.scorers.keypoint_detection import \
     ScorerKeypointDetection
 
-from lightly.active_learning.utils.keypoint_predictions import \
+from lightly_plus_time.lightly.active_learning.utils.keypoint_predictions import \
     KeypointInstancePrediction, KeypointPrediction
 
 

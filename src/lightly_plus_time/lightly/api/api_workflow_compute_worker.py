@@ -1,13 +1,13 @@
 from typing import Any, Dict, List, Optional
 
-from lightly.openapi_generated.swagger_client.models.create_docker_worker_registry_entry_request import CreateDockerWorkerRegistryEntryRequest
-from lightly.openapi_generated.swagger_client.models.docker_run_data import DockerRunData
-from lightly.openapi_generated.swagger_client.models.docker_run_scheduled_create_request import DockerRunScheduledCreateRequest
-from lightly.openapi_generated.swagger_client.models.docker_run_scheduled_data import DockerRunScheduledData
-from lightly.openapi_generated.swagger_client.models.docker_run_scheduled_priority import DockerRunScheduledPriority
-from lightly.openapi_generated.swagger_client.models.docker_worker_type import DockerWorkerType
-from lightly.openapi_generated.swagger_client.models.docker_worker_config import DockerWorkerConfig
-from lightly.openapi_generated.swagger_client.models.docker_worker_config_create_request import DockerWorkerConfigCreateRequest
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.create_docker_worker_registry_entry_request import CreateDockerWorkerRegistryEntryRequest
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.docker_run_data import DockerRunData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.docker_run_scheduled_create_request import DockerRunScheduledCreateRequest
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.docker_run_scheduled_data import DockerRunScheduledData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.docker_run_scheduled_priority import DockerRunScheduledPriority
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.docker_worker_type import DockerWorkerType
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.docker_worker_config import DockerWorkerConfig
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.docker_worker_config_create_request import DockerWorkerConfigCreateRequest
 
 
 class _ComputeWorkerMixin:
@@ -55,10 +55,10 @@ class _ComputeWorkerMixin:
         Args:
             worker_config:
                 Compute worker configuration. All possible values are listed in 
-                our docs: https://docs.lightly.ai/docker/configuration/configuration.html#list-of-parameters
+                our docs: https://docs.lightly_plus_time.lightly.ai/docker/configuration/configuration.html#list-of-parameters
             lightly_config:
                 Lightly configuration. All possible values are listed in our
-                docs: https://docs.lightly.ai/lightly.cli.html#default-settings
+                docs: https://docs.lightly_plus_time.lightly.ai/lightly_plus_time.lightly.cli.html#default-settings
 
         Returns:
             The id of the created config.
@@ -84,10 +84,10 @@ class _ComputeWorkerMixin:
         Args:
             worker_config:
                 Compute worker configuration. All possible values are listed in 
-                our docs: https://docs.lightly.ai/docker/configuration/configuration.html#list-of-parameters
+                our docs: https://docs.lightly_plus_time.lightly.ai/docker/configuration/configuration.html#list-of-parameters
             lightly_config:
                 Lightly configuration. All possible values are listed in our
-                docs: https://docs.lightly.ai/lightly.cli.html#default-settings
+                docs: https://docs.lightly_plus_time.lightly.ai/lightly_plus_time.lightly.cli.html#default-settings
 
         Returns:
             The id of the scheduled run.

@@ -1,7 +1,7 @@
 from typing import *
 
-from lightly.api.bitmask import BitMask
-from lightly.openapi_generated.swagger_client import TagData, \
+from lightly_plus_time.lightly.api.bitmask import BitMask
+from lightly_plus_time.lightly.openapi_generated.swagger_client import TagData, \
     TagArithmeticsRequest, TagArithmeticsOperation, TagBitMaskResponse
 
 

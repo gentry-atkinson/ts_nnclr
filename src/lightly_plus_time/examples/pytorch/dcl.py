@@ -6,10 +6,10 @@ import torch
 from torch import nn
 import torchvision
 
-from lightly.data import LightlyDataset
-from lightly.data import SimCLRCollateFunction
-from lightly.loss import DCLLoss, DCLWLoss
-from lightly.models.modules import SimCLRProjectionHead
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import SimCLRCollateFunction
+from lightly_plus_time.lightly.loss import DCLLoss, DCLWLoss
+from lightly_plus_time.lightly.models.modules import SimCLRProjectionHead
 
 
 class DCL(nn.Module):

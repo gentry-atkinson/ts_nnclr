@@ -6,18 +6,18 @@ import warnings
 import numpy as np
 
 import lightly
-from lightly.active_learning.agents.agent import ActiveLearningAgent
-from lightly.active_learning.config.selection_config import SelectionConfig
-from lightly.active_learning.scorers.classification import ScorerClassification
-from lightly.openapi_generated.swagger_client import SamplingMethod
-from lightly.openapi_generated.swagger_client.models.tag_data import TagData
+from lightly_plus_time.lightly.active_learning.agents.agent import ActiveLearningAgent
+from lightly_plus_time.lightly.active_learning.config.selection_config import SelectionConfig
+from lightly_plus_time.lightly.active_learning.scorers.classification import ScorerClassification
+from lightly_plus_time.lightly.openapi_generated.swagger_client import SamplingMethod
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.tag_data import TagData
 from tests.api_workflow.mocked_api_workflow_client import MockedApiWorkflowClient, MockedApiWorkflowSetup
 
 
 class TestApiWorkflowTags(MockedApiWorkflowSetup):
 
     def setUp(self) -> None:
-        lightly.api.api_workflow_client.__version__ = lightly.__version__
+        lightly_plus_time.lightly.api.api_workflow_client.__version__ = lightly_plus_time.lightly.__version__
         warnings.filterwarnings("ignore", category=UserWarning)
         self.api_workflow_client = MockedApiWorkflowClient(token="token_xyz")
 

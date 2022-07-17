@@ -11,32 +11,32 @@ The framework is structured into the following modules:
 
 - **api**: 
 
-  The lightly.api module handles communication with the Lightly web-app.
+  The lightly_plus_time.lightly.api module handles communication with the Lightly web-app.
 
 - **cli**:
 
-  The lightly.cli module provides a command-line interface for training 
+  The lightly_plus_time.lightly.cli module provides a command-line interface for training 
   self-supervised models and embedding images. Furthermore, the command-line
   tool can be used to upload and download images from/to the Lightly web-app.
 
 - **core**:
 
-  The lightly.core module offers one-liners for simple self-supervised learning.
+  The lightly_plus_time.lightly.core module offers one-liners for simple self-supervised learning.
 
 - **data**:
 
-  The lightly.data module provides a dataset wrapper and collate functions. The
+  The lightly_plus_time.lightly.data module provides a dataset wrapper and collate functions. The
   collate functions are in charge of the data augmentations which are crucial for
   self-supervised learning.
 
 - **loss**:
 
-  The lightly.loss module contains implementations of popular self-supervised training
+  The lightly_plus_time.lightly.loss module contains implementations of popular self-supervised training
   loss functions.
 
 - **models**:
 
-  The lightly.models module holds the implementation of the ResNet as well as heads
+  The lightly_plus_time.lightly.models module holds the implementation of the ResNet as well as heads
   for self-supervised methods. It currently implements the heads of:
 
   - Barlow Twins
@@ -55,7 +55,7 @@ The framework is structured into the following modules:
 
 - **transforms**:
 
-  The lightly.transforms module implements custom data transforms. Currently implements:
+  The lightly_plus_time.lightly.transforms module implements custom data transforms. Currently implements:
 
   - Gaussian Blur
 
@@ -65,7 +65,7 @@ The framework is structured into the following modules:
 
 - **utils**:
 
-  The lightly.utils package provides global utility methods.
+  The lightly_plus_time.lightly.utils package provides global utility methods.
   The io module contains utility to save and load embeddings in a format which is
   understood by the Lightly library.
 
@@ -113,7 +113,7 @@ else:
         _torchvision_vit_available = False
 
     #Updated for TS project -GA
-    #from lightly.core import *
+    #from lightly_plus_time.lightly.core import *
     # from lightly import active_learning
     # from lightly import api
     # from lightly import data
@@ -134,7 +134,7 @@ else:
     from lightly_plus_time.lightly import transforms
     from lightly_plus_time.lightly import utils
     
-    #from lightly.api.version_checking import do_version_check
+    #from lightly_plus_time.lightly.api.version_checking import do_version_check
     from api.version_checking import do_version_check
 
     if os.getenv('LIGHTLY_DID_VERSION_CHECK', 'False') == 'False':

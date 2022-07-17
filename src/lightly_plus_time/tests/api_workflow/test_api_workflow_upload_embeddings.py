@@ -6,7 +6,7 @@ import random
 import tempfile
 
 import numpy as np
-from lightly.utils.io import save_embeddings, load_embeddings, INVALID_FILENAME_CHARACTERS
+from lightly_plus_time.lightly.utils.io import save_embeddings, load_embeddings, INVALID_FILENAME_CHARACTERS
 
 import lightly
 from tests.api_workflow.mocked_api_workflow_client import \

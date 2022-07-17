@@ -12,11 +12,11 @@ import hydra
 from omegaconf import DictConfig
 
 #updated for TS project- GA
-# from lightly.cli._helpers import print_as_warning
-# from lightly.cli._helpers import fix_hydra_arguments
-# from lightly.cli.train_cli import _train_cli
-# from lightly.cli.embed_cli import _embed_cli
-# from lightly.cli.upload_cli import _upload_cli
+# from lightly_plus_time.lightly.cli._helpers import print_as_warning
+# from lightly_plus_time.lightly.cli._helpers import fix_hydra_arguments
+# from lightly_plus_time.lightly.cli.train_cli import _train_cli
+# from lightly_plus_time.lightly.cli.embed_cli import _embed_cli
+# from lightly_plus_time.lightly.cli.upload_cli import _upload_cli
 
 from lightly_plus_time.lightly.cli._helpers import print_as_warning
 from lightly_plus_time.lightly.cli._helpers import fix_hydra_arguments

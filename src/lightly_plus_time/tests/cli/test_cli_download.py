@@ -15,7 +15,7 @@ class TestCLIDownload(MockedApiWorkflowSetup):
 
     @classmethod
     def setUpClass(cls) -> None:
-        sys.modules["lightly.cli.download_cli"].ApiWorkflowClient = MockedApiWorkflowClient
+        sys.modules["lightly_plus_time.lightly.cli.download_cli"].ApiWorkflowClient = MockedApiWorkflowClient
 
     def setUp(self):
         with initialize(config_path="../../lightly/cli/config", job_name="test_app"):
@@ -54,48 +54,48 @@ class TestCLIDownload(MockedApiWorkflowSetup):
     def test_download_base(self):
         cli_string = "lightly-download token='123' dataset_id='XYZ'"
         self.parse_cli_string(cli_string)
-        lightly.cli.download_cli(self.cfg)
+        lightly_plus_time.lightly.cli.download_cli(self.cfg)
 
     def test_download_tag_name(self):
         cli_string = "lightly-download token='123' dataset_id='XYZ' tag_name='selected_tag_xyz'"
         self.parse_cli_string(cli_string)
-        lightly.cli.download_cli(self.cfg)
+        lightly_plus_time.lightly.cli.download_cli(self.cfg)
 
     def test_download_tag_name_nonexisting(self):
         cli_string = "lightly-download token='123' dataset_id='XYZ' tag_name='nonexisting_xyz'"
         self.parse_cli_string(cli_string)
         with self.assertRaises(ValueError):
-            lightly.cli.download_cli(self.cfg)
+            lightly_plus_time.lightly.cli.download_cli(self.cfg)
 
     def test_download_tag_name_exclude_parent(self):
         cli_string = "lightly-download token='123' dataset_id='XYZ' tag_name='selected_tag_xyz' exclude_parent_tag=True"
         self.parse_cli_string(cli_string)
-        lightly.cli.download_cli(self.cfg)
+        lightly_plus_time.lightly.cli.download_cli(self.cfg)
 
     def test_download_no_tag_name(self):
         # defaults to initial-tag
         cli_string = "lightly-download token='123' dataset_id='XYZ'"
         self.parse_cli_string(cli_string)
-        lightly.cli.download_cli(self.cfg)
+        lightly_plus_time.lightly.cli.download_cli(self.cfg)
 
     def test_download_no_token(self):
         cli_string = "lightly-download dataset_id='XYZ' tag_name='selected_tag_xyz'"
         self.parse_cli_string(cli_string)
         with self.assertWarns(UserWarning):
-            lightly.cli.download_cli(self.cfg)
+            lightly_plus_time.lightly.cli.download_cli(self.cfg)
 
     def test_download_no_dataset_id(self):
         cli_string = "lightly-download token='123' tag_name='selected_tag_xyz'"
         self.parse_cli_string(cli_string)
         with self.assertWarns(UserWarning):
-            lightly.cli.download_cli(self.cfg)
+            lightly_plus_time.lightly.cli.download_cli(self.cfg)
 
     def test_download_copy_from_input_to_output_dir(self):
         self.create_fake_dataset(n_data=100)
         cli_string = f"lightly-download token='123' dataset_id='dataset_1_id' tag_name='selected_tag_xyz' " \
                      f"input_dir={self.input_dir} output_dir={self.output_dir}"
         self.parse_cli_string(cli_string)
-        lightly.cli.download_cli(self.cfg)
+        lightly_plus_time.lightly.cli.download_cli(self.cfg)
 
     def test_download_from_tag_with_integer_name(self):
         """Test to reproduce issue #575."""
@@ -103,7 +103,7 @@ class TestCLIDownload(MockedApiWorkflowSetup):
         cli_string = "lightly-download token='123' dataset_id='dataset_1_id' tag_name=1000"
         self.parse_cli_string(cli_string)
         with pytest.warns(None) as record:
-            lightly.cli.download_cli(self.cfg)
+            lightly_plus_time.lightly.cli.download_cli(self.cfg)
         # check if the warning "Tag with name 1000 does not exist" is raised
         # if so, the cli string was not parsed correctly
         # (i.e. as int instead of str)

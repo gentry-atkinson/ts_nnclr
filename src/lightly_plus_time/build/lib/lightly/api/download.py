@@ -10,7 +10,7 @@ from typing import Callable, Dict, Iterable, List, Optional, Tuple, Type, Union
 import PIL
 import requests
 import tqdm
-from lightly.api import utils
+from lightly_plus_time.lightly.api import utils
 
 try:
     import av

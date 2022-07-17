@@ -9,10 +9,10 @@ import yaml
 from hydra.experimental import compose, initialize
 
 import lightly
-from lightly.active_learning.utils import BoundingBox
-from lightly.data import LightlyDataset
-from lightly.utils.cropping.crop_image_by_bounding_boxes import crop_dataset_by_bounding_boxes_and_save
-from lightly.utils.cropping.read_yolo_label_file import read_yolo_label_file
+from lightly_plus_time.lightly.active_learning.utils import BoundingBox
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.utils.cropping.crop_image_by_bounding_boxes import crop_dataset_by_bounding_boxes_and_save
+from lightly_plus_time.lightly.utils.cropping.read_yolo_label_file import read_yolo_label_file
 from tests.api_workflow.mocked_api_workflow_client import MockedApiWorkflowSetup, MockedApiWorkflowClient
 
 
@@ -20,7 +20,7 @@ class TestCLICrop(MockedApiWorkflowSetup):
 
     @classmethod
     def setUpClass(cls) -> None:
-        sys.modules["lightly.cli.upload_cli"].ApiWorkflowClient = MockedApiWorkflowClient
+        sys.modules["lightly_plus_time.lightly.cli.upload_cli"].ApiWorkflowClient = MockedApiWorkflowClient
 
     def setUp(self):
         MockedApiWorkflowSetup.setUp(self)
@@ -126,10 +126,10 @@ class TestCLICrop(MockedApiWorkflowSetup):
     def test_crop_with_class_names(self):
         cli_string = "lightly-crop crop_padding=0.1"
         self.parse_cli_string(cli_string)
-        lightly.cli.crop_cli(self.cfg)
+        lightly_plus_time.lightly.cli.crop_cli(self.cfg)
 
     def test_crop_without_class_names(self):
         cli_string = "lightly-crop crop_padding=0.1"
         self.parse_cli_string(cli_string)
         self.cfg['label_names_file'] = ''
-        lightly.cli.crop_cli(self.cfg)
+        lightly_plus_time.lightly.cli.crop_cli(self.cfg)

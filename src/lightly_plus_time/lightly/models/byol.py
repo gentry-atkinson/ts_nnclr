@@ -9,8 +9,8 @@ import torch
 import torch.nn as nn
 
 #Updated for TS project
-# from lightly.models.modules import BYOLProjectionHead
-# from lightly.models._momentum import _MomentumEncoderMixin
+# from lightly_plus_time.lightly.models.modules import BYOLProjectionHead
+# from lightly_plus_time.lightly.models._momentum import _MomentumEncoderMixin
 from lightly_plus_time.lightly.models.modules import BYOLProjectionHead
 from lightly_plus_time.lightly.models._momentum import _MomentumEncoderMixin
 
@@ -69,7 +69,7 @@ class BYOL(nn.Module, _MomentumEncoderMixin):
         warnings.warn(Warning(
             'The high-level building block BYOL will be deprecated in version 1.3.0. '
             + 'Use low-level building blocks instead. '
-            + 'See https://docs.lightly.ai/lightly.models.html for more information'),
+            + 'See https://docs.lightly_plus_time.lightly.ai/lightly_plus_time.lightly.models.html for more information'),
             PendingDeprecationWarning)
 
     def _forward(self,

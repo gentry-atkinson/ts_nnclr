@@ -5,14 +5,14 @@ import torch.nn as nn
 import torchvision
 
 import lightly
-from lightly.models import ResNetGenerator
-from lightly.models import MoCo
+from lightly_plus_time.lightly.models import ResNetGenerator
+from lightly_plus_time.lightly.models import MoCo
 
 
 def get_backbone(resnet, num_ftrs=64):
     last_conv_channels = list(resnet.children())[-1].in_features
     backbone = nn.Sequential(
-        lightly.models.batchnorm.get_norm_layer(3, 0),
+        lightly_plus_time.lightly.models.batchnorm.get_norm_layer(3, 0),
         *list(resnet.children())[:-1],
         nn.Conv2d(last_conv_channels, num_ftrs, 1),
         nn.AdaptiveAvgPool2d(1),

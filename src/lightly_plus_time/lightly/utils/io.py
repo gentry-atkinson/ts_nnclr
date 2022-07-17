@@ -43,7 +43,7 @@ def check_embeddings(path: str, remove_additional_columns: bool=False):
     Use this check whenever you want to upload an embedding to the Lightly 
     Platform.
     This method only checks whether the header row matches the specs:
-    https://docs.lightly.ai/getting_started/command_line_tool.html#id1
+    https://docs.lightly_plus_time.lightly.ai/getting_started/command_line_tool.html#id1
 
     Args:
         path:
@@ -144,7 +144,7 @@ def save_embeddings(path: str,
         ValueError: If embeddings, labels, and filenames have different lengths.
 
     Examples:
-        >>> import lightly.utils.io as io
+        >>> import lightly_plus_time.lightly.utils.io as io
         >>> io.save_embeddings(
         >>>     'path/to/my/embeddings.csv',
         >>>     embeddings,
@@ -186,7 +186,7 @@ def load_embeddings(path: str):
         The embeddings will always be of the Float32 datatype.
 
     Examples:
-        >>> import lightly.utils.io as io
+        >>> import lightly_plus_time.lightly.utils.io as io
         >>> embeddings, labels, filenames = io.load_embeddings(
         >>>     'path/to/my/embeddings.csv')
 
@@ -235,7 +235,7 @@ def load_embeddings_as_dict(path: str,
         A dictionary containing the embedding information (see load_embeddings)
 
     Examples:
-        >>> import lightly.utils.io as io
+        >>> import lightly_plus_time.lightly.utils.io as io
         >>> embedding_dict = io.load_embeddings_as_dict(
         >>>     'path/to/my/embeddings.csv',
         >>>     embedding_name='MyEmbeddings')
@@ -279,7 +279,7 @@ class COCO_ANNOTATION_KEYS:
 
 
 def format_custom_metadata(custom_metadata: List[Tuple[str, Dict]]):
-    """Transforms custom metadata into a format which can be handled by Lightly.
+    """Transforms custom metadata into a format which can be handled by lightly_plus_time.lightly.
 
     Args:
         custom_metadata:

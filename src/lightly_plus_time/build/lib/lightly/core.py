@@ -6,10 +6,10 @@ from typing import Tuple, List
 
 import numpy as np
 
-from lightly.cli.train_cli import _train_cli
-from lightly.cli.embed_cli import _embed_cli
-from lightly.cli.lightly_cli import _lightly_cli
-import lightly.cli as cli
+from lightly_plus_time.lightly.cli.train_cli import _train_cli
+from lightly_plus_time.lightly.cli.embed_cli import _embed_cli
+from lightly_plus_time.lightly.cli.lightly_cli import _lightly_cli
+import lightly_plus_time.lightly.cli as cli
 
 import yaml
 import os
@@ -101,17 +101,17 @@ def train_model_and_embed_images(config_path: str = None, **kwargs) -> Tuple[
         >>> import lightly
         >>>
         >>> # train a model and embed images with default configs
-        >>> embeddings, _, _ = lightly.train_model_and_embed_images(
+        >>> embeddings, _, _ = lightly_plus_time.lightly.train_model_and_embed_images(
         >>>     input_dir='path/to/data')
         >>>
         >>> # train a model and embed images with separate config file
         >>> my_config_path = 'my/config/file.yaml'
-        >>> embeddings, _, _ = lightly.train_model_and_embed_images(
+        >>> embeddings, _, _ = lightly_plus_time.lightly.train_model_and_embed_images(
         >>>     input_dir='path/to/data', config_path=my_config_path)
         >>>
         >>> # train a model and embed images with default settings + overwrites
         >>> my_trainer = {max_epochs: 10}
-        >>> embeddings, _, _ = lightly.train_model_and_embed_images(
+        >>> embeddings, _, _ = lightly_plus_time.lightly.train_model_and_embed_images(
         >>>     input_dir='path/to/data', trainer=my_trainer)
 
     """
@@ -145,12 +145,12 @@ def train_embedding_model(config_path: str = None, **kwargs):
         >>> import lightly
         >>>
         >>> # train a model with default configs
-        >>> checkpoint_path = lightly.train_embedding_model(
+        >>> checkpoint_path = lightly_plus_time.lightly.train_embedding_model(
         >>>     input_dir='path/to/data')
         >>>
         >>> # train a model with separate config file
         >>> my_config_path = 'my/config/file.yaml'
-        >>> checkpoint_path = lightly.train_embedding_model(
+        >>> checkpoint_path = lightly_plus_time.lightly.train_embedding_model(
         >>>     input_dir='path/to/data', config_path=my_config_path)
         >>>
         >>> # train a model with default settings and overwrites: large batch
@@ -160,7 +160,7 @@ def train_embedding_model(config_path: str = None, **kwargs):
         >>>     batch_size: 100,
         >>>     num_workers: 8,
         >>> }
-        >>> checkpoint_path = lightly.train_embedding_model(
+        >>> checkpoint_path = lightly_plus_time.lightly.train_embedding_model(
         >>>     input_dir='path/to/data', loader=my_loader)
         >>> # the command above is equivalent to:
         >>> # lightly-train input_dir='path/to/data' loader.batch_size=100 loader.num_workers=8
@@ -195,18 +195,18 @@ def embed_images(checkpoint: str, config_path: str = None, **kwargs):
         >>> my_checkpoint_path = 'path/to/checkpoint.ckpt'
         >>>
         >>> # embed images with default configs
-        >>> embeddings, _, _ = lightly.embed_images(
+        >>> embeddings, _, _ = lightly_plus_time.lightly.embed_images(
         >>>     my_checkpoint_path, input_dir='path/to/data')
         >>>
         >>> # embed images with separate config file
         >>> my_config_path = 'my/config/file.yaml'
-        >>> embeddings, _, _ = lightly.embed_images(
+        >>> embeddings, _, _ = lightly_plus_time.lightly.embed_images(
         >>>     my_checkpoint_path, input_dir='path/to/data', config_path=my_config_path)
         >>>
         >>> # embed images with default settings and overwrites: at inference,
         >>> # we can use larger input_sizes because it requires less memory.
         >>> my_collate = {input_size: 256}
-        >>> embeddings, _, _ = lightly.embed_images(
+        >>> embeddings, _, _ = lightly_plus_time.lightly.embed_images(
         >>>     my_checkpoint_path, input_dir='path/to/data', collate=my_collate)
         >>> # the command above is equivalent to:
         >>> # lightly-embed input_dir='path/to/data' collate.input_size=256

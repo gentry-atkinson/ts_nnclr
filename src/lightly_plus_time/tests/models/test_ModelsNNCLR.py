@@ -4,8 +4,8 @@ import torch
 import torch.nn as nn
 import torchvision
 
-from lightly.models import NNCLR
-from lightly.models.modules import NNMemoryBankModule
+from lightly_plus_time.lightly.models import NNCLR
+from lightly_plus_time.lightly.models.modules import NNMemoryBankModule
 
 
 def resnet_generator(name: str):

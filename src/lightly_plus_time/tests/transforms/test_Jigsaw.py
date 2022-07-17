@@ -1,7 +1,7 @@
 from PIL import Image
 import unittest
 
-from lightly.transforms import Jigsaw
+from lightly_plus_time.lightly.transforms import Jigsaw
 
 
 class TestJigsaw(unittest.TestCase):

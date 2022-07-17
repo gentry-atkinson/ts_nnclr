@@ -3,4 +3,4 @@
 # Copyright (c) 2020. Lightly AG and its affiliates.
 # All Rights Reserved
 
-from lightly.active_learning.agents.agent import ActiveLearningAgent
+from lightly_plus_time.lightly.active_learning.agents.agent import ActiveLearningAgent

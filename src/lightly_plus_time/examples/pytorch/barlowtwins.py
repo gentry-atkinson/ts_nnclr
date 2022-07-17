@@ -6,10 +6,10 @@ import torch
 from torch import nn
 import torchvision
 
-from lightly.data import LightlyDataset
-from lightly.data import ImageCollateFunction
-from lightly.models.modules import BarlowTwinsProjectionHead
-from lightly.loss import BarlowTwinsLoss
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import ImageCollateFunction
+from lightly_plus_time.lightly.models.modules import BarlowTwinsProjectionHead
+from lightly_plus_time.lightly.loss import BarlowTwinsLoss
 
 
 class BarlowTwins(nn.Module):

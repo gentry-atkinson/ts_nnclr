@@ -5,7 +5,7 @@
 
 from typing import List
 
-from lightly.active_learning.utils.bounding_box import BoundingBox
+from lightly_plus_time.lightly.active_learning.utils.bounding_box import BoundingBox
 
 
 class ObjectDetectionOutput:

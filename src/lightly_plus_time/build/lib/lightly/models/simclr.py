@@ -8,13 +8,13 @@ import warnings
 import torch
 import torch.nn as nn
 
-from lightly.models.modules import SimCLRProjectionHead
+from lightly_plus_time.lightly.models.modules import SimCLRProjectionHead
 
 
 class SimCLR(nn.Module):
     """Implementation of the SimCLR[0] architecture
 
-    Recommended loss: :py:class:`lightly.loss.ntx_ent_loss.NTXentLoss`
+    Recommended loss: :py:class:`lightly_plus_time.lightly.loss.ntx_ent_loss.NTXentLoss`
 
     [0] SimCLR, 2020, https://arxiv.org/abs/2002.05709
 
@@ -41,7 +41,7 @@ class SimCLR(nn.Module):
         warnings.warn(Warning(
             'The high-level building block SimCLR will be deprecated in version 1.3.0. '
             + 'Use low-level building blocks instead. '
-            + 'See https://docs.lightly.ai/lightly.models.html for more information'),
+            + 'See https://docs.lightly_plus_time.lightly.ai/lightly_plus_time.lightly.models.html for more information'),
             PendingDeprecationWarning)
 
     def forward(self,

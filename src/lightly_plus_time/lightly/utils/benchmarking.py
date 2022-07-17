@@ -113,14 +113,14 @@ class BenchmarkModule(pl.LightningModule):
         >>> class SimSiamModel(BenchmarkingModule):
         >>>     def __init__(dataloader_kNN, num_classes):
         >>>         super().__init__(dataloader_kNN, num_classes)
-        >>>         resnet = lightly.models.ResNetGenerator('resnet-18')
+        >>>         resnet = lightly_plus_time.lightly.models.ResNetGenerator('resnet-18')
         >>>         self.backbone = nn.Sequential(
         >>>             *list(resnet.children())[:-1],
         >>>             nn.AdaptiveAvgPool2d(1),
         >>>         )
         >>>         self.resnet_simsiam = 
-        >>>             lightly.models.SimSiam(self.backbone, num_ftrs=512)
-        >>>         self.criterion = lightly.loss.SymNegCosineSimilarityLoss()
+        >>>             lightly_plus_time.lightly.models.SimSiam(self.backbone, num_ftrs=512)
+        >>>         self.criterion = lightly_plus_time.lightly.loss.SymNegCosineSimilarityLoss()
         >>>
         >>>     def forward(self, x):
         >>>         self.resnet_simsiam(x)

@@ -1,7 +1,7 @@
 import warnings
 from datetime import datetime
 
-from lightly.openapi_generated.swagger_client.models.sampling_method import SamplingMethod
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.sampling_method import SamplingMethod
 
 
 

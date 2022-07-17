@@ -5,13 +5,13 @@ from typing import Tuple
 
 import requests
 
-from lightly.openapi_generated.swagger_client import VersioningApi, VersionNumber
-from lightly.openapi_generated.swagger_client.api_client import ApiClient
+from lightly_plus_time.lightly.openapi_generated.swagger_client import VersioningApi, VersionNumber
+from lightly_plus_time.lightly.openapi_generated.swagger_client.api_client import ApiClient
 
-from lightly.openapi_generated.swagger_client.configuration import Configuration
-from lightly.api.utils import getenv
+from lightly_plus_time.lightly.openapi_generated.swagger_client.configuration import Configuration
+from lightly_plus_time.lightly.api.utils import getenv
 
-from lightly.utils import version_compare
+from lightly_plus_time.lightly.utils import version_compare
 
 
 class LightlyAPITimeoutException(Exception):
@@ -53,7 +53,7 @@ def do_version_check(current_version: str):
 
 def get_versioning_api() -> VersioningApi:
     configuration = Configuration()
-    configuration.host = getenv('LIGHTLY_SERVER_LOCATION', 'https://api.lightly.ai')
+    configuration.host = getenv('LIGHTLY_SERVER_LOCATION', 'https://api.lightly_plus_time.lightly.ai')
     api_client = ApiClient(configuration=configuration)
     versioning_api = VersioningApi(api_client)
     return versioning_api

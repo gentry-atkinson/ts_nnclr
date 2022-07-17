@@ -8,8 +8,8 @@ import warnings
 import torch
 import torch.nn as nn
 
-from lightly.models.modules import NNCLRProjectionHead
-from lightly.models.modules import NNCLRPredictionHead
+from lightly_plus_time.lightly.models.modules import NNCLRProjectionHead
+from lightly_plus_time.lightly.models.modules import NNCLRPredictionHead
 
 
 def _prediction_mlp(in_dims: int, 
@@ -92,8 +92,8 @@ def _projection_mlp(num_ftrs: int,
 class NNCLR(nn.Module):
     """Implementation of the NNCLR[0] architecture
 
-    Recommended loss: :py:class:`lightly.loss.ntx_ent_loss.NTXentLoss`
-    Recommended module: :py:class:`lightly.models.modules.nn_memory_bank.NNmemoryBankModule`
+    Recommended loss: :py:class:`lightly_plus_time.lightly.loss.ntx_ent_loss.NTXentLoss`
+    Recommended module: :py:class:`lightly_plus_time.lightly.models.modules.nn_memory_bank.NNmemoryBankModule`
 
     [0] NNCLR, 2021, https://arxiv.org/abs/2104.14548
 
@@ -156,7 +156,7 @@ class NNCLR(nn.Module):
         warnings.warn(Warning(
             'The high-level building block NNCLR will be deprecated in version 1.3.0. '
             + 'Use low-level building blocks instead. '
-            + 'See https://docs.lightly.ai/lightly.models.html for more information'),
+            + 'See https://docs.lightly_plus_time.lightly.ai/lightly_plus_time.lightly.models.html for more information'),
             PendingDeprecationWarning)
 
     def forward(self,

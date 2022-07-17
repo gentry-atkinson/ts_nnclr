@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 
 #Updated for TS project -GA
-# from lightly.models.modules import SimCLRProjectionHead
+# from lightly_plus_time.lightly.models.modules import SimCLRProjectionHead
 from lightly_plus_time.lightly.models.modules import SimCLRProjectionHead
 
 

@@ -1,6 +1,6 @@
-""" lightly.cli.config
+""" lightly_plus_time.lightly.cli.config
 
-    The lightly.cli.config module holds default configs for the command-line
+    The lightly_plus_time.lightly.cli.config module holds default configs for the command-line
     interface.
 """
 

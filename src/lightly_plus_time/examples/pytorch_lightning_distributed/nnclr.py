@@ -7,12 +7,12 @@ from torch import nn
 import torchvision
 import pytorch_lightning as pl
 
-from lightly.data import LightlyDataset
-from lightly.data import SimCLRCollateFunction
-from lightly.loss import NTXentLoss
-from lightly.models.modules import NNCLRProjectionHead
-from lightly.models.modules import NNCLRPredictionHead
-from lightly.models.modules import NNMemoryBankModule
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import SimCLRCollateFunction
+from lightly_plus_time.lightly.loss import NTXentLoss
+from lightly_plus_time.lightly.models.modules import NNCLRProjectionHead
+from lightly_plus_time.lightly.models.modules import NNCLRPredictionHead
+from lightly_plus_time.lightly.models.modules import NNMemoryBankModule
 
 
 class NNCLR(pl.LightningModule):

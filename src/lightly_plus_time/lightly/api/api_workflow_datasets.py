@@ -1,10 +1,10 @@
 from typing import List
 
-from lightly.openapi_generated.swagger_client.models.create_entity_response import CreateEntityResponse
-from lightly.openapi_generated.swagger_client.models.dataset_create_request import DatasetCreateRequest
-from lightly.openapi_generated.swagger_client.models.dataset_data import DatasetData
-from lightly.openapi_generated.swagger_client.rest import ApiException
-from lightly.openapi_generated.swagger_client.models.dataset_type import DatasetType
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.create_entity_response import CreateEntityResponse
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.dataset_create_request import DatasetCreateRequest
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.dataset_data import DatasetData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.rest import ApiException
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.dataset_type import DatasetType
 
 class _DatasetsMixin:
 
@@ -89,10 +89,10 @@ class _DatasetsMixin:
                 `DatasetType.IMAGES` and `DatasetType.VIDEOS`.
 
         Examples:
-            >>> from lightly.api import ApiWorkflowClient
-            >>> from lightly.openapi_generated.swagger_client.models.dataset_type import DatasetType
+            >>> from lightly_plus_time.lightly.api import ApiWorkflowClient
+            >>> from lightly_plus_time.lightly.openapi_generated.swagger_client.models.dataset_type import DatasetType
             >>>
-            >>> client = lightly.api.ApiWorkflowClient(token="YOUR_TOKEN")
+            >>> client = lightly_plus_time.lightly.api.ApiWorkflowClient(token="YOUR_TOKEN")
             >>> client.create_dataset('your-dataset-name', dataset_type=DatasetType.IMAGES)
             >>>
             >>> # or to work with videos

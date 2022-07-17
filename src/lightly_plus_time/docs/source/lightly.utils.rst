@@ -1,40 +1,40 @@
-lightly.utils
+lightly_plus_time.lightly.utils
 ===================
 
-.. automodule:: lightly.utils
+.. automodule:: lightly_plus_time.lightly.utils
 
 .io
 ---------------
-.. automodule:: lightly.utils.io
+.. automodule:: lightly_plus_time.lightly.utils.io
    :members:
 
 .embeddings_2d
 ---------------
-.. automodule:: lightly.utils.embeddings_2d
+.. automodule:: lightly_plus_time.lightly.utils.embeddings_2d
    :members:
 
 .benchmarking
 ---------------
-.. automodule:: lightly.utils.benchmarking
+.. automodule:: lightly_plus_time.lightly.utils.benchmarking
    :members:
 
 .debug
 ---------------
-.. automodule:: lightly.utils.debug
+.. automodule:: lightly_plus_time.lightly.utils.debug
    :members:
 
 .dist
 ---------------
-.. automodule:: lightly.utils.dist
+.. automodule:: lightly_plus_time.lightly.utils.dist
    :members:
 
 .reordering
 ---------------
-.. automodule:: lightly.utils.reordering
+.. automodule:: lightly_plus_time.lightly.utils.reordering
    :members:
 
 .version_compare
 ---------------
-.. automodule:: lightly.utils.version_compare
+.. automodule:: lightly_plus_time.lightly.utils.version_compare
    :members:
 

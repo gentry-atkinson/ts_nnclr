@@ -10,8 +10,8 @@ import torch
 from torch import manual_seed
 from torch.utils.data import DataLoader
 
-from lightly.cli._helpers import get_model_from_config
-from lightly.data import LightlyDataset
+from lightly_plus_time.lightly.cli._helpers import get_model_from_config
+from lightly_plus_time.lightly.data import LightlyDataset
 
 
 class TestLightlyDataset(unittest.TestCase):

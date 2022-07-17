@@ -5,9 +5,9 @@ from typing import List
 
 import numpy as np
 
-from lightly.active_learning.scorers import ScorerClassification
-from lightly.active_learning.scorers.scorer import Scorer
-from lightly.active_learning.utils.object_detection_output import ObjectDetectionOutput
+from lightly_plus_time.lightly.active_learning.scorers import ScorerClassification
+from lightly_plus_time.lightly.active_learning.scorers.scorer import Scorer
+from lightly_plus_time.lightly.active_learning.utils.object_detection_output import ObjectDetectionOutput
 
 
 def _object_frequency(model_output: List[ObjectDetectionOutput],

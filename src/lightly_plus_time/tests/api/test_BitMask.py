@@ -2,7 +2,7 @@ import unittest
 from copy import deepcopy
 from random import random, seed, randint
 
-from lightly.api.bitmask import BitMask
+from lightly_plus_time.lightly.api.bitmask import BitMask
 
 N = 10
 

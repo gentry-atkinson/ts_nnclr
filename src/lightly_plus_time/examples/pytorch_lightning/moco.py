@@ -8,12 +8,12 @@ import torchvision
 import copy
 import pytorch_lightning as pl
 
-from lightly.data import LightlyDataset
-from lightly.data import MoCoCollateFunction
-from lightly.loss import NTXentLoss
-from lightly.models.modules import MoCoProjectionHead
-from lightly.models.utils import deactivate_requires_grad
-from lightly.models.utils import update_momentum
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import MoCoCollateFunction
+from lightly_plus_time.lightly.loss import NTXentLoss
+from lightly_plus_time.lightly.models.modules import MoCoProjectionHead
+from lightly_plus_time.lightly.models.utils import deactivate_requires_grad
+from lightly_plus_time.lightly.models.utils import update_momentum
 
 
 class MoCo(pl.LightningModule):

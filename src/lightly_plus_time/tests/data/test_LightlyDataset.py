@@ -12,13 +12,13 @@ import warnings
 import numpy as np
 from PIL.Image import Image
 
-from lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import LightlyDataset
 
-from lightly.data._utils import check_images
-from lightly.utils.io import INVALID_FILENAME_CHARACTERS
+from lightly_plus_time.lightly.data._utils import check_images
+from lightly_plus_time.lightly.utils.io import INVALID_FILENAME_CHARACTERS
 
 try:
-    from lightly.data._video import VideoDataset    
+    from lightly_plus_time.lightly.data._video import VideoDataset    
     import av
     import cv2
 

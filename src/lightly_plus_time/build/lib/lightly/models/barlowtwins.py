@@ -10,13 +10,13 @@ import warnings
 import torch
 import torch.nn as nn
 
-from lightly.models.modules import BarlowTwinsProjectionHead
+from lightly_plus_time.lightly.models.modules import BarlowTwinsProjectionHead
 
 
 class BarlowTwins(nn.Module):
     """Implementation of BarlowTwins[0] network.
 
-    Recommended loss: :py:class:`lightly.loss.barlow_twins_loss.BarlowTwinsLoss`
+    Recommended loss: :py:class:`lightly_plus_time.lightly.loss.barlow_twins_loss.BarlowTwinsLoss`
 
     Default params are the ones explained in the original paper [0].
     [0] Zbontar,J. et.al. 2021. Barlow Twins... https://arxiv.org/abs/2103.03230
@@ -57,7 +57,7 @@ class BarlowTwins(nn.Module):
         warnings.warn(Warning(
             'The high-level building block BarlowTwins will be deprecated in version 1.3.0. '
             + 'Use low-level building blocks instead. '
-            + 'See https://docs.lightly.ai/lightly.models.html for more information'),
+            + 'See https://docs.lightly_plus_time.lightly.ai/lightly_plus_time.lightly.models.html for more information'),
             PendingDeprecationWarning)
 
     def forward(self,

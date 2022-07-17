@@ -64,15 +64,15 @@ Check it out here: :ref:`lightly-tutorial-active-learning-detectron2`
    :caption: Python API
 
    lightly
-   lightly.active_learning
-   lightly.api
-   lightly.cli
-   lightly.core
-   lightly.data
-   lightly.loss
-   lightly.models
-   lightly.transforms
-   lightly.utils
+   lightly_plus_time.lightly.active_learning
+   lightly_plus_time.lightly.api
+   lightly_plus_time.lightly.cli
+   lightly_plus_time.lightly.core
+   lightly_plus_time.lightly.data
+   lightly_plus_time.lightly.loss
+   lightly_plus_time.lightly.models
+   lightly_plus_time.lightly.transforms
+   lightly_plus_time.lightly.utils
 
 
 .. toctree::

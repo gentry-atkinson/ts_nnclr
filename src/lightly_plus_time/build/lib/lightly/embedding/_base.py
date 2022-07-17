@@ -10,7 +10,7 @@ import pytorch_lightning.core.lightning as lightning
 from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
 import torch.nn as nn
 
-from lightly.embedding._callback import CustomModelCheckpoint
+from lightly_plus_time.lightly.embedding._callback import CustomModelCheckpoint
 
 
 class BaseEmbedding(lightning.LightningModule):

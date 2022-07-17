@@ -1,7 +1,7 @@
 import unittest
 from PIL import Image
 
-from lightly.transforms.solarize import RandomSolarization
+from lightly_plus_time.lightly.transforms.solarize import RandomSolarization
 
 
 class TestRandomSolarization(unittest.TestCase):

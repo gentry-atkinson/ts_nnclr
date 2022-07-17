@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 
-from lightly.active_learning.utils.bounding_box import BoundingBox
-from lightly.active_learning.utils.object_detection_output import ObjectDetectionOutput
+from lightly_plus_time.lightly.active_learning.utils.bounding_box import BoundingBox
+from lightly_plus_time.lightly.active_learning.utils.object_detection_output import ObjectDetectionOutput
 
 
 class TestObjectDetectionOutput(unittest.TestCase):

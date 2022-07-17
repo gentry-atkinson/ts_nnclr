@@ -6,11 +6,11 @@ import torch
 from torch import nn
 import torchvision
 
-from lightly.data import LightlyDataset
-from lightly.data import SwaVCollateFunction
-from lightly.loss import SwaVLoss
-from lightly.models.modules import SwaVProjectionHead
-from lightly.models.modules import SwaVPrototypes
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import SwaVCollateFunction
+from lightly_plus_time.lightly.loss import SwaVLoss
+from lightly_plus_time.lightly.models.modules import SwaVProjectionHead
+from lightly_plus_time.lightly.models.modules import SwaVPrototypes
 
 
 class SwaV(nn.Module):

@@ -6,8 +6,8 @@ import unittest
 
 import numpy as np
 
-from lightly.utils import save_custom_metadata
-from lightly.utils.io import check_filenames, save_embeddings, check_embeddings, save_tasks, save_schema
+from lightly_plus_time.lightly.utils import save_custom_metadata
+from lightly_plus_time.lightly.utils.io import check_filenames, save_embeddings, check_embeddings, save_tasks, save_schema
 from tests.api_workflow.mocked_api_workflow_client import MockedApiWorkflowSetup, MockedApiWorkflowClient
 
 
@@ -15,7 +15,7 @@ class TestCLICrop(MockedApiWorkflowSetup):
 
     @classmethod
     def setUpClass(cls) -> None:
-        sys.modules["lightly.cli.upload_cli"].ApiWorkflowClient = MockedApiWorkflowClient
+        sys.modules["lightly_plus_time.lightly.cli.upload_cli"].ApiWorkflowClient = MockedApiWorkflowClient
 
     def test_save_metadata(self):
         metadata = [("filename.jpg", {"random_metadata": 42})]

@@ -4,14 +4,14 @@ from typing import Dict, List, Union
 
 import numpy as np
 
-from lightly.active_learning.config.selection_config import SelectionConfig
-from lightly.openapi_generated.swagger_client import ActiveLearningScoreCreateRequest
-from lightly.openapi_generated.swagger_client.models.job_state import JobState
-from lightly.openapi_generated.swagger_client.models.job_status_data import JobStatusData
-from lightly.openapi_generated.swagger_client.models.tag_data import TagData
-from lightly.openapi_generated.swagger_client.models.sampling_config import SamplingConfig
-from lightly.openapi_generated.swagger_client.models.sampling_create_request import SamplingCreateRequest
-from lightly.openapi_generated.swagger_client.models.sampling_config_stopping_condition import \
+from lightly_plus_time.lightly.active_learning.config.selection_config import SelectionConfig
+from lightly_plus_time.lightly.openapi_generated.swagger_client import ActiveLearningScoreCreateRequest
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.job_state import JobState
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.job_status_data import JobStatusData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.tag_data import TagData
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.sampling_config import SamplingConfig
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.sampling_create_request import SamplingCreateRequest
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.sampling_config_stopping_condition import \
     SamplingConfigStoppingCondition
 
 

@@ -5,12 +5,12 @@ setup.cfg
 setup.py
 lightly/__init__.py
 lightly/core.py
-lightly.egg-info/PKG-INFO
-lightly.egg-info/SOURCES.txt
-lightly.egg-info/dependency_links.txt
-lightly.egg-info/entry_points.txt
-lightly.egg-info/requires.txt
-lightly.egg-info/top_level.txt
+lightly_plus_time.lightly.egg-info/PKG-INFO
+lightly_plus_time.lightly.egg-info/SOURCES.txt
+lightly_plus_time.lightly.egg-info/dependency_links.txt
+lightly_plus_time.lightly.egg-info/entry_points.txt
+lightly_plus_time.lightly.egg-info/requires.txt
+lightly_plus_time.lightly.egg-info/top_level.txt
 lightly/active_learning/__init__.py
 lightly/active_learning/agents/__init__.py
 lightly/active_learning/agents/agent.py
@@ -145,7 +145,7 @@ lightly/openapi_generated/swagger_client/models/datasource_config.py
 lightly/openapi_generated/swagger_client/models/datasource_config_azure.py
 lightly/openapi_generated/swagger_client/models/datasource_config_base.py
 lightly/openapi_generated/swagger_client/models/datasource_config_gcs.py
-lightly/openapi_generated/swagger_client/models/datasource_config_lightly.py
+lightly/openapi_generated/swagger_client/models/datasource_config_lightly_plus_time.lightly.py
 lightly/openapi_generated/swagger_client/models/datasource_config_local.py
 lightly/openapi_generated/swagger_client/models/datasource_config_s3.py
 lightly/openapi_generated/swagger_client/models/datasource_config_s3_delegated_access.py

@@ -14,7 +14,7 @@ class TestCLIEmbed(MockedApiWorkflowSetup):
 
     @classmethod
     def setUpClass(cls) -> None:
-        sys.modules["lightly.cli.embed_cli"].ApiWorkflowClient = \
+        sys.modules["lightly_plus_time.lightly.cli.embed_cli"].ApiWorkflowClient = \
             MockedApiWorkflowClient
 
     def setUp(self):
@@ -40,7 +40,7 @@ class TestCLIEmbed(MockedApiWorkflowSetup):
             data[0].save(path)
 
     def test_embed(self):
-        lightly.cli.embed_cli(self.cfg)
+        lightly_plus_time.lightly.cli.embed_cli(self.cfg)
         self.assertGreater(len(os.getenv(
             self.cfg['environment_variable_names'][
             'lightly_last_embedding_path']

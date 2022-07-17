@@ -3,8 +3,8 @@ import unittest
 import numpy as np
 
 import lightly
-from lightly.active_learning.scorers import ScorerSemanticSegmentation
-from lightly.active_learning.scorers import ScorerClassification
+from lightly_plus_time.lightly.active_learning.scorers import ScorerSemanticSegmentation
+from lightly_plus_time.lightly.active_learning.scorers import ScorerClassification
 
 class TestScorerSemanticSegmentation(unittest.TestCase):
 

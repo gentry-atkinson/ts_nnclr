@@ -10,7 +10,7 @@ import torchvision.datasets as datasets
 from torchvision import transforms
 
 #Updated for TS project -GA
-# from lightly.data._image_loaders import default_loader
+# from lightly_plus_time.lightly.data._image_loaders import default_loader
 from lightly_plus_time.lightly.data._image_loaders import default_loader
 
 

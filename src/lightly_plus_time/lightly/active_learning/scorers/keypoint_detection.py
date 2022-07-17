@@ -2,8 +2,8 @@ from typing import List, Dict
 
 import numpy as np
 
-from lightly.active_learning.scorers import Scorer
-from lightly.active_learning.utils.keypoint_predictions import \
+from lightly_plus_time.lightly.active_learning.scorers import Scorer
+from lightly_plus_time.lightly.active_learning.utils.keypoint_predictions import \
     KeypointPrediction
 
 

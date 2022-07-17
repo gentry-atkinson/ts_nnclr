@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import torch
 
-from lightly.loss import NTXentLoss
+from lightly_plus_time.lightly.loss import NTXentLoss
 
 
 class TestNTXentLoss(unittest.TestCase):

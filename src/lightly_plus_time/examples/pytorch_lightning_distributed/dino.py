@@ -8,12 +8,12 @@ from torch import nn
 import torchvision
 import pytorch_lightning as pl
 
-from lightly.data import LightlyDataset
-from lightly.data import DINOCollateFunction
-from lightly.loss import DINOLoss
-from lightly.models.modules import DINOProjectionHead
-from lightly.models.utils import deactivate_requires_grad
-from lightly.models.utils import update_momentum
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data import DINOCollateFunction
+from lightly_plus_time.lightly.loss import DINOLoss
+from lightly_plus_time.lightly.models.modules import DINOProjectionHead
+from lightly_plus_time.lightly.models.utils import deactivate_requires_grad
+from lightly_plus_time.lightly.models.utils import update_momentum
 
 
 class DINO(pl.LightningModule):

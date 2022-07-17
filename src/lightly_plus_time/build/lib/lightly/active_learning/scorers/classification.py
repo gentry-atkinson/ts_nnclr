@@ -3,7 +3,7 @@ from typing import *
 
 import numpy as np
 
-from lightly.active_learning.scorers.scorer import Scorer
+from lightly_plus_time.lightly.active_learning.scorers.scorer import Scorer
 
 
 def _entropy(probs: np.ndarray, axis: int = 1) -> np.ndarray:

@@ -1,6 +1,6 @@
 import unittest
 
-from lightly.active_learning.utils.bounding_box import BoundingBox
+from lightly_plus_time.lightly.active_learning.utils.bounding_box import BoundingBox
 
 
 class TestBoundingBox(unittest.TestCase):

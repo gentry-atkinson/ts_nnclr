@@ -8,10 +8,10 @@ from typing import List, Set, Optional, Callable, Dict, Any
 
 from torchvision import datasets
 
-# from lightly.data._image import DatasetFolder
+# from lightly_plus_time.lightly.data._image import DatasetFolder
 
 # try:
-#     from lightly.data._video import VideoDataset
+#     from lightly_plus_time.lightly.data._video import VideoDataset
 #     VIDEO_DATASET_AVAILABLE = True
 # except Exception as e:
 #     VIDEO_DATASET_AVAILABLE = False

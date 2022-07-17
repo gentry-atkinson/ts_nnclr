@@ -14,12 +14,12 @@ import hydra
 import yaml
 from torch.utils.hipify.hipify_python import bcolors
 
-from lightly.active_learning.utils import BoundingBox
-from lightly.cli._helpers import fix_input_path
-from lightly.cli._helpers import fix_hydra_arguments
-from lightly.data import LightlyDataset
-from lightly.utils.cropping.crop_image_by_bounding_boxes import crop_dataset_by_bounding_boxes_and_save
-from lightly.utils.cropping.read_yolo_label_file import read_yolo_label_file
+from lightly_plus_time.lightly.active_learning.utils import BoundingBox
+from lightly_plus_time.lightly.cli._helpers import fix_input_path
+from lightly_plus_time.lightly.cli._helpers import fix_hydra_arguments
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.utils.cropping.crop_image_by_bounding_boxes import crop_dataset_by_bounding_boxes_and_save
+from lightly_plus_time.lightly.utils.cropping.read_yolo_label_file import read_yolo_label_file
 
 
 def _crop_cli(cfg, is_cli_call=True):

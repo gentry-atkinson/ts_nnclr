@@ -1,7 +1,7 @@
 import unittest
 import torch
 
-from lightly.loss.memory_bank import MemoryBankModule
+from lightly_plus_time.lightly.loss.memory_bank import MemoryBankModule
 
 
 class TestNTXentLoss(unittest.TestCase):

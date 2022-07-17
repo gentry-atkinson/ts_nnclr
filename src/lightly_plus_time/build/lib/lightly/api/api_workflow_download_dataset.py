@@ -5,8 +5,8 @@ import tqdm
 from urllib.request import Request, urlopen
 from PIL import Image
 
-from lightly.api.bitmask import BitMask
-from lightly.openapi_generated.swagger_client.models.image_type import ImageType
+from lightly_plus_time.lightly.api.bitmask import BitMask
+from lightly_plus_time.lightly.openapi_generated.swagger_client.models.image_type import ImageType
 
 
 

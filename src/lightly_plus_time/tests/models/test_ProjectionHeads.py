@@ -3,18 +3,18 @@ import unittest
 import torch
 
 import lightly
-from lightly.models.modules.heads import BarlowTwinsProjectionHead
-from lightly.models.modules.heads import BYOLProjectionHead
-from lightly.models.modules.heads import BYOLPredictionHead
-from lightly.models.modules.heads import DINOProjectionHead
-from lightly.models.modules.heads import MoCoProjectionHead
-from lightly.models.modules.heads import NNCLRProjectionHead
-from lightly.models.modules.heads import NNCLRPredictionHead
-from lightly.models.modules.heads import SimCLRProjectionHead
-from lightly.models.modules.heads import SimSiamProjectionHead
-from lightly.models.modules.heads import SimSiamPredictionHead
-from lightly.models.modules.heads import SwaVProjectionHead
-from lightly.models.modules.heads import SwaVPrototypes
+from lightly_plus_time.lightly.models.modules.heads import BarlowTwinsProjectionHead
+from lightly_plus_time.lightly.models.modules.heads import BYOLProjectionHead
+from lightly_plus_time.lightly.models.modules.heads import BYOLPredictionHead
+from lightly_plus_time.lightly.models.modules.heads import DINOProjectionHead
+from lightly_plus_time.lightly.models.modules.heads import MoCoProjectionHead
+from lightly_plus_time.lightly.models.modules.heads import NNCLRProjectionHead
+from lightly_plus_time.lightly.models.modules.heads import NNCLRPredictionHead
+from lightly_plus_time.lightly.models.modules.heads import SimCLRProjectionHead
+from lightly_plus_time.lightly.models.modules.heads import SimSiamProjectionHead
+from lightly_plus_time.lightly.models.modules.heads import SimSiamPredictionHead
+from lightly_plus_time.lightly.models.modules.heads import SwaVProjectionHead
+from lightly_plus_time.lightly.models.modules.heads import SwaVPrototypes
 
 
 class TestProjectionHeads(unittest.TestCase):
@@ -134,7 +134,7 @@ class TestProjectionHeads(unittest.TestCase):
                     norm_last_layer=norm_last_layer,
                 )
                 optimizer = torch.optim.SGD(head.parameters(), lr=1)
-                criterion = lightly.loss.DINOLoss(output_dim=4)
+                criterion = lightly_plus_time.lightly.loss.DINOLoss(output_dim=4)
                 # Store initial weights of last layer
                 initial_data = [
                     param.data.detach().clone() 

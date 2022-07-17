@@ -6,10 +6,10 @@ import torch
 from torch import nn
 import torchvision
 
-from lightly.data import LightlyDataset
-from lightly.data.collate import MAECollateFunction
-from lightly.models import utils
-from lightly.models.modules import masked_autoencoder
+from lightly_plus_time.lightly.data import LightlyDataset
+from lightly_plus_time.lightly.data.collate import MAECollateFunction
+from lightly_plus_time.lightly.models import utils
+from lightly_plus_time.lightly.models.modules import masked_autoencoder
 
 
 class MAE(nn.Module):

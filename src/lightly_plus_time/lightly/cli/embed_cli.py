@@ -17,15 +17,26 @@ import torch
 import torchvision
 from torch.utils.hipify.hipify_python import bcolors
 
-from lightly.data import LightlyDataset
+#Updated for TS project -GA
+# from lightly_plus_time.lightly.data import LightlyDataset
 
-from lightly.cli._helpers import fix_hydra_arguments
+# from lightly_plus_time.lightly.cli._helpers import fix_hydra_arguments
 
-from lightly.utils import save_embeddings
+# from lightly_plus_time.lightly.utils import save_embeddings
 
-from lightly.cli._helpers import get_model_from_config
-from lightly.cli._helpers import fix_input_path
-from lightly.cli._helpers import cpu_count
+# from lightly_plus_time.lightly.cli._helpers import get_model_from_config
+# from lightly_plus_time.lightly.cli._helpers import fix_input_path
+# from lightly_plus_time.lightly.cli._helpers import cpu_count
+
+from lightly_plus_time.lightly.data import LightlyDataset
+
+from lightly_plus_time.lightly.cli._helpers import fix_hydra_arguments
+
+from lightly_plus_time.lightly.utils import save_embeddings
+
+from lightly_plus_time.lightly.cli._helpers import get_model_from_config
+from lightly_plus_time.lightly.cli._helpers import fix_input_path
+from lightly_plus_time.lightly.cli._helpers import cpu_count
 
 
 def _embed_cli(cfg, is_cli_call=True) -> \

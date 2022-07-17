@@ -5,7 +5,7 @@ import torch
 import torchvision
 
 #Updated for TS project- GA
-# from lightly.data.collate import BaseCollateFunction, MultiViewCollateFunction
+# from lightly_plus_time.lightly.data.collate import BaseCollateFunction, MultiViewCollateFunction
 from lightly_plus_time.lightly.data.collate import BaseCollateFunction, MultiViewCollateFunction
 
 try:

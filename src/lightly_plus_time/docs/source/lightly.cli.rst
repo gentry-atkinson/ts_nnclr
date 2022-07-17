@@ -1,40 +1,40 @@
-lightly.cli
+lightly_plus_time.lightly.cli
 ===================
 
-.. automodule:: lightly.cli
+.. automodule:: lightly_plus_time.lightly.cli
 
 .lightly_cli
 ---------------
-.. automodule:: lightly.cli.lightly_cli
+.. automodule:: lightly_plus_time.lightly.cli.lightly_cli
    :members:
 
 .train_cli
 ---------------
-.. automodule:: lightly.cli.train_cli
+.. automodule:: lightly_plus_time.lightly.cli.train_cli
    :members:
 
 .embed_cli
 ---------------
-.. automodule:: lightly.cli.embed_cli
+.. automodule:: lightly_plus_time.lightly.cli.embed_cli
    :members:
 
 .upload_cli
 ---------------
-.. automodule:: lightly.cli.upload_cli
+.. automodule:: lightly_plus_time.lightly.cli.upload_cli
    :members:
 
 .download_cli
 ---------------
-.. automodule:: lightly.cli.download_cli
+.. automodule:: lightly_plus_time.lightly.cli.download_cli
    :members:
 
 .version_cli
 -------------
-.. automodule:: lightly.cli.version_cli
+.. automodule:: lightly_plus_time.lightly.cli.version_cli
 
 .crop_cli
 ---------------
-.. automodule:: lightly.cli.crop_cli
+.. automodule:: lightly_plus_time.lightly.cli.crop_cli
    :members:
 
 .config.config.yaml

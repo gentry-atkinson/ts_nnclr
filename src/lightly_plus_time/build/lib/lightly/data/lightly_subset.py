@@ -1,6 +1,6 @@
 from typing import List, Dict, Tuple
 
-from lightly.data.dataset import LightlyDataset
+from lightly_plus_time.lightly.data.dataset import LightlyDataset
 
 
 class LightlySubset(LightlyDataset):
