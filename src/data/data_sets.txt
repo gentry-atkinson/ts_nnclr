@@ -1,0 +1,5 @@
+I have ommited data sets from the git repo to keep the size down. I will record the file structure and sources here to help you build your own folder of datasets to run the experiments described in this project.
+
+1. UniMiB SHAR: http://www.sal.disco.unimib.it/technologies/unimib-shar/
+
+    src->data->UniMiB-SHAR
