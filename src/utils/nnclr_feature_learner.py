@@ -14,16 +14,10 @@ from random import choice
 import sys 
 
 
-
-# try:
-#     from utils.gen_ts_data import generate_pattern_data_as_array
-# except:
-#     from gen_ts_data import generate_pattern_data_as_array
-
-
 from lightly_plus_time.lightly.models.nnclr import NNCLR
-
 from lightly_plus_time.lightly.models.modules import NNMemoryBankModule
+from lightly_plus_time.lightly.data import SimCLRCollateFunction
+from lightly_plus_time.lightly.data import LightlyDataset
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     #resnet = torchvision.models.resnet18()
@@ -41,6 +35,15 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
 
     memory_bank = NNMemoryBankModule(size=4096)
     memory_bank.to(device)
+
+    collate_fn = SimCLRCollateFunction(input_size=32)
+
+    print("X: ", type(X))
+    print("y: ", type(y))
+
+    torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y))
+
+    dataset = LightlyDataset.from_torch_dataset(torch_X)
 
     return(np.zeros(X.shape))
 
