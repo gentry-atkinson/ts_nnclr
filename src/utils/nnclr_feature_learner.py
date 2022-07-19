@@ -19,6 +19,7 @@ from lightly_plus_time.lightly.models.modules import NNMemoryBankModule
 from lightly_plus_time.lightly.data import SimCLRCollateFunction
 from lightly_plus_time.lightly.data import LightlyDataset
 from lightly_plus_time.lightly.loss import NTXentLoss
+from lightly_plus_time.ts_utils.ts_dataloader import UCR2018
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     #resnet = torchvision.models.resnet18()
@@ -43,12 +44,12 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     print("y: ", type(y))
     print("y: ", y)
 
-    torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y), torch.tensor([""]))
+    torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y))
 
     dataset = LightlyDataset.from_torch_dataset(torch_X)
 
     dataloader = torch.utils.data.DataLoader(
-      dataset,
+      UCR2018(X, y, None),
       batch_size=16,
       collate_fn=collate_fn,
       shuffle=True,
