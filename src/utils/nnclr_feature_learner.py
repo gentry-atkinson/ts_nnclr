@@ -49,7 +49,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     dataset = LightlyDataset.from_torch_dataset(torch_X)
 
     dataloader = torch.utils.data.DataLoader(
-      UCR2018(X, y, None),
+      torch_X,
       batch_size=16,
       collate_fn=collate_fn,
       shuffle=True,
@@ -64,8 +64,8 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
 
     for epoch in range(10):
         total_loss = 0
-        print('Epoch: ', epoch)
-        for (x0, x1), _, _ in dataloader:
+        #for (x0, x1), _, _ in dataloader:
+        for (x0, x1), _ in dataloader:
             x0 = x0.to(device)
             x1 = x1.to(device)
             z0, p0 = model(x0)
@@ -81,16 +81,3 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
         print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
 
     return(np.zeros(X.shape))
-
-# if __name__ == '__main__':
-#   print('Verifying NNCLR')
-#   X = np.array([
-#     generate_pattern_data_as_array(128) for _ in range(100)
-#   ])
-  
-#   X = np.reshape(X, (100,128,1))
-#   y = np.array([choice([0,1]) for _ in range(100)])
-#   print(X.shape)
-
-#   encoded_X = get_features_for_set(X, y)
-#   print(encoded_X.shape)

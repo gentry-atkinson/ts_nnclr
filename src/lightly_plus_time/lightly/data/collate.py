@@ -155,7 +155,7 @@ class BaseCollateFunction(nn.Module):
         # list of labels
         labels = torch.LongTensor([item[1] for item in batch])
         # list of filenames
-        fnames = [item[2] for item in batch]
+        #fnames = [item[2] for item in batch]
 
         # tuple of transforms
         transforms = (
@@ -163,7 +163,9 @@ class BaseCollateFunction(nn.Module):
             torch.cat(transforms[batch_size:], 0)
         )
 
-        return transforms, labels, fnames
+        # return transforms, labels, fnames
+        return transforms, labels
+
 
 
 class ImageCollateFunction(BaseCollateFunction):
