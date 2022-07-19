@@ -43,7 +43,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     print("y: ", type(y))
     print("y: ", y)
 
-    torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y))
+    torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y), torch.tensor([""]))
 
     dataset = LightlyDataset.from_torch_dataset(torch_X)
 
@@ -63,6 +63,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
 
     for epoch in range(10):
         total_loss = 0
+        print('Epoch: ', epoch)
         for (x0, x1), _, _ in dataloader:
             x0 = x0.to(device)
             x1 = x1.to(device)
