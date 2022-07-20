@@ -43,7 +43,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     memory_bank = NNMemoryBankModule(size=4096)
     memory_bank.to(device)
 
-    collate_fn = SimCLRCollateFunction(input_size=32)
+    collate_fn = TS_NNCLRCollateFunction(input_size=X[0].shape[0])
 
     print("X: ", type(X))
     print("y: ", type(y))

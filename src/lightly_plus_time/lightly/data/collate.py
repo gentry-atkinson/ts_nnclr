@@ -334,9 +334,9 @@ class SimCLRCollateFunction(ImageCollateFunction):
 
 class TS_NNCLRCollateFunction(TSCollateFunction):
     def __init__(self,
-                 input_size: int = 224,):
+                 input_size: int = 151,):
 
-        super(SimCLRCollateFunction, self).__init__(
+        super(TS_NNCLRCollateFunction, self).__init__(
             input_size=input_size,
         )
 
