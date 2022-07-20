@@ -16,7 +16,7 @@ import sys
 
 from lightly_plus_time.lightly.models.nnclr import NNCLR
 from lightly_plus_time.lightly.models.modules import NNMemoryBankModule
-from lightly_plus_time.lightly.data import SimCLRCollateFunction
+from lightly_plus_time.lightly.data import TS_NNCLRCollateFunction
 from lightly_plus_time.lightly.data import LightlyDataset
 from lightly_plus_time.lightly.loss import NTXentLoss
 from lightly_plus_time.ts_utils.ts_dataloader import UCR2018
@@ -35,7 +35,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
         torch.nn.AdaptiveAvgPool1d(1),
         nn.Flatten()
     )
-    model = NNCLR(backbone)
+    model = NNCLR(backbone=backbone, num_ftrs=64, proj_hidden_dim=128, pred_hidden_dim=64)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)

@@ -23,77 +23,13 @@ from lightly_plus_time.lightly.transforms import Jigsaw
 from lightly_plus_time.lightly.transforms import RandomRotate
 from lightly_plus_time.lightly.transforms import RandomSolarization
 
+#TODO: add TS transforms
+
 imagenet_normalize = {
     'mean': [0.485, 0.456, 0.406],
     'std': [0.229, 0.224, 0.225]
 }
 
-
-# class BaseCollateFunction(nn.Module):
-#     """Base class for other collate implementations.
-
-#     Takes a batch of images as input and transforms each image into two 
-#     different augmentations with the help of random transforms. The images are
-#     then concatenated such that the output batch is exactly twice the length 
-#     of the input batch.
-
-#     Attributes:
-#         transform:
-#             A set of torchvision transforms which are randomly applied to
-#             each image.
-
-#     """
-
-#     def __init__(self, transform: torchvision.transforms.Compose):
-
-#         super(BaseCollateFunction, self).__init__()
-#         self.transform = transform
-
-#     def forward(self, batch: List[tuple]):
-#         """Turns a batch of tuples into a tuple of batches.
-
-#             Args:
-#                 batch:
-#                     A batch of tuples of images, labels, and filenames which
-#                     is automatically provided if the dataloader is built from 
-#                     a LightlyDataset.
-
-#             Returns:
-#                 A tuple of images, labels, and filenames. The images consist of 
-#                 two batches corresponding to the two transformations of the
-#                 input images.
-
-#             Examples:
-#                 >>> # define a random transformation and the collate function
-#                 >>> transform = ... # some random augmentations
-#                 >>> collate_fn = BaseCollateFunction(transform)
-#                 >>>
-#                 >>> # input is a batch of tuples (here, batch_size = 1)
-#                 >>> input = [(img, 0, 'my-image.png')]
-#                 >>> output = collate_fn(input)
-#                 >>>
-#                 >>> # output consists of two random transforms of the images,
-#                 >>> # the labels, and the filenames in the batch
-#                 >>> (img_t0, img_t1), label, filename = output
-
-#         """
-#         batch_size = len(batch)
-
-#         # list of transformed images
-#         transforms = [self.transform(batch[i % batch_size][0]).unsqueeze_(0)
-#                       for i in range(2 * batch_size)]
-#         # list of labels
-#         labels = torch.LongTensor([item[1] for item in batch])
-#         # list of filenames
-#         fnames = [item[2] for item in batch]
-
-#         # tuple of transforms
-#         transforms = (
-#             torch.cat(transforms[:batch_size], 0),
-#             torch.cat(transforms[batch_size:], 0)
-#         )
-
-#         return transforms, labels, fnames
 
 class BaseCollateFunction(nn.Module):
     """Base class for other collate implementations.
@@ -107,10 +43,6 @@ class BaseCollateFunction(nn.Module):
         transform:
             A set of torchvision transforms which are randomly applied to
             each image.
-
-    Update for TS project.
-    Unsqueeze will promote the dimensionality of the input batch, but we need our time series to stay a series.
-    -GA 19 July, 2022
 
     """
 
@@ -155,7 +87,7 @@ class BaseCollateFunction(nn.Module):
         # list of labels
         labels = torch.LongTensor([item[1] for item in batch])
         # list of filenames
-        #fnames = [item[2] for item in batch]
+        fnames = [item[2] for item in batch]
 
         # tuple of transforms
         transforms = (
@@ -163,8 +95,8 @@ class BaseCollateFunction(nn.Module):
             torch.cat(transforms[batch_size:], 0)
         )
 
-        # return transforms, labels, fnames
-        return transforms, labels
+        return transforms, labels, fnames
+
 
 
 
@@ -258,6 +190,42 @@ class ImageCollateFunction(BaseCollateFunction):
 
         super(ImageCollateFunction, self).__init__(transform)
 
+class TSCollateFunction(BaseCollateFunction):
+    """Implementation of a collate function for time series.
+
+    This is an implementation of the BaseCollateFunction with a concrete
+    set of transforms.
+
+    The set of transforms is inspired by the SimCLR paper as it has shown
+    to produce powerful embeddings. 
+
+    Attributes:
+        input_size:
+            Size of the input signal in samples.
+
+    """
+
+    def __init__(self,
+                 input_size: int = 64):
+
+        if isinstance(input_size, tuple):
+            input_size_ = max(input_size)
+        else:
+            input_size_ = input_size
+
+
+        transform = []
+
+        # if normalize:
+        #     transform += [
+        #      T.Normalize(
+        #         mean=normalize['mean'],
+        #         std=normalize['std'])
+        #      ]
+           
+        transform = T.Compose(transform)
+
+        super(TSCollateFunction, self).__init__(transform)
 
 class MultiViewCollateFunction(nn.Module):
     """Generates multiple views for each image in the batch.
@@ -364,6 +332,13 @@ class SimCLRCollateFunction(ImageCollateFunction):
             normalize=normalize,
         )
 
+class TS_NNCLRCollateFunction(TSCollateFunction):
+    def __init__(self,
+                 input_size: int = 224,):
+
+        super(SimCLRCollateFunction, self).__init__(
+            input_size=input_size,
+        )
 
 class MoCoCollateFunction(ImageCollateFunction):
     """Implements the transformations for MoCo v1.
