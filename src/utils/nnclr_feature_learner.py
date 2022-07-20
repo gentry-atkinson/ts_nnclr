@@ -24,12 +24,17 @@ from lightly_plus_time.ts_utils.ts_dataloader import UCR2018
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     #resnet = torchvision.models.resnet18()
     #backbone = nn.Sequential(*list(resnet.children())[:-1])
+    print("Backbone channels in: ", X[0].shape[0])
     backbone = nn.Sequential(
-          nn.Conv1d(in_channels=X[0].shape[1], out_channels=128, kernel_size=16, padding=0),
-          nn.ReLU(),
-          nn.Conv1d(in_channels=128, out_channels=64, kernel_size=8, padding=0),
-          nn.ReLU()
-        )
+        nn.Conv1d(1, 8, 4, 2, 1, bias=False),
+        torch.nn.BatchNorm1d(8),
+        torch.nn.ReLU(),
+        nn.Conv1d(8, 16, 4, 2, 1, bias=False),
+        torch.nn.BatchNorm1d(16),
+        torch.nn.ReLU(),
+        torch.nn.AdaptiveAvgPool1d(1),
+        nn.Flatten()
+    )
     model = NNCLR(backbone)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
