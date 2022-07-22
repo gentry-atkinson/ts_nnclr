@@ -22,6 +22,7 @@ from lightly_plus_time.lightly.transforms import GaussianBlur
 from lightly_plus_time.lightly.transforms import Jigsaw
 from lightly_plus_time.lightly.transforms import RandomRotate
 from lightly_plus_time.lightly.transforms import RandomSolarization
+from lightly_plus_time.lightly.transforms import signalDrop
 
 #TODO: add TS transforms
 
@@ -214,7 +215,10 @@ class TSCollateFunction(BaseCollateFunction):
             input_size_ = input_size
 
 
-        transform = []
+        transform = [
+            signalDrop.RandomSignalDrop(),
+            T.ToTensor()
+        ]
 
         # if normalize:
         #     transform += [
