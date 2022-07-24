@@ -37,8 +37,7 @@ class Flip(object):
 
     def __call__(self, signal):
         #Set some samples to 0 with random chance
-        signalLength = len(signal)
         if np.random.random_sample() < self.prob:
-            return torch.Tensor([-1*x for x in signal])
+            return np.array([-1*x for x in signal])
         else:
             return signal
