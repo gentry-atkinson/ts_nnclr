@@ -10,6 +10,7 @@ class RandomSignalDrop(object):
 
     def __init__(self, prob: float = 0.5, drop: float = 0.1):
         self.prob = prob
+        self.drop = drop
 
     def __call__(self, signal):
         #Set some samples to 0 with random chance
@@ -20,12 +21,22 @@ class RandomSignalDrop(object):
 
 class WindowedSignalDrop(object):
 
-    def __init__(self, prob: float = 0.5, drop: float = 0.1):
+    def __init__(self, prob: float = 0.5, len: float = 0.1):
         self.prob = prob
+        if len > 0.25:
+            print("Window length must be <= 0.25 for Windowed Signal Drop")
+            self.window_len = 0.25
+        else:
+            self.window_len = len
+        
 
     def __call__(self, signal):
         #Set some samples to 0 with random chance
         if np.random.random_sample() < self.prob:
-            return torch.Tensor([i if np.random.random_sample() >= self.drop else 0 for i in signal[:]])
+            signalLength = len(signal)
+            start = np.random.randint(0, 3*signalLength//4-1)
+            stop = start + self.window_len
+            if stop >= signalLength: stop = signalLength-1
+            return torch.Tensor([0 if i >= start and i <= stop else signal[i] for i in range(signalLength)])
         else:
             return signal
