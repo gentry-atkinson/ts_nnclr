@@ -5,9 +5,10 @@
 
 from torch import Tensor
 
-class AmplitudeShift(object):
+class ToTensor(object):
     def __init__(self):
         pass
 
     def __call__(self, signal):
+        #print(signal)
         return Tensor(signal)
