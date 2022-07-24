@@ -24,6 +24,15 @@ from lightly_plus_time.lightly.transforms import RandomRotate
 from lightly_plus_time.lightly.transforms import RandomSolarization
 from lightly_plus_time.lightly.transforms import signalDrop
 
+from lightly_plus_time.lightly.transforms.signalDrop import RandomSignalDrop
+from lightly_plus_time.lightly.transforms.signalDrop import PeriodicSignalDrop
+from lightly_plus_time.lightly.transforms.signalDrop import WindowedSignalDrop
+from lightly_plus_time.lightly.transforms.signalNoise import GaussianNoise
+from lightly_plus_time.lightly.transforms.signalShift import Flip
+from lightly_plus_time.lightly.transforms.signalShift import AmplitudeShift
+from lightly_plus_time.lightly.transforms.signalShift import TimeShift
+
+
 #TODO: add TS transforms
 
 imagenet_normalize = {
@@ -216,7 +225,10 @@ class TSCollateFunction(BaseCollateFunction):
 
 
         transform = [
-            signalDrop.RandomSignalDrop(),
+            RandomSignalDrop(),
+            Flip(),
+            TimeShift(),
+            AmplitudeShift(),
             T.ToTensor()
         ]
 
