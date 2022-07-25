@@ -47,14 +47,16 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
 
     print("X: ", type(X))
     print("y: ", type(y))
-    print("y: ", y)
+    print("X shapre: ", X.shape)
+    print("y shape: ", y.shape)
 
-    torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y))
+    #torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y))
+    torch_X = torch.utils.data.TensorDataset(np.array([(X[i], y[i]) for i in range(len(X))]))
 
     dataset = LightlyDataset.from_torch_dataset(torch_X)
 
     dataloader = torch.utils.data.DataLoader(
-      torch_X,
+      dataset,
       batch_size=16,
       collate_fn=collate_fn,
       shuffle=True,

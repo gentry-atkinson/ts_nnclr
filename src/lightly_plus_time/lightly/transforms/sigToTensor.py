@@ -10,5 +10,8 @@ class ToTensor(object):
         pass
 
     def __call__(self, signal):
-        #print(signal)
-        return Tensor(signal)
+        print("In signal to tensor: ", type(signal))
+        if type(signal) == 'Tensor':
+            return signal
+        else:
+            return Tensor(signal)

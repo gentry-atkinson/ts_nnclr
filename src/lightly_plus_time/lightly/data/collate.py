@@ -92,6 +92,9 @@ class BaseCollateFunction(nn.Module):
         batch_size = len(batch)
 
         # list of transformed images
+        print("Type of batch in collate: ", type(batch))
+        print("Size of batch in collate: ", len(batch))
+        print("Batch[0] in collate: ", batch[0])
         transforms = [self.transform(batch[i % batch_size][0]).unsqueeze_(0)
                       for i in range(2 * batch_size)]
         # list of labels
@@ -226,7 +229,7 @@ class TSCollateFunction(BaseCollateFunction):
 
         transform = [
             #RandomSignalDrop(),
-            #Flip(),
+            Flip(),
             #TimeShift(),
             #AmplitudeShift(),
             ToTensor()
