@@ -50,8 +50,8 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     print("X shapre: ", X.shape)
     print("y shape: ", y.shape)
 
-    #torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y))
-    torch_X = torch.utils.data.TensorDataset(np.array([(X[i], y[i]) for i in range(len(X))]))
+    torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y))
+    #torch_X = torch.utils.data.TensorDataset(np.array([(X[i], y[i]) for i in range(len(X))]))
 
     dataset = LightlyDataset.from_torch_dataset(torch_X)
 
@@ -61,7 +61,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
       collate_fn=collate_fn,
       shuffle=True,
       drop_last=False,
-      num_workers=8,
+      num_workers=1,
     )
 
     criterion = NTXentLoss()
@@ -72,7 +72,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     for epoch in range(10):
         total_loss = 0
         #for (x0, x1), _, _ in dataloader:
-        for (x0, x1), _ in dataloader:
+        for (x0, x1), _ , _ in dataloader:
             x0 = x0.to(device)
             x1 = x1.to(device)
             z0, p0 = model(x0)
