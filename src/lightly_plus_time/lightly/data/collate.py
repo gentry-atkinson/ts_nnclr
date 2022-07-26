@@ -12,6 +12,8 @@ from PIL import Image
 import torchvision
 import torchvision.transforms as T
 
+import numpy as np
+
 #Updated for TS project -GA
 # from lightly_plus_time.lightly.transforms import GaussianBlur
 # from lightly_plus_time.lightly.transforms import Jigsaw
@@ -92,15 +94,15 @@ class BaseCollateFunction(nn.Module):
         batch_size = len(batch)
 
         # list of transformed images
-        print("Type of batch in collate: ", type(batch))
-        print("Size of batch in collate: ", len(batch))
-        print("Size of Batch[0] in collate: ", len(batch[0]))
-        print("Size of Batch[0][0] in collate: ", len(batch[0][0]))
-        print("Batch[0][1] in collate: ", (batch[0][1]))
-        print("Batch[0][2] in collate: ", (batch[0][2]))
+        # print("Type of batch in collate: ", type(batch))
+        # print("Size of batch in collate: ", len(batch))
+        # print("Size of Batch[0] in collate: ", len(batch[0]))
+        # print("Size of Batch[0][0] in collate: ", len(batch[0][0]))
+        # print("Batch[0][1] in collate: ", (batch[0][1]))
+        # print("Batch[0][2] in collate: ", (batch[0][2]))
         # transforms = [self.transform(batch[i % batch_size][0]).unsqueeze_(0)
         #               for i in range(2 * batch_size)]
-        transforms = [self.transform(batch[i % batch_size][0])
+        transforms = [self.transform(np.array(batch[i % batch_size][0]))
                       for i in range(2 * batch_size)]
         # list of labels
         labels = torch.LongTensor([item[1] for item in batch])
@@ -108,6 +110,8 @@ class BaseCollateFunction(nn.Module):
         fnames = [item[2] for item in batch]
 
         # tuple of transforms
+        print("Type of transforms to return from collate: ", type(transforms))
+        print("Type of transforms[0] to return from collate: ", type(transforms[0]))
         transforms = (
             torch.cat(transforms[:batch_size], 0),
             torch.cat(transforms[batch_size:], 0)
@@ -358,7 +362,7 @@ class SimCLRCollateFunction(ImageCollateFunction):
 
 class TS_NNCLRCollateFunction(TSCollateFunction):
     def __init__(self,
-                 input_size: int = 151,):
+                 input_size: int = 100):
 
         super(TS_NNCLRCollateFunction, self).__init__(
             input_size=input_size,
