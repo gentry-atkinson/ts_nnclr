@@ -13,10 +13,16 @@ class AmplitudeShift(object):
 
     def __call__(self, signal):
         #Set some samples to 0 with random chance
-        if np.random.random_sample() < self.prob:
-            return torch.Tensor([i+self.shift for i in signal])
+        if signal.ndim == 1:
+            if np.random.random_sample() < self.prob:
+                return np.array([i+self.shift for i in signal])
+            else:
+                return signal
         else:
-            return signal
+            if np.random.random_sample() < self.prob:
+                return np.array([[i+self.shift for i in s] for s in signal])
+            else:
+                return signal
 
 class TimeShift(object):
     def __init__(self, prob: float = 0.5, shift: int = 20):
@@ -26,10 +32,18 @@ class TimeShift(object):
     def __call__(self, signal):
         #Set some samples to 0 with random chance
         signalLength = len(signal)
-        if np.random.random_sample() < self.prob:
-            return torch.Tensor([signal[(i+self.shift)%signalLength] for i in range(signalLength)])
+        if signal.ndim == 1:
+            signalLength = len(signal)
+            if np.random.random_sample() < self.prob:
+                return np.array([signal[(i+self.shift)%signalLength] for i in range(signalLength)])
+            else:
+                return signal
         else:
-            return signal
+            signLength = signal.shape[1]
+            if np.random.random_sample() < self.prob:
+                return np.array([[s[(i+self.shift)%signalLength] for i in range(signalLength)] for s in signal])
+            else:
+                return signal
 
 class Flip(object):
     def __init__(self, prob: float = 0.5):
