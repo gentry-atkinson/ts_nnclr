@@ -67,7 +67,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
       collate_fn=collate_fn,
       shuffle=True,
       drop_last=False,
-      num_workers=1,
+      num_workers=8,
     )
 
     criterion = NTXentLoss()
