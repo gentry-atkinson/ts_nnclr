@@ -37,7 +37,16 @@ class Flip(object):
 
     def __call__(self, signal):
         #Set some samples to 0 with random chance
-        if np.random.random_sample() < self.prob:
-            return np.array([-1*x for x in signal])
+        #print("Shape of signal in flip: ", signal.shape)
+        if signal.ndim == 1:
+            #print("Flipping one dimensional signal")
+            if np.random.random_sample() < self.prob:
+                return np.array([-1*x for x in signal])
+            else:
+                return signal
         else:
-            return signal
+            #print("Flipping two dimensional signal")
+            if np.random.random_sample() < self.prob:
+                return np.array([[-1*x for x in s] for s in signal])
+            else:
+                return signal
