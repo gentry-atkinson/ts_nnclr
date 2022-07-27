@@ -10,12 +10,19 @@ from random import gauss, seed
 class GaussianNoise(object):
     def __init__(self, prob: float = 0.5, sigma: float = 0.1):
         self.prob = prob
-        self.signma = sigma
+        self.sigma = sigma
 
     def __call__(self, signal):
         #Set some samples to 0 with random chance
-        if np.random.random_sample() < self.prob:
-            seed()
-            return torch.Tensor([gauss(i, self.sigma) for i in signal])
+        if signal.ndim == 1:
+            if np.random.random_sample() < self.prob:
+                seed()
+                return torch.Tensor([gauss(i, self.sigma) for i in signal])
+            else:
+                return signal
         else:
-            return signal
+            if np.random.random_sample() < self.prob:
+                seed()
+                return torch.Tensor([[gauss(i, self.sigma) for i in s] for s in signal])
+            else:
+                return signal

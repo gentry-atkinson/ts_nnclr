@@ -31,7 +31,6 @@ class TimeShift(object):
 
     def __call__(self, signal):
         #Set some samples to 0 with random chance
-        signalLength = len(signal)
         if signal.ndim == 1:
             signalLength = len(signal)
             if np.random.random_sample() < self.prob:
@@ -39,7 +38,8 @@ class TimeShift(object):
             else:
                 return signal
         else:
-            signLength = signal.shape[1]
+            signalLength = signal.shape[1]
+            #print("length of signal in timeshift: ", signalLength)
             if np.random.random_sample() < self.prob:
                 return np.array([[s[(i+self.shift)%signalLength] for i in range(signalLength)] for s in signal])
             else:
