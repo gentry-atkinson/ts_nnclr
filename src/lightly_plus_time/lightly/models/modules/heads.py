@@ -11,6 +11,7 @@ import torch.nn as nn
 #Updated for TS project -GA
 #from lightly_plus_time.lightly.models import utils
 from lightly_plus_time.lightly.models import utils
+from torchsummary import summary
 
 class ProjectionHead(nn.Module):
     """Base class for all projection and prediction heads.
@@ -47,6 +48,7 @@ class ProjectionHead(nn.Module):
             if non_linearity:
                 layers.append(non_linearity)
         self.layers = nn.Sequential(*layers)
+        #summary(self.layers, (1, 64))
 
     def forward(self, x: torch.Tensor):
         """Computes one forward pass through the projection head.

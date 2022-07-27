@@ -241,7 +241,7 @@ class TSCollateFunction(BaseCollateFunction):
 
 
         transform = [
-            #RandomSignalDrop(),
+            RandomSignalDrop(),
             Flip(),
             TimeShift(),
             AmplitudeShift(),
