@@ -154,9 +154,9 @@ class NNCLRProjectionHead(ProjectionHead):
 
     """
     def __init__(self,
-                 input_dim: int = 2048,
-                 hidden_dim: int = 2048,
-                 output_dim: int = 256):
+                 input_dim: int = 256,
+                 hidden_dim: int = 128,
+                 output_dim: int = 128):
         super(NNCLRProjectionHead, self).__init__([
             (input_dim, hidden_dim, nn.BatchNorm1d(hidden_dim), nn.ReLU()),
             (hidden_dim, hidden_dim, nn.BatchNorm1d(hidden_dim), nn.ReLU()),
@@ -175,9 +175,9 @@ class NNCLRPredictionHead(ProjectionHead):
 
     """
     def __init__(self,
-                 input_dim: int = 256,
-                 hidden_dim: int = 4096,
-                 output_dim: int = 256):
+                 input_dim: int = 128,
+                 hidden_dim: int = 64,
+                 output_dim: int = 64):
         super(NNCLRPredictionHead, self).__init__([
             (input_dim, hidden_dim, nn.BatchNorm1d(hidden_dim), nn.ReLU()),
             (hidden_dim, output_dim, None, None),

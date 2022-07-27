@@ -205,6 +205,7 @@ class NNCLR(nn.Module):
         # forward pass of first input x0
         print("Shape of X0 in nnclr.forward: ", x0.shape)
         f0 = self.backbone(x0).flatten(start_dim=0)
+        print("Shape of f0 in nnclr.forward: ", f0.shape)
         z0 = self.projection_mlp(f0)
         p0 = self.prediction_mlp(z0)
 

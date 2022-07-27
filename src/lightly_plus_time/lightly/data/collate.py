@@ -113,8 +113,8 @@ class BaseCollateFunction(nn.Module):
         print("Type of transforms to return from collate: ", type(transforms))
         print("Type of transforms[0] to return from collate: ", type(transforms[0]))
         transforms = (
-            torch.cat(transforms[:batch_size], 0),
-            torch.cat(transforms[batch_size:], 0)
+            torch.cat(transforms[:batch_size], 0).reshape(batch_size, 1, len(transforms[0])),
+            torch.cat(transforms[batch_size:], 0).reshape(batch_size, 1, len(transforms[0]))
         )
 
         return transforms, labels, fnames
