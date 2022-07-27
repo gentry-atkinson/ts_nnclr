@@ -131,10 +131,10 @@ class NNCLR(nn.Module):
 
     def __init__(self,
                  backbone: nn.Module,
-                 num_ftrs: int = 256,
-                 proj_hidden_dim: int = 256,
-                 pred_hidden_dim: int = 256,
-                 out_dim: int = 128):
+                 num_ftrs: int = 64,
+                 proj_hidden_dim: int = 64,
+                 pred_hidden_dim: int = 64,
+                 out_dim: int = 64):
 
         super(NNCLR, self).__init__()
 

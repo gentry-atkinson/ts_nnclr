@@ -41,6 +41,7 @@ if __name__ == '__main__':
     for l in labels: print(l)
     flattened_X = np.array([np.linalg.norm(i, axis=0) for i in X])
     old_shape = flattened_X.shape
+    #Channels last
     flattened_X = np.reshape(flattened_X, (old_shape[0], old_shape[1], 1))
     print('Shape of flattened X: ', flattened_X.shape)
 
