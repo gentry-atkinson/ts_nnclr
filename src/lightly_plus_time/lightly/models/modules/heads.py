@@ -56,6 +56,8 @@ class ProjectionHead(nn.Module):
                 Input of shape bsz x num_ftrs.
 
         """
+        print("Size of x in projection head: ", x.shape)
+        print(self.layers)
         return self.layers(x)
 
 
@@ -155,7 +157,7 @@ class NNCLRProjectionHead(ProjectionHead):
     """
     def __init__(self,
                  input_dim: int = 256,
-                 hidden_dim: int = 128,
+                 hidden_dim: int = 256,
                  output_dim: int = 128):
         super(NNCLRProjectionHead, self).__init__([
             (input_dim, hidden_dim, nn.BatchNorm1d(hidden_dim), nn.ReLU()),

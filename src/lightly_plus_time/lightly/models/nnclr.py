@@ -131,10 +131,10 @@ class NNCLR(nn.Module):
 
     def __init__(self,
                  backbone: nn.Module,
-                 num_ftrs: int = 512,
-                 proj_hidden_dim: int = 2048,
-                 pred_hidden_dim: int = 4096,
-                 out_dim: int = 256):
+                 num_ftrs: int = 256,
+                 proj_hidden_dim: int = 256,
+                 pred_hidden_dim: int = 256,
+                 out_dim: int = 128):
 
         super(NNCLR, self).__init__()
 
@@ -207,6 +207,7 @@ class NNCLR(nn.Module):
         f0 = self.backbone(x0).flatten(start_dim=0)
         print("Shape of f0 in nnclr.forward: ", f0.shape)
         z0 = self.projection_mlp(f0)
+        print("Shape of z0 in nnclr.forward: ", z0.shape)
         p0 = self.prediction_mlp(z0)
 
         out0 = (z0, p0)
