@@ -94,12 +94,12 @@ class BaseCollateFunction(nn.Module):
         batch_size = len(batch)
 
         #list of transformed images
-        print("Type of batch in collate: ", type(batch))
-        print("Size of batch in collate: ", len(batch))
-        print("Size of Batch[0] in collate: ", len(batch[0]))
-        print("Shape of Batch[0][0] in collate: ", (batch[0][0].shape))
-        print("Shape of Batch[0][1] in collate: ", (batch[0][1].shape))
-        print("Size of Batch[0][0] in collate: ", len(batch[0][0]))
+        # print("Type of batch in collate: ", type(batch))
+        # print("Size of batch in collate: ", len(batch))
+        # print("Size of Batch[0] in collate: ", len(batch[0]))
+        # print("Shape of Batch[0][0] in collate: ", (batch[0][0].shape))
+        # print("Shape of Batch[0][1] in collate: ", (batch[0][1].shape))
+        # print("Size of Batch[0][0] in collate: ", len(batch[0][0]))
         # print("Batch[0][1] in collate: ", (batch[0][1]))
         # print("Batch[0][2] in collate: ", (batch[0][2]))
         # transforms = [self.transform(batch[i % batch_size][0]).unsqueeze_(0)
@@ -112,13 +112,13 @@ class BaseCollateFunction(nn.Module):
         fnames = [item[2] for item in batch]
 
         # tuple of transforms
-        print("Type of transforms to return from collate: ", type(transforms))
-        print("Type of transforms[0] to return from collate: ", type(transforms[0]))
-        print("Len of transforms in collate: ", len(transforms))
-        print("Shape of transforms[0] in collate: ", (transforms[0].shape))
+        # print("Type of transforms to return from collate: ", type(transforms))
+        # print("Type of transforms[0] to return from collate: ", type(transforms[0]))
+        # print("Len of transforms in collate: ", len(transforms))
+        # print("Shape of transforms[0] in collate: ", (transforms[0].shape))
         transforms = (
-            torch.cat(transforms[:batch_size], 0).reshape(batch_size, 1, transforms[0].shape[1]),
-            torch.cat(transforms[batch_size:], 0).reshape(batch_size, 1, transforms[0].shape[1])
+            torch.cat(transforms[:batch_size], 0).reshape(batch_size, transforms[0].shape[0], transforms[0].shape[1]),
+            torch.cat(transforms[batch_size:], 0).reshape(batch_size, transforms[0].shape[0], transforms[0].shape[1])
         )
 
         return transforms, labels, fnames
