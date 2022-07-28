@@ -78,12 +78,10 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
 
     print("Training NNCLR")
 
-    
+    losses = list()
 
     for epoch in range(MAX_EPOCHS):
-        total_loss = 0
-        losses = list()
-        quit_counter = 0
+        total_loss = 0  
         for (x0, x1), _ , _ in dataloader:
             #print("Type of x0 in main loop: ", type(x0))
             x0 = x0.to(device)
@@ -99,20 +97,20 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
             optimizer.zero_grad()
         avg_loss = total_loss / len(dataloader)
         print(f"epoch: {epoch+1:>02}, loss: {avg_loss:.5f}")
-        #Early Stopping
-        losses.append(avg_loss)
-        if len(losses) >= PATIENCE:
-            losses = losses[1:]
-        if avg_loss >= max(losses):
-            quit_counter += 1
-            print("Early stop at epoch ", epoch+1)
-            break
+        #Early Stopping        
+        if len(losses) == PATIENCE:
+            if avg_loss > max(losses):
+                print("Early stop at epoch ", epoch+1)
+                break
+            else:
+                losses = losses[1:]
+        losses.append(avg_loss.cpu().item())
+        #print(len(losses), ' ', losses)
             
 
     torch_X = torch.tensor(X).to(device)
     
     torch_X = torch_X.float()
     _, f = model(torch_X, return_features=True)
-    #o, f = model(torch_X)
 
     return f.cpu().detach().numpy()
