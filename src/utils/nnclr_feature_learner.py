@@ -21,7 +21,7 @@ from lightly_plus_time.lightly.data import LightlyDataset
 from lightly_plus_time.lightly.loss import NTXentLoss
 from lightly_plus_time.ts_utils.ts_dataloader import UCR2018
 
-MAX_EPOCHS = 10
+MAX_EPOCHS = 100
 PATIENCE = 5
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
@@ -105,11 +105,9 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
             losses = losses[1:]
         if avg_loss >= max(losses):
             quit_counter += 1
-        else:
-            quit_counter = 0
-        if quit_counter == PATIENCE:
             print("Early stop at epoch ", epoch+1)
             break
+            
 
     torch_X = torch.tensor(X).to(device)
     
