@@ -6,3 +6,6 @@ scipy>=1.6.1
 joblib >= 1.0.1
 umap-learn >= 0.5.3
 tensorflow >= 2.9.1
+torchsumary >= 1.5.1
+torch 1.12.0 
+torchvision  >=  0.13.0
