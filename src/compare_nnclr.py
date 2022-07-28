@@ -75,7 +75,17 @@ if __name__ == '__main__':
     if run_nnclr:
         from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
         nnclr_features = get_nnclr_features(flattened_X, y=y)
-        print(nnclr_features.shape)
+        print("NNCLR feature shape: ", nnclr_features.shape)
+        reducer = umap.UMAP(n_neighbors=umap_neighbors, n_components=umap_dim)
+        embedding = reducer.fit_transform(nnclr_features)
+        print('Shape of UMAP representation: ', embedding.shape)
+        plt.figure()
+        if umap_dim==2:
+            plt.scatter(embedding[:,0], embedding[:,1], c=y)
+        else:
+            ax = plt.axes(projection ="3d")
+            ax.scatter(embedding[:,0], embedding[:,1], embedding[:,2], c=y)
+        plt.show()
 
     if run_simclr:
         from utils.simclr_feature_learner import get_features_for_set as get_simclr_features

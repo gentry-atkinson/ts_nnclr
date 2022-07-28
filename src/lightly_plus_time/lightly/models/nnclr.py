@@ -203,12 +203,12 @@ class NNCLR(nn.Module):
         """
         
         # forward pass of first input x0
-        print("Shape of X0 in nnclr.forward: ", x0.shape)
+        #print("Shape of X0 in nnclr.forward: ", x0.shape)
         #f0 = self.backbone(x0).flatten(start_dim=0)
         f0 = self.backbone(x0)
-        print("Shape of f0 in nnclr.forward: ", f0.shape)
+        #print("Shape of f0 in nnclr.forward: ", f0.shape)
         z0 = self.projection_mlp(f0)
-        print("Shape of z0 in nnclr.forward: ", z0.shape)
+        #print("Shape of z0 in nnclr.forward: ", z0.shape)
         p0 = self.prediction_mlp(z0)
 
         out0 = (z0, p0)

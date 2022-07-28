@@ -21,6 +21,9 @@ from lightly_plus_time.lightly.data import LightlyDataset
 from lightly_plus_time.lightly.loss import NTXentLoss
 from lightly_plus_time.ts_utils.ts_dataloader import UCR2018
 
+MAX_EPOCHS = 10
+PATIENCE = 5
+
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     #resnet = torchvision.models.resnet18()
     #backbone = nn.Sequential(*list(resnet.children())[:-1])
@@ -39,7 +42,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
         nn.Flatten()
     )
     
-    model = NNCLR(backbone=backbone, num_ftrs=64, proj_hidden_dim=64, pred_hidden_dim=64)
+    model = NNCLR(backbone=backbone, num_ftrs=64, proj_hidden_dim=64, pred_hidden_dim=64, )
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
@@ -75,10 +78,14 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
 
     print("Training NNCLR")
 
-    for epoch in range(10):
+    
+
+    for epoch in range(MAX_EPOCHS):
         total_loss = 0
-        #for (x0, x1), _, _ in dataloader:
+        losses = list()
+        quit_counter = 0
         for (x0, x1), _ , _ in dataloader:
+            #print("Type of x0 in main loop: ", type(x0))
             x0 = x0.to(device)
             x1 = x1.to(device)
             z0, p0 = model(x0)
@@ -91,6 +98,23 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
             optimizer.step()
             optimizer.zero_grad()
         avg_loss = total_loss / len(dataloader)
-        print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
+        print(f"epoch: {epoch+1:>02}, loss: {avg_loss:.5f}")
+        #Early Stopping
+        losses.append(avg_loss)
+        if len(losses) >= PATIENCE:
+            losses = losses[1:]
+        if avg_loss >= max(losses):
+            quit_counter += 1
+        else:
+            quit_counter = 0
+        if quit_counter == PATIENCE:
+            print("Early stop at epoch ", epoch+1)
+            break
 
-    return(np.zeros(X.shape))
+    torch_X = torch.tensor(X).to(device)
+    
+    torch_X = torch_X.float()
+    _, f = model(torch_X, return_features=True)
+    #o, f = model(torch_X)
+
+    return f.cpu().detach().numpy()

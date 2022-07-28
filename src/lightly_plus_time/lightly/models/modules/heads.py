@@ -58,8 +58,8 @@ class ProjectionHead(nn.Module):
                 Input of shape bsz x num_ftrs.
 
         """
-        print("Size of x in projection head: ", x.shape)
-        print(self.layers)
+        #print("Size of x in projection head: ", x.shape)
+        #print(self.layers)
         return self.layers(x)
 
 
