@@ -33,7 +33,7 @@ def make_decoder(encoder):
   decoder.add(tf.keras.layers.Conv1DTranspose(64, kernel_size, activation='relu'))
   decoder.add(tf.keras.layers.MaxPooling1D(kernel_size))
   decoder.add(tf.keras.layers.Flatten())
-  decoder.add(tf.keras.layers.Dense(input_size[0], activation='linear'))
+  decoder.add(tf.keras.layers.Dense(input_size[0]*input_size[1], activation='linear'))
   decoder.add(tf.keras.layers.Reshape(input_size))
 
   return decoder
@@ -52,6 +52,8 @@ def get_features_for_set(X, with_visual=False, with_summary=False):
     global kernel_size
     global input_size
     input_size = X[0].shape
+
+    print("AE input shape: ", input_size)
     
     if len(X[0]) <= 32:
       kernel_size = 4

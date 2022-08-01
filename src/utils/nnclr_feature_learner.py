@@ -28,7 +28,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     #resnet = torchvision.models.resnet18()
     #backbone = nn.Sequential(*list(resnet.children())[:-1])
     print("Swapping to channels first for PyTorch")
-    X = np.reshape(X, (X.shape[0], 1, X.shape[1]))
+    X = np.reshape(X, (X.shape[0], X.shape[2], X.shape[1]))
     print("Backbone channels in: ", X[0].shape[0])
     print("Backbone samples in: ", X[0].shape[1])
     backbone = nn.Sequential(
