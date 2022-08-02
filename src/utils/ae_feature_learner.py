@@ -47,7 +47,7 @@ def make_cae():
   return conv_autoencoder
 
 
-def get_features_for_set(X, with_visual=False, with_summary=False):
+def get_features_for_set(X, with_visual=False, with_summary=False, returnModel=False):
     global latent_dim
     global kernel_size
     global input_size
@@ -76,7 +76,10 @@ def get_features_for_set(X, with_visual=False, with_summary=False):
     feature_encoder = tf.keras.models.Sequential(ae.layers[:-1])
     if with_summary: feature_encoder.summary()
 
-    return feature_encoder.predict(X)
+    if returnModel:
+      return feature_encoder
+    else:
+      return feature_encoder.predict(X)
 
 if __name__ == '__main__':
   print('Verifying AutoEncoder')

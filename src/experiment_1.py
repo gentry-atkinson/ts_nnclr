@@ -12,29 +12,34 @@
 #Hypothesis: NNCLR will have the highest accuracy and F1 when
 #  classifying the extracted features
 
-run_trad = False
+run_trad = True
 run_ae = False
-run_nnclr = True
-run_simclr = True
+run_nnclr = False
+run_simclr = False
 
-from utils.import_datasets import get_unimib_data
+#from utils.import_datasets import get_unimib_data
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
+from load_data_time_series_dev.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
 import numpy as np
 
 datasets = {
-    'unimib' :  tuple(get_unimib_data())
+    'unimib' :  tuple(unimib_load_dataset())
 }
 
 if __name__ == '__main__':
     for set in datasets.keys():
         print("------------Set: ", set, "------------")
-        X, y, labels = datasets[set]
-        flattened_X = np.array([np.linalg.norm(i, axis=0) for i in X])   
+        X, y, X_test, y_test = datasets[set]
+        if X.shape[2] == 1:
+            flattened_X = X
+        else:
+            flattened_X = np.array([np.linalg.norm(i, axis=0) for i in X_test])   
         print('Shape of X: ', X.shape)
         print('Shape of y: ', y.shape)
-        print('Labels in Set: ', ' '.join([str(i) for i in labels]))
         print('Shape of flattened X: ', flattened_X.shape)
+        print('Shape of X_test: ', X_test.shape)
+        print('Shape of y_test: ', y_test.shape)
         if(run_trad):        
             from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
             trad_features = get_trad_features(np.reshape(flattened_X, (flattened_X.shape[0], flattened_X.shape[1])))
