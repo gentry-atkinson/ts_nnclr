@@ -21,7 +21,7 @@ from lightly_plus_time.lightly.data import LightlyDataset
 from lightly_plus_time.lightly.loss import NTXentLoss
 from lightly_plus_time.ts_utils.ts_dataloader import UCR2018
 
-MAX_EPOCHS = 100
+MAX_EPOCHS = 10
 PATIENCE = 5
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False, returnModel=False):
@@ -29,6 +29,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, retur
     #backbone = nn.Sequential(*list(resnet.children())[:-1])
     print("Swapping to channels first for PyTorch")
     X = np.reshape(X, (X.shape[0], X.shape[2], X.shape[1]))
+    y_flat = np.argmax(y, axis=-1)
     print("Backbone channels in: ", X[0].shape[0])
     print("Backbone samples in: ", X[0].shape[1])
     backbone = nn.Sequential(
@@ -59,7 +60,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, retur
     print("X shape: ", X.shape)
     print("y shape: ", y.shape)
 
-    torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y))
+    torch_X = torch.utils.data.TensorDataset(torch.tensor(X), torch.tensor(y_flat))
     #torch_X = torch.utils.data.TensorDataset(np.array([(X[i], y[i]) for i in range(len(X))]))
 
     dataset = LightlyDataset.from_torch_dataset(torch_X)

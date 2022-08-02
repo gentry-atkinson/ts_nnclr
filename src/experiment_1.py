@@ -30,6 +30,9 @@ datasets = {
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
+#TensorFlow -> channels last
+#PyTorch -> channels first
+
 if __name__ == '__main__':
     for set in datasets.keys():
         print("------------Set: ", set, "------------")
@@ -63,9 +66,12 @@ if __name__ == '__main__':
         if(run_nnclr):
             from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
             _, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True)
-            _, nnclr_features = nnclr_feature_learner(torch.utils.data.TensorDataset(torch.tensor(X_test), torch.zeros(size=(len(X_test), 1))).to(device), return_features=True)
+            torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
+            torch_X = torch_X.float()
+            _, nnclr_features = nnclr_feature_learner(torch_X, return_features=True)
             nnclr_features = nnclr_features.cpu().detach().numpy()
+            print('Shape of NNCLR Features: ', nnclr_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
-            model.fit(nnclr_features, y)
+            model.fit(nnclr_features, y_test)
             y_pred = model.predict(nnclr_features)
-            print("NNCLR accuracy: ", accuracy_score(y, y_pred))
+            print("NNCLR accuracy: ", accuracy_score(y_test, y_pred))
