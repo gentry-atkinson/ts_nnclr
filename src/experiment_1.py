@@ -14,8 +14,8 @@
 
 run_trad = False
 run_ae = False
-run_nnclr = True
-run_simclr = False
+run_nnclr = False
+run_simclr = True
 
 #from utils.import_datasets import get_unimib_data
 from sklearn.neighbors import KNeighborsClassifier
@@ -79,3 +79,6 @@ if __name__ == '__main__':
             model.fit(nnclr_features, y_test)
             y_pred = model.predict(nnclr_features)
             print("NNCLR accuracy: ", accuracy_score(y_test, y_pred))
+
+        if(run_simclr):
+            from utils.simclr_feature_learner import get_features_for_set as get_simclr_features

@@ -90,7 +90,7 @@ if __name__ == '__main__':
         #print("Dunn index of traditional features: ", clustering_metrics.dunn_index(nnclr_features, y))
 
     if run_simclr:
-        from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
+        from utils.simclr_feature_learner_tf import get_features_for_set as get_simclr_features
         simclr_features = get_simclr_features(flattened_X, y)
 
 

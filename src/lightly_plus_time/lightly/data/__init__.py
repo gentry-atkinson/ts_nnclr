@@ -28,6 +28,7 @@ from lightly_plus_time.lightly.data.collate import MAECollateFunction
 from lightly_plus_time.lightly.data.collate import PIRLCollateFunction
 from lightly_plus_time.lightly.data.collate import SimCLRCollateFunction
 from lightly_plus_time.lightly.data.collate import TS_NNCLRCollateFunction
+from lightly_plus_time.lightly.data.collate import TS_SimCLRCollateFunction
 from lightly_plus_time.lightly.data.collate import MoCoCollateFunction
 from lightly_plus_time.lightly.data.collate import MultiCropCollateFunction
 from lightly_plus_time.lightly.data.collate import SwaVCollateFunction

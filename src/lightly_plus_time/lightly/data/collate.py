@@ -373,6 +373,14 @@ class TS_NNCLRCollateFunction(TSCollateFunction):
             input_size=input_size,
         )
 
+class TS_SimCLRCollateFunction(TSCollateFunction):
+    def __init__(self,
+                 input_size: int = 100):
+
+        super(TS_NNCLRCollateFunction, self).__init__(
+            input_size=input_size,
+        )
+
 class MoCoCollateFunction(ImageCollateFunction):
     """Implements the transformations for MoCo v1.
 

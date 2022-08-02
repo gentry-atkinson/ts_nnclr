@@ -19,7 +19,7 @@ from lightly_plus_time.lightly.models.modules import NNMemoryBankModule
 from lightly_plus_time.lightly.data import TS_NNCLRCollateFunction
 from lightly_plus_time.lightly.data import LightlyDataset
 from lightly_plus_time.lightly.loss import NTXentLoss
-from lightly_plus_time.ts_utils.ts_dataloader import UCR2018
+
 
 MAX_EPOCHS = 100
 PATIENCE = 5
