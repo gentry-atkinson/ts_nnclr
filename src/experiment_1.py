@@ -21,13 +21,15 @@ run_simclr = False
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 from load_data_time_series_dev.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
-from load_data_time_series_dev.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
+#from load_data_time_series_dev.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
+from load_data_time_series_dev.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
 import numpy as np
 import torch
 
 datasets = {
     'unimib' :  tuple(unimib_load_dataset()),
-    #'twister' : tuple(e4_load_dataset())
+    #'twister' : tuple(e4_load_dataset()),
+    #'mobiact' : tuple(mobiact_adl_load_dataset())
 }
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
