@@ -24,7 +24,7 @@ from lightly_plus_time.ts_utils.ts_dataloader import UCR2018
 MAX_EPOCHS = 100
 PATIENCE = 5
 
-def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
+def get_features_for_set(X, y=None, with_visual=False, with_summary=False, returnModel=False):
     #resnet = torchvision.models.resnet18()
     #backbone = nn.Sequential(*list(resnet.children())[:-1])
     print("Swapping to channels first for PyTorch")
@@ -113,4 +113,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False):
     torch_X = torch_X.float()
     _, f = model(torch_X, return_features=True)
 
-    return f.cpu().detach().numpy()
+    if returnModel:
+        return f.cpu().detach().numpy(), model
+    else:
+        return f.cpu().detach().numpy()

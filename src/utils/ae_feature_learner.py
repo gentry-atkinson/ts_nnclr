@@ -12,7 +12,9 @@ from matplotlib import pyplot as plt
 
 latent_dim = 32
 kernel_size = 16
-input_size = (128,1) 
+input_size = (128,1)
+
+PATIENCE = 7
 
 def make_encoder():
   encoder = tf.keras.models.Sequential()
@@ -63,7 +65,7 @@ def get_features_for_set(X, with_visual=False, with_summary=False, returnModel=F
     ae = make_cae()
     if with_summary: ae.summary()
 
-    es = tf.keras.callbacks.EarlyStopping(monitor='val_loss',patience=4,verbose=1)
+    es = tf.keras.callbacks.EarlyStopping(monitor='val_loss',patience=PATIENCE,verbose=1, mode='min')
 
     history = ae.fit(X, X, batch_size=16, epochs=100, shuffle=True, validation_split=0.1, callbacks=es)
     if with_visual:
@@ -77,7 +79,7 @@ def get_features_for_set(X, with_visual=False, with_summary=False, returnModel=F
     if with_summary: feature_encoder.summary()
 
     if returnModel:
-      return feature_encoder
+      return feature_encoder.predict(X), feature_encoder
     else:
       return feature_encoder.predict(X)
 
