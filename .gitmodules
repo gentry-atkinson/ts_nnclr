@@ -1,0 +1,3 @@
+[submodule "src/load_data_time_series_dev"]
+	path = src/load_data_time_series_dev
+	url = https://git.txstate.edu/imics-lab/load_data_time_series_dev/
