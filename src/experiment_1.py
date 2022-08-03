@@ -18,7 +18,6 @@ run_nnclr = True
 run_simclr = True
 
 #from utils.import_datasets import get_unimib_data
-from unittest import result
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from load_data_time_series_dev.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
