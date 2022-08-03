@@ -97,6 +97,16 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, retur
         avg_loss = total_loss / len(dataloader)
         print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
 
+    torch_X = torch.tensor(X).to(device)
+    
+    torch_X = torch_X.float()
+    _, f = model(torch_X, return_features=True)
+
+    if returnModel:
+        return f.cpu().detach().numpy(), model
+    else:
+        return f.cpu().detach().numpy()
+
 
 
 

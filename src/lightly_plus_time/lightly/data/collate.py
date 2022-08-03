@@ -377,7 +377,7 @@ class TS_SimCLRCollateFunction(TSCollateFunction):
     def __init__(self,
                  input_size: int = 100):
 
-        super(TS_NNCLRCollateFunction, self).__init__(
+        super(TS_SimCLRCollateFunction, self).__init__(
             input_size=input_size,
         )
 
