@@ -81,8 +81,10 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, retur
     criterion = NTXentLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.06)
 
+    losses = list()
+
     print("Starting Training")
-    for epoch in range(10):
+    for epoch in range(MAX_EPOCHS):
         total_loss = 0
         for (x0, x1), _, _ in dataloader:
             x0 = x0.to(device)
@@ -96,6 +98,14 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, retur
             optimizer.zero_grad()
         avg_loss = total_loss / len(dataloader)
         print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
+        #Early Stopping        
+        if len(losses) == PATIENCE:
+            if avg_loss > max(losses):
+                print("Early stop at epoch ", epoch+1)
+                break
+            else:
+                losses = losses[1:]
+        losses.append(avg_loss.cpu().item())
 
     torch_X = torch.tensor(X).to(device)
     

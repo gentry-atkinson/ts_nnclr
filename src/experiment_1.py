@@ -51,22 +51,31 @@ if __name__ == '__main__':
     for set in datasets.keys():
         print("------------Set: ", set, "------------")
         X, y, X_test, y_test = datasets[set]
-        if X_test.shape[2] == 1:
-            flattened_X = X_test
+
+        if X.shape[2] == 1:
+            flattened_train = X
         else:
-            flattened_X = np.array([np.linalg.norm(i, axis=0) for i in X_test])   
+            flattened_train = np.array([np.linalg.norm(i, axis=0) for i in X])
+
+        if X_test.shape[2] == 1:
+            flattened_test = X_test
+        else:
+            flattened_test = np.array([np.linalg.norm(i, axis=0) for i in X_test])
+
         print('Shape of X: ', X.shape)
         print('Shape of y: ', y.shape)
-        print('Shape of flattened X: ', flattened_X.shape)
+        print('Shape of flattened train X: ', flattened_train.shape)
+        print('Shape of flattened test X: ', flattened_test.shape)
         print('Shape of X_test: ', X_test.shape)
         print('Shape of y_test: ', y_test.shape)
         if(run_trad):        
             from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
-            trad_features = get_trad_features(np.reshape(flattened_X, (flattened_X.shape[0], flattened_X.shape[1])))
-            print('Shape of Traditional Features: ', trad_features.shape)
+            train_features = get_trad_features(np.reshape(flattened_train, (flattened_train.shape[0], flattened_train.shape[1])))
+            test_features = get_trad_features(np.reshape(flattened_test, (flattened_test.shape[0], flattened_test.shape[1])))
+            print('Shape of Traditional Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
-            model.fit(trad_features, y_test)
-            y_pred = model.predict(trad_features)
+            model.fit(train_features, y)
+            y_pred = model.predict(test_features)
             print("Trad accuracy: ", accuracy_score(y_test, y_pred))
             results['Features'].append('Traditional')
             results['Acc'].append(accuracy_score(y_test, y_pred))
@@ -75,12 +84,12 @@ if __name__ == '__main__':
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
         if(run_ae):        
             from utils.ae_feature_learner import get_features_for_set as get_ae_features
-            _, ae_feature_learner = get_ae_features(X, with_visual=False, returnModel=True)
-            ae_features = ae_feature_learner.predict(X_test)
-            print('Shape of AE Features: ', ae_features.shape)
+            train_features, ae_feature_learner = get_ae_features(X, with_visual=False, returnModel=True)
+            test_features = ae_feature_learner.predict(X_test)
+            print('Shape of AE Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
-            model.fit(ae_features, y_test)
-            y_pred = model.predict(ae_features)
+            model.fit(train_features, y)
+            y_pred = model.predict(test_features)
             print("AE accuracy: ", accuracy_score(y_test, y_pred))
             results['Features'].append('Autoencoder')
             results['Acc'].append(accuracy_score(y_test, y_pred))
@@ -89,15 +98,15 @@ if __name__ == '__main__':
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
         if(run_nnclr):
             from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
-            _, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True)
+            train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True)
             torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
             torch_X = torch_X.float()
-            _, nnclr_features = nnclr_feature_learner(torch_X, return_features=True)
-            nnclr_features = nnclr_features.cpu().detach().numpy()
-            print('Shape of NNCLR Features: ', nnclr_features.shape)
+            _, test_features = nnclr_feature_learner(torch_X, return_features=True)
+            test_features = test_features.cpu().detach().numpy()
+            print('Shape of NNCLR Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
-            model.fit(nnclr_features, y_test)
-            y_pred = model.predict(nnclr_features)
+            model.fit(train_features, y)
+            y_pred = model.predict(test_features)
             print("NNCLR accuracy: ", accuracy_score(y_test, y_pred))
             results['Features'].append('NNCLR')
             results['Acc'].append(accuracy_score(y_test, y_pred))
@@ -107,15 +116,15 @@ if __name__ == '__main__':
 
         if(run_simclr):
             from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
-            _, simclr_feature_learner = get_simclr_features(X, y=y, returnModel=True)
+            train_features, simclr_feature_learner = get_simclr_features(X, y=y, returnModel=True)
             torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
             torch_X = torch_X.float()
-            _, simclr_features = simclr_feature_learner(torch_X, return_features=True)
-            simclr_features = simclr_features.cpu().detach().numpy()
-            print('Shape of SimCLR Features: ', simclr_features.shape)
+            _, test_features = simclr_feature_learner(torch_X, return_features=True)
+            test_features = test_features.cpu().detach().numpy()
+            print('Shape of SimCLR Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
-            model.fit(simclr_features, y_test)
-            y_pred = model.predict(simclr_features)
+            model.fit(train_features, y)
+            y_pred = model.predict(test_features)
             print("SimCLR accuracy: ", accuracy_score(y_test, y_pred))
             results['Features'].append('SimClr')
             results['Acc'].append(accuracy_score(y_test, y_pred))
