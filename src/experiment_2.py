@@ -23,6 +23,8 @@ run_simclr = True
 from load_data_time_series_dev.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
 #from load_data_time_series_dev.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
 from load_data_time_series_dev.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
+from scipy.stats import wasserstein_distance
+from scipy.spatial.distance import cdist
 import numpy as np
 import pandas as pd
 import torch
@@ -54,6 +56,8 @@ if __name__ == '__main__':
 
         X_total = np.concatenate((X, X_test), axis=0)
         y_total = np.concatenate((y, y_test), axis=0)
+        num_labels = len(y_total[0])
+        y_total = np.argmax(y_total, -1)
 
         if X_total.shape[2] == 1:
             flattened_X = X_total
@@ -67,8 +71,21 @@ if __name__ == '__main__':
 
         if(run_trad):        
             from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
-            train_features = get_trad_features(np.reshape(flattened_X, (flattened_X.shape[0], flattened_X.shape[1])))
-
+            features = get_trad_features(np.reshape(flattened_X, (flattened_X.shape[0], flattened_X.shape[1])))
+            features_split = []
+            dist_mat = []
+            for l in range(num_labels):
+                #print("Label: ", l)
+                w = np.where(y_total==l)
+                #print("number of labels: ", len(w))
+                features_split.append(np.array(features[w][:]))
+                print("Instances with label ", l, " : ", len(features_split[l]))
+            features_split = np.array(features_split)
+            print("Shape of feature split: ", features_split.shape)
+            print(cdist(features_split[0], features_split[1], wasserstein_distance))
+            # for i in features_split:
+            #     dist_mat.append([wasserstein_distance(i, j) for j in features_split])
+            # print(dist_mat)
     
     result_gram = pd.DataFrame.from_dict(results)
     result_gram.to_csv('src/results/experiment2_dataframe.csv')
