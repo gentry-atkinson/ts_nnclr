@@ -82,13 +82,19 @@ if __name__ == '__main__':
                 print("Instances with label ", l, " : ", len(features_split[l]))
             features_split = np.array(features_split)
             print("Shape of feature split: ", features_split.shape)
-            print(cdist(features_split[0], features_split[1], wasserstein_distance))
-            # for i in features_split:
-            #     dist_mat.append([wasserstein_distance(i, j) for j in features_split])
-            # print(dist_mat)
+            # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
+            for i in features_split:
+                dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
+            dist_mat = np.array(dist_mat)
+            results['Features'].append('Traditional')
+            results['Avg Dist'].append(np.mean(dist_mat))
+            results['Max Dist'].append(np.max(dist_mat))
+            results['Min Dist'].append(np.min(dist_mat))
+
+            raw_distances['Traditional'] = dist_mat
     
     result_gram = pd.DataFrame.from_dict(results)
     result_gram.to_csv('src/results/experiment2_dataframe.csv')
-    for k in raw_distances.keys():
-        np.array(raw_distances[k]).savetext('src/results/distance_'+k+'.csv', delimeter=',')
+    # for k in raw_distances.keys():
+    #     np.array(raw_distances[k]).savetext('src/results/distance_'+k+'.csv', delimeter=',')
     print(result_gram.to_string())
