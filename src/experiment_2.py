@@ -14,8 +14,8 @@
 #  between classes in the feature space
 
 
-run_trad = False
-run_ae = False
+run_trad = True
+run_ae = True
 run_nnclr = True
 run_simclr = True
 
@@ -38,7 +38,7 @@ datasets = {
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 #TensorFlow -> channels last
-#PyTorch -> channels first
+#PyTorch -> channels first (they get swapped in the feature extractors)
 
 results = {
     'Features'  : [],
@@ -132,7 +132,7 @@ if __name__ == '__main__':
             for i in features_split:
                 dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
             dist_mat = np.array(dist_mat)
-            results['Features'].append('AutoEncoder')
+            results['Features'].append('NNCLR')
             results['Avg Dist'].append(np.mean(dist_mat))
             results['Max Dist'].append(np.amax(dist_mat))
             results['Min Dist'].append(np.amin(dist_mat))
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
         if(run_simclr):
             from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
-            features = get_simclr_features(X, y=y, returnModel=False)
+            features = get_simclr_features(X_total, y=y_total, returnModel=False)
 
             features_split = []
             dist_mat = []
@@ -155,7 +155,7 @@ if __name__ == '__main__':
             for i in features_split:
                 dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
             dist_mat = np.array(dist_mat)
-            results['Features'].append('AutoEncoder')
+            results['Features'].append('SimCLR')
             results['Avg Dist'].append(np.mean(dist_mat))
             results['Max Dist'].append(np.amax(dist_mat))
             results['Min Dist'].append(np.amin(dist_mat))
