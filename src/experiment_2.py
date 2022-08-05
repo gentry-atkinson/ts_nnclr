@@ -14,8 +14,8 @@
 #  between classes in the feature space
 
 
-run_trad = True
-run_ae = True
+run_trad = False
+run_ae = False
 run_nnclr = True
 run_simclr = True
 
@@ -88,11 +88,57 @@ if __name__ == '__main__':
             dist_mat = np.array(dist_mat)
             results['Features'].append('Traditional')
             results['Avg Dist'].append(np.mean(dist_mat))
-            results['Max Dist'].append(np.max(dist_mat))
-            results['Min Dist'].append(np.min(dist_mat))
+            results['Max Dist'].append(np.amax(dist_mat))
+            results['Min Dist'].append(np.amin(dist_mat))
 
             raw_distances['Traditional'] = dist_mat
-    
+        
+        if(run_ae):        
+            from utils.ae_feature_learner import get_features_for_set as get_ae_features
+            features = get_ae_features(X_total, with_visual=False, returnModel=False)
+            features_split = []
+            dist_mat = []
+            for l in range(num_labels):
+                w = np.where(y_total==l)
+                features_split.append(np.array(features[w][:]))
+                print("Instances with label ", l, " : ", len(features_split[l]))
+            features_split = np.array(features_split)
+            print("Shape of feature split: ", features_split.shape)
+            # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
+            for i in features_split:
+                dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
+            dist_mat = np.array(dist_mat)
+            results['Features'].append('AutoEncoder')
+            results['Avg Dist'].append(np.mean(dist_mat))
+            results['Max Dist'].append(np.amax(dist_mat))
+            results['Min Dist'].append(np.amin(dist_mat))
+
+            raw_distances['Traditional'] = dist_mat
+
+        if(run_nnclr):
+            print("Shape of X_total: ", X_total.shape)
+            from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
+            
+            features = get_nnclr_features(X_total, y=y_total, returnModel=False)
+            features_split = []
+            dist_mat = []
+            for l in range(num_labels):
+                w = np.where(y_total==l)
+                features_split.append(np.array(features[w][:]))
+                print("Instances with label ", l, " : ", len(features_split[l]))
+            features_split = np.array(features_split)
+            print("Shape of feature split: ", features_split.shape)
+            # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
+            for i in features_split:
+                dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
+            dist_mat = np.array(dist_mat)
+            results['Features'].append('AutoEncoder')
+            results['Avg Dist'].append(np.mean(dist_mat))
+            results['Max Dist'].append(np.amax(dist_mat))
+            results['Min Dist'].append(np.amin(dist_mat))
+
+            raw_distances['Traditional'] = dist_mat
+
     result_gram = pd.DataFrame.from_dict(results)
     result_gram.to_csv('src/results/experiment2_dataframe.csv')
     # for k in raw_distances.keys():
