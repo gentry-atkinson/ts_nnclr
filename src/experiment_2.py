@@ -57,7 +57,7 @@ if __name__ == '__main__':
         X_total = np.concatenate((X, X_test), axis=0)
         y_total = np.concatenate((y, y_test), axis=0)
         num_labels = len(y_total[0])
-        y_total = np.argmax(y_total, -1)
+        y_flat = np.argmax(y_total, -1)
 
         if X_total.shape[2] == 1:
             flattened_X = X_total
@@ -76,7 +76,7 @@ if __name__ == '__main__':
             dist_mat = []
             for l in range(num_labels):
                 #print("Label: ", l)
-                w = np.where(y_total==l)
+                w = np.where(y_flat==l)
                 #print("number of labels: ", len(w))
                 features_split.append(np.array(features[w][:]))
                 print("Instances with label ", l, " : ", len(features_split[l]))
@@ -99,7 +99,7 @@ if __name__ == '__main__':
             features_split = []
             dist_mat = []
             for l in range(num_labels):
-                w = np.where(y_total==l)
+                w = np.where(y_flat==l)
                 features_split.append(np.array(features[w][:]))
                 print("Instances with label ", l, " : ", len(features_split[l]))
             features_split = np.array(features_split)
@@ -123,7 +123,30 @@ if __name__ == '__main__':
             features_split = []
             dist_mat = []
             for l in range(num_labels):
-                w = np.where(y_total==l)
+                w = np.where(y_flat==l)
+                features_split.append(np.array(features[w][:]))
+                print("Instances with label ", l, " : ", len(features_split[l]))
+            features_split = np.array(features_split)
+            print("Shape of feature split: ", features_split.shape)
+            # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
+            for i in features_split:
+                dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
+            dist_mat = np.array(dist_mat)
+            results['Features'].append('AutoEncoder')
+            results['Avg Dist'].append(np.mean(dist_mat))
+            results['Max Dist'].append(np.amax(dist_mat))
+            results['Min Dist'].append(np.amin(dist_mat))
+
+            raw_distances['Traditional'] = dist_mat
+
+        if(run_simclr):
+            from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
+            features = get_simclr_features(X, y=y, returnModel=False)
+
+            features_split = []
+            dist_mat = []
+            for l in range(num_labels):
+                w = np.where(y_flat==l)
                 features_split.append(np.array(features[w][:]))
                 print("Instances with label ", l, " : ", len(features_split[l]))
             features_split = np.array(features_split)

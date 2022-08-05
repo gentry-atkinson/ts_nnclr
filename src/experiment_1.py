@@ -12,8 +12,8 @@
 #Hypothesis: NNCLR will have the highest accuracy and F1 when
 #  classifying the extracted features
 
-run_trad = True
-run_ae = True
+run_trad = False
+run_ae = False
 run_nnclr = True
 run_simclr = True
 
