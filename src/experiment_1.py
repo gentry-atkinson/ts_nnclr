@@ -12,10 +12,10 @@
 #Hypothesis: NNCLR will have the highest accuracy and F1 when
 #  classifying the extracted features
 
-run_trad = False
+run_trad = True
 run_ae = False
-run_nnclr = True
-run_simclr = True
+run_nnclr = False
+run_simclr = False
 
 #from utils.import_datasets import get_unimib_data
 from sklearn.neighbors import KNeighborsClassifier
