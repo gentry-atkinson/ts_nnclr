@@ -28,6 +28,7 @@ from scipy.spatial.distance import cdist
 import numpy as np
 import pandas as pd
 import torch
+import json
 
 datasets = {
     'unimib' :  tuple(unimib_load_dataset()),
@@ -41,10 +42,12 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 #PyTorch -> channels first (they get swapped in the feature extractors)
 
 results = {
-    'Features'  : [],
-    'Avg Dist'  : [],
-    'Max Dist'  : [],
-    'Min Dist'  : [],
+    'Features'        : [],
+    'Avg Inter-Dist'  : [],
+    'Avg Intra-Dist'  : [],
+    'Max Dist'        : [],
+    'Min Dist'        : [],
+    'Silhouette'      : []
 }
 
 raw_distances = {}
@@ -86,10 +89,20 @@ if __name__ == '__main__':
             for i in features_split:
                 dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
             dist_mat = np.array(dist_mat)
+            inter_sum = 0
+            intra_sum = 0
+            for i in range(len(dist_mat)):
+                for j in range(len(dist_mat[0])):
+                    if i == j:
+                        intra_sum += dist_mat[i][j]
+                    else:
+                        inter_sum += dist_mat[i][j]
             results['Features'].append('Traditional')
-            results['Avg Dist'].append(np.mean(dist_mat))
+            results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
+            results['Avg Intra-Dist'].append(intra_sum/num_labels)
             results['Max Dist'].append(np.amax(dist_mat))
             results['Min Dist'].append(np.amin(dist_mat))
+            results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
 
             raw_distances['Traditional'] = dist_mat
         
@@ -109,9 +122,11 @@ if __name__ == '__main__':
                 dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
             dist_mat = np.array(dist_mat)
             results['Features'].append('AutoEncoder')
-            results['Avg Dist'].append(np.mean(dist_mat))
+            results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
+            results['Avg Intra-Dist'].append(intra_sum/num_labels)
             results['Max Dist'].append(np.amax(dist_mat))
             results['Min Dist'].append(np.amin(dist_mat))
+            results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
 
             raw_distances['Traditional'] = dist_mat
 
@@ -133,9 +148,11 @@ if __name__ == '__main__':
                 dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
             dist_mat = np.array(dist_mat)
             results['Features'].append('NNCLR')
-            results['Avg Dist'].append(np.mean(dist_mat))
+            results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
+            results['Avg Intra-Dist'].append(intra_sum/num_labels)
             results['Max Dist'].append(np.amax(dist_mat))
             results['Min Dist'].append(np.amin(dist_mat))
+            results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
 
             raw_distances['Traditional'] = dist_mat
 
@@ -156,14 +173,18 @@ if __name__ == '__main__':
                 dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
             dist_mat = np.array(dist_mat)
             results['Features'].append('SimCLR')
-            results['Avg Dist'].append(np.mean(dist_mat))
+            results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
+            results['Avg Intra-Dist'].append(intra_sum/num_labels)
             results['Max Dist'].append(np.amax(dist_mat))
             results['Min Dist'].append(np.amin(dist_mat))
+            results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
 
             raw_distances['Traditional'] = dist_mat
 
     result_gram = pd.DataFrame.from_dict(results)
     result_gram.to_csv('src/results/experiment2_dataframe.csv')
-    # for k in raw_distances.keys():
-    #     np.array(raw_distances[k]).savetext('src/results/distance_'+k+'.csv', delimeter=',')
+
+    with open('results/experiment_2_raw_distances.txt', 'w') as convert_file:
+     convert_file.write(json.dumps(raw_distances))
+    
     print(result_gram.to_string())

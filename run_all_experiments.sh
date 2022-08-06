@@ -7,10 +7,10 @@
 
 
 echo "Experiment 1"
-python3 -Wignore src/experiment1.py > ex1_log.txt
+python3 -Wignore src/experiment_1.py > ex1_log.txt
 
 echo "Experiment 2"
-python3 -Wignore src/experiment1.py > ex2_log.txt
+python3 -Wignore src/experiment_2.py > ex2_log.txt
 
 echo "Experiment 3"
-python3 -Wignore src/experiment1.py > ex3_log.txt
+python3 -Wignore src/experiment_3.py > ex3_log.txt

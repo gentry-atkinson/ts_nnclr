@@ -14,9 +14,9 @@
 #  instance
 
 
-run_trad = False
-run_ae = False
-run_nnclr = False
+run_trad = True
+run_ae = True
+run_nnclr = True
 run_simclr = True
 
 #from utils.import_datasets import get_unimib_data
@@ -156,7 +156,7 @@ if __name__ == '__main__':
             print('Shape of AE Features: ', train_features.shape)
             #Low Noise Labels
             #model = KNeighborsClassifier(n_neighbors=3)
-            model = SVC()
+            model = SVC(kernel='poly', degree=5, gamma='scale')
             model.fit(train_features, np.argmax(y_low_noise_train, axis=-1))
             y_pred = model.predict(test_features)
             print("AE accuracy low noise: ", accuracy_score(np.argmax(y_low_noise_test,axis=-1), y_pred))
@@ -181,7 +181,7 @@ if __name__ == '__main__':
             low_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
             #High Noise Labels
             #model = KNeighborsClassifier(n_neighbors=3)
-            model = SVC()
+            model = SVC(kernel='poly', degree=5, gamma='scale')
             model.fit(train_features, np.argmax(y_high_noise_train, axis=-1))
             y_pred = model.predict(test_features)
             print("AE accuracy high noise: ", accuracy_score(np.argmax(y_high_noise_test,axis=-1), y_pred))

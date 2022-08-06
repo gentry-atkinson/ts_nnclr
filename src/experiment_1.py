@@ -13,9 +13,9 @@
 #  classifying the extracted features
 
 run_trad = True
-run_ae = False
-run_nnclr = False
-run_simclr = False
+run_ae = True
+run_nnclr = True
+run_simclr = True
 
 #from utils.import_datasets import get_unimib_data
 from sklearn.neighbors import KNeighborsClassifier
