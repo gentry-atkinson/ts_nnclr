@@ -26,6 +26,7 @@ from load_data_time_series_dev.HAR.MobiAct.mobiact_adl_load_dataset import mobia
 import numpy as np
 import pandas as pd
 import torch
+import gc
 
 datasets = {
     'unimib' :  tuple(unimib_load_dataset()),
@@ -71,6 +72,7 @@ if __name__ == '__main__':
             from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
             train_features = get_trad_features(np.reshape(flattened_train, (flattened_train.shape[0], flattened_train.shape[1])))
             test_features = get_trad_features(np.reshape(flattened_test, (flattened_test.shape[0], flattened_test.shape[1])))
+            gc.collect()
             print('Shape of Traditional Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
             model.fit(train_features, y)
@@ -85,6 +87,7 @@ if __name__ == '__main__':
             from utils.ae_feature_learner import get_features_for_set as get_ae_features
             train_features, ae_feature_learner = get_ae_features(X, with_visual=False, returnModel=True)
             test_features = ae_feature_learner.predict(X_test)
+            gc.collect()
             print('Shape of AE Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
             model.fit(train_features, y)
@@ -102,6 +105,7 @@ if __name__ == '__main__':
             torch_X = torch_X.float()
             _, test_features = nnclr_feature_learner(torch_X, return_features=True)
             test_features = test_features.cpu().detach().numpy()
+            gc.collect()
             print('Shape of NNCLR Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
             model.fit(train_features, y)
@@ -120,6 +124,7 @@ if __name__ == '__main__':
             torch_X = torch_X.float()
             _, test_features = simclr_feature_learner(torch_X, return_features=True)
             test_features = test_features.cpu().detach().numpy()
+            gc.collect()
             print('Shape of SimCLR Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
             model.fit(train_features, y)

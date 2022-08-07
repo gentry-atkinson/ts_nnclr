@@ -30,6 +30,7 @@ from sklearn.svm import SVC
 import numpy as np
 import pandas as pd
 import torch
+import gc
 
 datasets = {
     'unimib' :  tuple(unimib_load_dataset()),
@@ -100,6 +101,7 @@ if __name__ == '__main__':
             print('Shape of Traditional Features: ', train_features.shape)
             #Low Noise Labels
             #model = KNeighborsClassifier(n_neighbors=3)
+            gc.collect()
             model = SVC(kernel='poly', degree=5, gamma='scale')
             model.fit(train_features, np.argmax(y_low_noise_train, axis=-1))
             y_pred = model.predict(test_features)
@@ -126,6 +128,7 @@ if __name__ == '__main__':
             low_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
             #High Noise Labels
             #model = KNeighborsClassifier(n_neighbors=3)
+            gc.collect()
             model = SVC(kernel='poly', degree=5, gamma='scale')
             model.fit(train_features, np.argmax(y_high_noise_train, axis=-1))
             y_pred = model.predict(test_features)
@@ -156,6 +159,7 @@ if __name__ == '__main__':
             print('Shape of AE Features: ', train_features.shape)
             #Low Noise Labels
             #model = KNeighborsClassifier(n_neighbors=3)
+            gc.collect()
             model = SVC(kernel='poly', degree=5, gamma='scale')
             model.fit(train_features, np.argmax(y_low_noise_train, axis=-1))
             y_pred = model.predict(test_features)
@@ -214,6 +218,7 @@ if __name__ == '__main__':
             print('Shape of NNCLR Features: ', train_features.shape)
             #Low Noise Labels
             #model = KNeighborsClassifier(n_neighbors=3)
+            gc.collect()
             model = SVC(kernel='poly', degree=3, gamma='scale')
             model.fit(train_features, np.argmax(y_low_noise_train, axis=-1))
             y_pred = model.predict(test_features)
@@ -272,6 +277,7 @@ if __name__ == '__main__':
             print('Shape of SimCLR Features: ', train_features.shape)
             #Low Noise Labels
             #model = KNeighborsClassifier(n_neighbors=3)
+            gc.collect()
             model = SVC(kernel='poly', degree=3, gamma='scale')
             model.fit(train_features, np.argmax(y_low_noise_train, axis=-1))
             y_pred = model.predict(test_features)

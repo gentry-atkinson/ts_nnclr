@@ -29,6 +29,7 @@ import numpy as np
 import pandas as pd
 import torch
 import json
+import gc
 
 datasets = {
     'unimib' :  tuple(unimib_load_dataset()),
@@ -77,6 +78,7 @@ if __name__ == '__main__':
             features = get_trad_features(np.reshape(flattened_X, (flattened_X.shape[0], flattened_X.shape[1])))
             features_split = []
             dist_mat = []
+            gc.collect()
             for l in range(num_labels):
                 #print("Label: ", l)
                 w = np.where(y_flat==l)
@@ -111,6 +113,7 @@ if __name__ == '__main__':
             features = get_ae_features(X_total, with_visual=False, returnModel=False)
             features_split = []
             dist_mat = []
+            gc.collect()
             for l in range(num_labels):
                 w = np.where(y_flat==l)
                 features_split.append(np.array(features[w][:]))
@@ -121,6 +124,14 @@ if __name__ == '__main__':
             for i in features_split:
                 dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
             dist_mat = np.array(dist_mat)
+            inter_sum = 0
+            intra_sum = 0
+            for i in range(len(dist_mat)):
+                for j in range(len(dist_mat[0])):
+                    if i == j:
+                        intra_sum += dist_mat[i][j]
+                    else:
+                        inter_sum += dist_mat[i][j]
             results['Features'].append('AutoEncoder')
             results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
             results['Avg Intra-Dist'].append(intra_sum/num_labels)
@@ -137,6 +148,7 @@ if __name__ == '__main__':
             features = get_nnclr_features(X_total, y=y_total, returnModel=False)
             features_split = []
             dist_mat = []
+            gc.collect()
             for l in range(num_labels):
                 w = np.where(y_flat==l)
                 features_split.append(np.array(features[w][:]))
@@ -147,6 +159,14 @@ if __name__ == '__main__':
             for i in features_split:
                 dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
             dist_mat = np.array(dist_mat)
+            inter_sum = 0
+            intra_sum = 0
+            for i in range(len(dist_mat)):
+                for j in range(len(dist_mat[0])):
+                    if i == j:
+                        intra_sum += dist_mat[i][j]
+                    else:
+                        inter_sum += dist_mat[i][j]
             results['Features'].append('NNCLR')
             results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
             results['Avg Intra-Dist'].append(intra_sum/num_labels)
@@ -162,6 +182,7 @@ if __name__ == '__main__':
 
             features_split = []
             dist_mat = []
+            gc.collect()
             for l in range(num_labels):
                 w = np.where(y_flat==l)
                 features_split.append(np.array(features[w][:]))
@@ -172,6 +193,14 @@ if __name__ == '__main__':
             for i in features_split:
                 dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
             dist_mat = np.array(dist_mat)
+            inter_sum = 0
+            intra_sum = 0
+            for i in range(len(dist_mat)):
+                for j in range(len(dist_mat[0])):
+                    if i == j:
+                        intra_sum += dist_mat[i][j]
+                    else:
+                        inter_sum += dist_mat[i][j]
             results['Features'].append('SimCLR')
             results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
             results['Avg Intra-Dist'].append(intra_sum/num_labels)
