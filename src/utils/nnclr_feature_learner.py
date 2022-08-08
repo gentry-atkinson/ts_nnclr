@@ -24,7 +24,7 @@ from lightly_plus_time.lightly.loss import NTXentLoss
 MAX_EPOCHS = 100
 PATIENCE = 5
 
-def get_features_for_set(X, y=None, with_visual=False, with_summary=False, returnModel=False):
+def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='CNN', returnModel=False):
     #resnet = torchvision.models.resnet18()
     #backbone = nn.Sequential(*list(resnet.children())[:-1])
     print("Swapping to channels first for PyTorch")
@@ -32,16 +32,31 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, retur
     y_flat = np.argmax(y, axis=-1)
     print("Backbone channels in: ", X[0].shape[0])
     print("Backbone samples in: ", X[0].shape[1])
-    backbone = nn.Sequential(
-        nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-        torch.nn.BatchNorm1d(64),
-        torch.nn.ReLU(),
-        nn.Conv1d(in_channels=64, out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-        torch.nn.BatchNorm1d(64),
-        torch.nn.ReLU(),
-        torch.nn.AdaptiveAvgPool1d(1),
-        nn.Flatten()
-    )
+    if bb == 'CNN':
+        backbone = nn.Sequential(
+            nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
+            torch.nn.BatchNorm1d(64),
+            torch.nn.ReLU(),
+            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
+            torch.nn.BatchNorm1d(64),
+            torch.nn.ReLU(),
+            torch.nn.AdaptiveAvgPool1d(1),
+            nn.Flatten()
+        )
+    elif bb == "Tansformer":
+        backbone = nn.Sequential(
+            nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
+            torch.nn.BatchNorm1d(64),
+            torch.nn.ReLU(),
+            torch.nn.Transformer(d_model=64, nhead=8),
+            torch.nn.BatchNorm1d(64),
+            torch.nn.ReLU(),
+            torch.nn.AdaptiveAvgPool1d(1),
+            nn.Flatten()
+        )
+    else:
+        print("Invalid backbone")
+        exit()
     
     model = NNCLR(backbone=backbone, num_ftrs=64, proj_hidden_dim=64, pred_hidden_dim=64, )
 

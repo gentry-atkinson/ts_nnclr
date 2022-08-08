@@ -12,17 +12,17 @@
 #Hypothesis: NNCLR will have the highest accuracy and F1 when
 #  classifying the extracted features
 
-run_trad = True
+run_trad = False
 run_ae = False
-run_nnclr = False
+run_nnclr = True
 run_simclr = False
 
 #from utils.import_datasets import get_unimib_data
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
-from load_data_time_series.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
-from load_data_time_series.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
+#from load_data_time_series.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
+#from load_data_time_series.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
 import numpy as np
 import pandas as pd
 import torch
@@ -30,7 +30,7 @@ import gc
 
 datasets = {
     'unimib' :  tuple(unimib_load_dataset()),
-    'twister' : tuple(e4_load_dataset()),
+    #'twister' : tuple(e4_load_dataset()),
     #'mobiact' : tuple(mobiact_adl_load_dataset(orig_zipfile=None))
 }
 
@@ -103,7 +103,7 @@ if __name__ == '__main__':
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
         if(run_nnclr):
             from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
-            train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True)
+            train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True, bb='CNN')
             torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
             torch_X = torch_X.float()
             _, test_features = nnclr_feature_learner(torch_X, return_features=True)
