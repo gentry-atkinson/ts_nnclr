@@ -13,16 +13,16 @@
 #  classifying the extracted features
 
 run_trad = True
-run_ae = True
-run_nnclr = True
-run_simclr = True
+run_ae = False
+run_nnclr = False
+run_simclr = False
 
 #from utils.import_datasets import get_unimib_data
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
-from load_data_time_series_dev.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
-#from load_data_time_series_dev.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
-from load_data_time_series_dev.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
+from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
+from load_data_time_series.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
+from load_data_time_series.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
 import numpy as np
 import pandas as pd
 import torch
@@ -30,8 +30,8 @@ import gc
 
 datasets = {
     'unimib' :  tuple(unimib_load_dataset()),
-    #'twister' : tuple(e4_load_dataset()),
-    #'mobiact' : tuple(mobiact_adl_load_dataset())
+    'twister' : tuple(e4_load_dataset()),
+    #'mobiact' : tuple(mobiact_adl_load_dataset(orig_zipfile=None))
 }
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -41,10 +41,11 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 results = {
     'Features'  : [],
-    'Acc'   : [],
-    'F1'    : [],
-    'Prec'  : [],
-    'Rec'   : []
+    'Data'      : [],
+    'Acc'       : [],
+    'F1'        : [],
+    'Prec'      : [],
+    'Rec'       : []
 }
 
 if __name__ == '__main__':
@@ -79,6 +80,7 @@ if __name__ == '__main__':
             y_pred = model.predict(test_features)
             print("Trad accuracy: ", accuracy_score(y_test, y_pred))
             results['Features'].append('Traditional')
+            results['Data'].append(set)
             results['Acc'].append(accuracy_score(y_test, y_pred))
             results['F1'].append(f1_score(y_test, y_pred, average='weighted'))
             results['Prec'].append(precision_score(y_test, y_pred, average='weighted'))
@@ -94,6 +96,7 @@ if __name__ == '__main__':
             y_pred = model.predict(test_features)
             print("AE accuracy: ", accuracy_score(y_test, y_pred))
             results['Features'].append('Autoencoder')
+            results['Data'].append(set)
             results['Acc'].append(accuracy_score(y_test, y_pred))
             results['F1'].append(f1_score(y_test, y_pred, average='weighted'))
             results['Prec'].append(precision_score(y_test, y_pred, average='weighted'))
@@ -112,6 +115,7 @@ if __name__ == '__main__':
             y_pred = model.predict(test_features)
             print("NNCLR accuracy: ", accuracy_score(y_test, y_pred))
             results['Features'].append('NNCLR')
+            results['Data'].append(set)
             results['Acc'].append(accuracy_score(y_test, y_pred))
             results['F1'].append(f1_score(y_test, y_pred, average='weighted'))
             results['Prec'].append(precision_score(y_test, y_pred, average='weighted'))
@@ -131,6 +135,7 @@ if __name__ == '__main__':
             y_pred = model.predict(test_features)
             print("SimCLR accuracy: ", accuracy_score(y_test, y_pred))
             results['Features'].append('SimClr')
+            results['Data'].append(set)
             results['Acc'].append(accuracy_score(y_test, y_pred))
             results['F1'].append(f1_score(y_test, y_pred, average='weighted'))
             results['Prec'].append(precision_score(y_test, y_pred, average='weighted'))

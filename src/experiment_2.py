@@ -20,9 +20,9 @@ run_nnclr = True
 run_simclr = True
 
 #from utils.import_datasets import get_unimib_data
-from load_data_time_series_dev.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
+from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
 #from load_data_time_series_dev.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
-from load_data_time_series_dev.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
+from load_data_time_series.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
 from scipy.stats import wasserstein_distance
 from scipy.spatial.distance import cdist
 import numpy as np
@@ -44,6 +44,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 results = {
     'Features'        : [],
+    'Data'            : [],
     'Avg Inter-Dist'  : [],
     'Avg Intra-Dist'  : [],
     'Max Dist'        : [],
@@ -100,6 +101,7 @@ if __name__ == '__main__':
                     else:
                         inter_sum += dist_mat[i][j]
             results['Features'].append('Traditional')
+            results['Data'].append(set)
             results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
             results['Avg Intra-Dist'].append(intra_sum/num_labels)
             results['Max Dist'].append(np.amax(dist_mat))
@@ -133,6 +135,7 @@ if __name__ == '__main__':
                     else:
                         inter_sum += dist_mat[i][j]
             results['Features'].append('AutoEncoder')
+            results['Data'].append(set)
             results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
             results['Avg Intra-Dist'].append(intra_sum/num_labels)
             results['Max Dist'].append(np.amax(dist_mat))
@@ -168,6 +171,7 @@ if __name__ == '__main__':
                     else:
                         inter_sum += dist_mat[i][j]
             results['Features'].append('NNCLR')
+            results['Data'].append(set)
             results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
             results['Avg Intra-Dist'].append(intra_sum/num_labels)
             results['Max Dist'].append(np.amax(dist_mat))
@@ -202,6 +206,7 @@ if __name__ == '__main__':
                     else:
                         inter_sum += dist_mat[i][j]
             results['Features'].append('SimCLR')
+            results['Data'].append(set)
             results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
             results['Avg Intra-Dist'].append(intra_sum/num_labels)
             results['Max Dist'].append(np.amax(dist_mat))

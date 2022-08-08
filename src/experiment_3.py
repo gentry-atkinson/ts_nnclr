@@ -20,9 +20,9 @@ run_nnclr = True
 run_simclr = True
 
 #from utils.import_datasets import get_unimib_data
-from load_data_time_series_dev.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
+from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
 #from load_data_time_series_dev.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
-from load_data_time_series_dev.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
+from load_data_time_series.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
 from utils.add_nar import add_nar_from_array
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
@@ -45,6 +45,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 low_noise_results = {
     'Features'          : [],
+    'Data'              : [],
     '# Mislabeled'      : [],
     'Acc'               : [],
     'P(mis)'            : [],
@@ -54,6 +55,7 @@ low_noise_results = {
 
 high_noise_results = {
     'Features'          : [],
+    'Data'              : [],
     '# Mislabeled'      : [],
     'Acc'               : [],
     'P(mis)'            : [],
@@ -121,6 +123,7 @@ if __name__ == '__main__':
                     if np.argmax(y_low_noise_test[i]) != y_pred[i]:
                         mispred_given_incorrect_label += 1
             low_noise_results['Features'].append('Traditional')
+            low_noise_results['Data'].append(set)
             low_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
             low_noise_results['Acc'].append(accuracy_score(np.argmax(y_low_noise_test,axis=-1), y_pred))
             low_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
@@ -147,6 +150,7 @@ if __name__ == '__main__':
                     if np.argmax(y_high_noise_test[i]) != y_pred[i]:
                         mispred_given_incorrect_label += 1
             high_noise_results['Features'].append('Traditional')
+            high_noise_results['Data'].append(set)
             high_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
             high_noise_results['Acc'].append(accuracy_score(np.argmax(y_high_noise_test,axis=-1), y_pred))
             high_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
@@ -178,6 +182,7 @@ if __name__ == '__main__':
                     if np.argmax(y_low_noise_test[i]) != y_pred[i]:
                         mispred_given_incorrect_label += 1
             low_noise_results['Features'].append('Autoencoder')
+            low_noise_results['Data'].append(set)
             low_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
             low_noise_results['Acc'].append(accuracy_score(np.argmax(y_low_noise_test,axis=-1), y_pred))
             low_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
@@ -203,6 +208,7 @@ if __name__ == '__main__':
                     if np.argmax(y_high_noise_test[i]) != y_pred[i]:
                         mispred_given_incorrect_label += 1
             high_noise_results['Features'].append('Autoencoder')
+            high_noise_results['Data'].append(set)
             high_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
             high_noise_results['Acc'].append(accuracy_score(np.argmax(y_high_noise_test,axis=-1), y_pred))
             high_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
@@ -237,6 +243,7 @@ if __name__ == '__main__':
                     if np.argmax(y_low_noise_test[i]) != y_pred[i]:
                         mispred_given_incorrect_label += 1
             low_noise_results['Features'].append('NNCLR')
+            low_noise_results['Data'].append(set)
             low_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
             low_noise_results['Acc'].append(accuracy_score(np.argmax(y_low_noise_test,axis=-1), y_pred))
             low_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
@@ -262,6 +269,7 @@ if __name__ == '__main__':
                     if np.argmax(y_high_noise_test[i]) != y_pred[i]:
                         mispred_given_incorrect_label += 1
             high_noise_results['Features'].append('NNCLR')
+            high_noise_results['Data'].append(set)
             high_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
             high_noise_results['Acc'].append(accuracy_score(np.argmax(y_high_noise_test,axis=-1), y_pred))
             high_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
@@ -296,6 +304,7 @@ if __name__ == '__main__':
                     if np.argmax(y_low_noise_test[i]) != y_pred[i]:
                         mispred_given_incorrect_label += 1
             low_noise_results['Features'].append('SimCLR')
+            low_noise_results['Data'].append(set)
             low_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
             low_noise_results['Acc'].append(accuracy_score(np.argmax(y_low_noise_test,axis=-1), y_pred))
             low_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
@@ -321,6 +330,7 @@ if __name__ == '__main__':
                     if np.argmax(y_high_noise_test[i]) != y_pred[i]:
                         mispred_given_incorrect_label += 1
             high_noise_results['Features'].append('SimCLR')
+            high_noise_results['Data'].append(set)
             high_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
             high_noise_results['Acc'].append(accuracy_score(np.argmax(y_high_noise_test,axis=-1), y_pred))
             high_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
