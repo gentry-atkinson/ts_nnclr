@@ -25,6 +25,7 @@ from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import u
 from load_data_time_series.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
 from scipy.stats import wasserstein_distance
 from scipy.spatial.distance import cdist
+from datetime import datetime
 import numpy as np
 import pandas as pd
 import torch
@@ -216,7 +217,7 @@ if __name__ == '__main__':
             raw_distances['Traditional'] = dist_mat
 
     result_gram = pd.DataFrame.from_dict(results)
-    result_gram.to_csv('src/results/experiment2_dataframe.csv')
+    result_gram.to_csv('src/results/experiment2_dataframe_{}.csv'.format(str(datetime.now())))
 
     with open('results/experiment_2_raw_distances.txt', 'w') as convert_file:
      convert_file.write(json.dumps(raw_distances))

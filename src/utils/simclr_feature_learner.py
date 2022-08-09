@@ -21,7 +21,7 @@ from lightly_plus_time.lightly.loss import NTXentLoss
 from lightly_plus_time.lightly.models.modules import SimCLRProjectionHead
 from lightly_plus_time.lightly.models.simclr import SimCLR
 
-MAX_EPOCHS = 5
+MAX_EPOCHS = 100
 PATIENCE = 5
 
 # class SimCLR(nn.Module):
@@ -50,6 +50,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, retur
         nn.Conv1d(in_channels=64, out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
         torch.nn.BatchNorm1d(64),
         torch.nn.ReLU(),
+        nn.Dropout(p=0.1),
         torch.nn.AdaptiveAvgPool1d(1),
         nn.Flatten()
     )

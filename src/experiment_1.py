@@ -12,26 +12,28 @@
 #Hypothesis: NNCLR will have the highest accuracy and F1 when
 #  classifying the extracted features
 
-run_trad = False
-run_ae = False
+run_trad = True
+run_ae = True
 run_nnclr = True
-run_simclr = False
+run_simclr = True
 
 #from utils.import_datasets import get_unimib_data
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
-#from load_data_time_series.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
-#from load_data_time_series.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
+from load_data_time_series.twristar_dataset_demo import e4_load_dataset
+from load_data_time_series.HAR.UCI_HAR.uci_har_load_dataset import uci_har_load_dataset
+from datetime import datetime
 import numpy as np
 import pandas as pd
 import torch
 import gc
 
+#Dataset are returned in channels-last format
 datasets = {
-    'unimib' :  tuple(unimib_load_dataset()),
-    #'twister' : tuple(e4_load_dataset()),
-    #'mobiact' : tuple(mobiact_adl_load_dataset(orig_zipfile=None))
+    'unimib' :  unimib_load_dataset,
+    'twister' : e4_load_dataset,
+    'uci har' : uci_har_load_dataset
 }
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -51,17 +53,17 @@ results = {
 if __name__ == '__main__':
     for set in datasets.keys():
         print("------------Set: ", set, "------------")
-        X, y, X_test, y_test = datasets[set]
+        X, y, X_test, y_test = datasets[set](incl_xyz_accel=True, incl_rms_accel=False)
 
         if X.shape[2] == 1:
             flattened_train = X
         else:
-            flattened_train = np.array([np.linalg.norm(i, axis=0) for i in X])
+            flattened_train = np.array([np.linalg.norm(i, axis=1) for i in X])
 
         if X_test.shape[2] == 1:
             flattened_test = X_test
         else:
-            flattened_test = np.array([np.linalg.norm(i, axis=0) for i in X_test])
+            flattened_test = np.array([np.linalg.norm(i, axis=1) for i in X_test])
 
         print('Shape of X: ', X.shape)
         print('Shape of y: ', y.shape)
@@ -142,5 +144,5 @@ if __name__ == '__main__':
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
 
         result_gram = pd.DataFrame.from_dict(results)
-        result_gram.to_csv('src/results/experiment1_dataframe.csv')
+        result_gram.to_csv('src/results/experiment1_dataframe_{}.csv'.format(str(datetime.now())))
         print(result_gram.to_string())

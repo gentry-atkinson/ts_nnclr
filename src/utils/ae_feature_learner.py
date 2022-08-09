@@ -21,6 +21,7 @@ def make_encoder():
   encoder.add(tf.keras.layers.Input(input_size))
   encoder.add(tf.keras.layers.Conv1D(64, kernel_size, activation='relu', data_format='channels_last'))
   encoder.add(tf.keras.layers.Conv1D(64, kernel_size, activation='relu'))
+  encoder.add(tf.keras.layers.Dropout(0.1))
   encoder.add(tf.keras.layers.MaxPooling1D(kernel_size))
   encoder.add(tf.keras.layers.Flatten())
   encoder.add(tf.keras.layers.Dense(latent_dim, activation='relu'))

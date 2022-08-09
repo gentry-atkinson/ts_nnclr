@@ -40,18 +40,21 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
             nn.Conv1d(in_channels=64, out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
             torch.nn.BatchNorm1d(64),
             torch.nn.ReLU(),
+            nn.Dropout(p=0.1),
             torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()
         )
-    elif bb == "Tansformer":
+    elif bb == "Transformer":
         backbone = nn.Sequential(
             nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
             torch.nn.BatchNorm1d(64),
             torch.nn.ReLU(),
-            torch.nn.Transformer(d_model=64, nhead=8),
+            nn.MaxPool1d(kernel_size=8),
+            nn.LazyLinear(out_features=64),
+            torch.nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=4) , num_layers=4),
             torch.nn.BatchNorm1d(64),
             torch.nn.ReLU(),
-            torch.nn.AdaptiveAvgPool1d(1),
+            #torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()
         )
     else:
@@ -66,7 +69,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
     memory_bank = NNMemoryBankModule(size=4096)
     memory_bank.to(device)
 
-    print("Backbone: \n", summary(backbone, X[0].shape))
+    #print("Backbone: \n", summary(backbone, X[0].shape))
 
     collate_fn = TS_NNCLRCollateFunction(input_size=X[0].shape[0])
 
