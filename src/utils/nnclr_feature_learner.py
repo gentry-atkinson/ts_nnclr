@@ -21,7 +21,7 @@ from lightly_plus_time.lightly.data import LightlyDataset
 from lightly_plus_time.lightly.loss import NTXentLoss
 
 
-MAX_EPOCHS = 5
+MAX_EPOCHS = 100
 PATIENCE = 5
 NUM_FEATURES = 64
 
@@ -51,7 +51,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
             torch.nn.BatchNorm1d(64),
             torch.nn.ReLU(),
             nn.LazyLinear(out_features=64),
-            torch.nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=4) , num_layers=2),
+            torch.nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=8) , num_layers=4),
             torch.nn.ReLU(),
             torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()

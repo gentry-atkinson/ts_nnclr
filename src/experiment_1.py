@@ -110,8 +110,8 @@ if __name__ == '__main__':
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
         if(run_nnclr):
             from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
-            train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True, bb='Transformer')
-            test_features = np.empty((len(X), NUM_FEATURES))
+            train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True, bb='CNN')
+            test_features = np.empty((len(X_test), NUM_FEATURES))
             for i in range(0, len(X_test)-20, 20):
                 #print(i)
                 torch_X = torch.tensor(np.reshape(X_test[i:i+20, :, :], (20, X_test.shape[2], X_test.shape[1]))).to(device)
