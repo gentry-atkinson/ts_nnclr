@@ -21,8 +21,9 @@ from lightly_plus_time.lightly.data import LightlyDataset
 from lightly_plus_time.lightly.loss import NTXentLoss
 
 
-MAX_EPOCHS = 100
+MAX_EPOCHS = 5
 PATIENCE = 5
+NUM_FEATURES = 64
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='CNN', returnModel=False):
     #resnet = torchvision.models.resnet18()
@@ -49,10 +50,8 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
             nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
             torch.nn.BatchNorm1d(64),
             torch.nn.ReLU(),
-            nn.MaxPool1d(kernel_size=8),
             nn.LazyLinear(out_features=64),
-            torch.nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=4) , num_layers=4),
-            torch.nn.BatchNorm1d(64),
+            torch.nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=4) , num_layers=2),
             torch.nn.ReLU(),
             torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()
@@ -126,14 +125,32 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
                 losses = losses[1:]
         losses.append(avg_loss.cpu().item())
         #print(len(losses), ' ', losses)
-            
 
-    torch_X = torch.tensor(X).to(device)
+    print("Training finished for NNCLR")    
+
+    del torch_X
+    del dataloader
+
+    feat = np.empty((len(X), NUM_FEATURES))
+    for i in range(0, len(X)-20, 20):
+        torch_X = torch.tensor(X[i:i+20, :, :]).to(device)
+        torch_X = torch_X.float()
+        _, f = model(torch_X, return_features=True)
+        #feat.append(f.cpu().detach().numpy())
+        #feat = np.append(feat, f.cpu().detach().numpy(), axis=0)
+        feat[i:i+20] = f.cpu().detach().numpy()
+    else:
+        i+=20
+        torch_X = torch.tensor(X[i:len(X), :, :]).to(device)
+        torch_X = torch_X.float()
+        _, f = model(torch_X, return_features=True)
+        #feat = np.append(feat, f.cpu().detach().numpy(), axis=0) 
+        feat[i:len(X)] = f.cpu().detach().numpy()
+
+    print("Shape of NNCLR features before return: ", feat.shape)
     
-    torch_X = torch_X.float()
-    _, f = model(torch_X, return_features=True)
 
     if returnModel:
-        return f.cpu().detach().numpy(), model
+        return np.array(feat), model
     else:
-        return f.cpu().detach().numpy()
+        return np.array(feat)

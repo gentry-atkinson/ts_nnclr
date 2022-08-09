@@ -12,10 +12,15 @@
 #Hypothesis: NNCLR will have the highest accuracy and F1 when
 #  classifying the extracted features
 
+from utils.nnclr_feature_learner import NUM_FEATURES
+
+
 run_trad = False
 run_ae = False
 run_nnclr = True
 run_simclr = False
+
+NUM_FEATURES = 64
 
 #from utils.import_datasets import get_unimib_data
 from sklearn.neighbors import KNeighborsClassifier
@@ -106,10 +111,21 @@ if __name__ == '__main__':
         if(run_nnclr):
             from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
             train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True, bb='Transformer')
-            torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
-            torch_X = torch_X.float()
-            _, test_features = nnclr_feature_learner(torch_X, return_features=True)
-            test_features = test_features.cpu().detach().numpy()
+            test_features = np.empty((len(X), NUM_FEATURES))
+            for i in range(0, len(X_test)-20, 20):
+                #print(i)
+                torch_X = torch.tensor(np.reshape(X_test[i:i+20, :, :], (20, X_test.shape[2], X_test.shape[1]))).to(device)
+                torch_X = torch_X.float()
+                _, f = nnclr_feature_learner(torch_X, return_features=True)
+                test_features[i:i+20] = f.cpu().detach().numpy()
+            else:
+                i += 20
+                #print("Last run ", i)
+                torch_X = torch.tensor(np.reshape(X_test[i:len(X_test), :, :], (len(X_test)-i, X_test.shape[2], X_test.shape[1]))).to(device)
+                torch_X = torch_X.float()
+                _, f = nnclr_feature_learner(torch_X, return_features=True)
+                test_features[i:len(X_test)] = f.cpu().detach().numpy()
+            test_features = np.array(test_features)
             gc.collect()
             print('Shape of NNCLR Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
