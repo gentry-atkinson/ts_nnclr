@@ -54,7 +54,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
             torch.nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=4) , num_layers=4),
             torch.nn.BatchNorm1d(64),
             torch.nn.ReLU(),
-            #torch.nn.AdaptiveAvgPool1d(1),
+            torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()
         )
     else:
@@ -69,6 +69,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
     memory_bank = NNMemoryBankModule(size=4096)
     memory_bank.to(device)
 
+    print("Backbone ", backbone)
     #print("Backbone: \n", summary(backbone, X[0].shape))
 
     collate_fn = TS_NNCLRCollateFunction(input_size=X[0].shape[0])

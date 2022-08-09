@@ -21,8 +21,8 @@ run_simclr = True
 
 #from utils.import_datasets import get_unimib_data
 from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
-#from load_data_time_series_dev.HAR.e4_wristband_Nov2019.e4_load_dataset import e4_load_dataset
-from load_data_time_series.HAR.MobiAct.mobiact_adl_load_dataset import mobiact_adl_load_dataset
+from load_data_time_series.twristar_dataset_demo import e4_load_dataset
+from load_data_time_series.HAR.UCI_HAR.uci_har_load_dataset import uci_har_load_dataset
 from scipy.stats import wasserstein_distance
 from scipy.spatial.distance import cdist
 from datetime import datetime
@@ -33,9 +33,9 @@ import json
 import gc
 
 datasets = {
-    'unimib' :  tuple(unimib_load_dataset()),
-    #'twister' : tuple(e4_load_dataset()),
-    #'mobiact' : tuple(mobiact_adl_load_dataset())
+    'unimib' :  unimib_load_dataset,
+    'twister' : e4_load_dataset,
+    'uci har' : uci_har_load_dataset
 }
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -58,7 +58,7 @@ raw_distances = {}
 if __name__ == '__main__':
     for set in datasets.keys():
         print("------------Set: ", set, "------------")
-        X, y, X_test, y_test = datasets[set]
+        X, y, X_test, y_test = datasets[set](incl_xyz_accel=True, incl_rms_accel=False)
 
         X_total = np.concatenate((X, X_test), axis=0)
         y_total = np.concatenate((y, y_test), axis=0)
