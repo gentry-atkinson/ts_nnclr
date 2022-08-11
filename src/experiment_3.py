@@ -17,12 +17,15 @@
 run_trad = True
 run_ae = True
 run_nnclr = True
+run_nnclr_t = True
 run_simclr = True
+run_simclr_t = True
 
 #from utils.import_datasets import get_unimib_data
 from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
 from load_data_time_series.twristar_dataset_demo import e4_load_dataset
 from load_data_time_series.HAR.UCI_HAR.uci_har_load_dataset import uci_har_load_dataset
+from utils.sh_loader import sh_loco_load_dataset
 from utils.add_nar import add_nar_from_array
 from sklearn.metrics import accuracy_score
 from sklearn.neighbors import KNeighborsClassifier
@@ -36,7 +39,8 @@ import gc
 datasets = {
     'unimib' :  unimib_load_dataset,
     'twister' : e4_load_dataset,
-    'uci har' : uci_har_load_dataset
+    'uci har' : uci_har_load_dataset,
+    'sussex huawei' : sh_loco_load_dataset
 }
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -157,6 +161,7 @@ if __name__ == '__main__':
             high_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
             high_noise_results['P(mis|correct)'].append(mispred_given_correct_label/num_correctly_labeled)
             high_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
+        
         if(run_ae):   
             from utils.ae_feature_learner import get_features_for_set as get_ae_features
             train_features, ae_feature_learner = get_ae_features(X, with_visual=False, returnModel=True)
@@ -215,14 +220,23 @@ if __name__ == '__main__':
             high_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
             high_noise_results['P(mis|correct)'].append(mispred_given_correct_label/num_correctly_labeled)
             high_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
+        
         if(run_nnclr):
             from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
-            train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True)
+            train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True, bb='CNN')
             torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
             torch_X = torch_X.float()
-            _, test_features = nnclr_feature_learner(torch_X, return_features=True)
-            test_features = test_features.cpu().detach().numpy()
+            test_features = None
+            for signal in torch_X:
+                signal = signal.to(device).float()
+                signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+                (_, _), f = nnclr_feature_learner(signal, return_features=True)
+                if test_features is None:
+                    test_features = f.cpu().detach().numpy()
+                else:
+                    test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
             print('Shape of NNCLR Features: ', train_features.shape)
+            print('Shape of NNCLR Test Features: ', test_features.shape)
             #Low Noise Labels
             #model = KNeighborsClassifier(n_neighbors=3)
             gc.collect()
@@ -276,13 +290,91 @@ if __name__ == '__main__':
             high_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
             high_noise_results['P(mis|correct)'].append(mispred_given_correct_label/num_correctly_labeled)
             high_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
-        if(run_simclr):
-            from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
-            train_features, simclr_feature_learner = get_simclr_features(X, y=y, returnModel=True)
+        
+        if(run_nnclr_t):
+            from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_t_features
+            train_features, nnclr_feature_learner = get_nnclr_t_features(X, y=y, returnModel=True, bb='Transformer')
             torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
             torch_X = torch_X.float()
-            _, test_features = simclr_feature_learner(torch_X, return_features=True)
-            test_features = test_features.cpu().detach().numpy()
+            test_features = None
+            for signal in torch_X:
+                signal = signal.to(device).float()
+                signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+                (_, _), f = nnclr_feature_learner(signal, return_features=True)
+                if test_features is None:
+                    test_features = f.cpu().detach().numpy()
+                else:
+                    test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+            print('Shape of NNCLR+T Features: ', train_features.shape)
+            print('Shape of NNCLR+T Test Features: ', test_features.shape)
+            #Low Noise Labels
+            #model = KNeighborsClassifier(n_neighbors=3)
+            gc.collect()
+            model = SVC(kernel='poly', degree=3, gamma='scale')
+            model.fit(train_features, np.argmax(y_low_noise_train, axis=-1))
+            y_pred = model.predict(test_features)
+            print("NNCLR+T accuracy low noise: ", accuracy_score(np.argmax(y_low_noise_test,axis=-1), y_pred))
+            num_correctly_labeled = 0
+            num_incorrectly_labeled = 0
+            mispred_given_correct_label = 0
+            mispred_given_incorrect_label = 0
+            for i in range(len(y_test)):
+                if np.argmax(y_test[i]) == np.argmax(y_low_noise_test[i]):
+                    num_correctly_labeled += 1
+                    if np.argmax(y_low_noise_test[i]) != y_pred[i]:
+                        mispred_given_correct_label += 1
+                else:
+                    num_incorrectly_labeled += 1
+                    if np.argmax(y_low_noise_test[i]) != y_pred[i]:
+                        mispred_given_incorrect_label += 1
+            low_noise_results['Features'].append('NNCLR+T')
+            low_noise_results['Data'].append(set)
+            low_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
+            low_noise_results['Acc'].append(accuracy_score(np.argmax(y_low_noise_test,axis=-1), y_pred))
+            low_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
+            low_noise_results['P(mis|correct)'].append(mispred_given_correct_label/num_correctly_labeled)
+            low_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
+            #High Noise Labels
+            #model = KNeighborsClassifier(n_neighbors=3)
+            model = SVC(kernel='poly', degree=5, gamma='scale')
+            model.fit(train_features, np.argmax(y_high_noise_train, axis=-1))
+            y_pred = model.predict(test_features)
+            print("NNCLR+T accuracy high noise: ", accuracy_score(np.argmax(y_high_noise_test,axis=-1), y_pred))
+            num_correctly_labeled = 0
+            num_incorrectly_labeled = 0
+            mispred_given_correct_label = 0
+            mispred_given_incorrect_label = 0
+            for i in range(len(y_test)):
+                if np.argmax(y_test[i]) == np.argmax(y_high_noise_test[i]):
+                    num_correctly_labeled += 1
+                    if np.argmax(y_high_noise_test[i]) != y_pred[i]:
+                        mispred_given_correct_label += 1
+                else:
+                    num_incorrectly_labeled += 1
+                    if np.argmax(y_high_noise_test[i]) != y_pred[i]:
+                        mispred_given_incorrect_label += 1
+            high_noise_results['Features'].append('NNCLR+T')
+            high_noise_results['Data'].append(set)
+            high_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
+            high_noise_results['Acc'].append(accuracy_score(np.argmax(y_high_noise_test,axis=-1), y_pred))
+            high_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
+            high_noise_results['P(mis|correct)'].append(mispred_given_correct_label/num_correctly_labeled)
+            high_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
+
+        if(run_simclr):
+            from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
+            train_features, simclr_feature_learner = get_simclr_features(X, y=y, returnModel=True, bb='CNN')
+            torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
+            torch_X = torch_X.float()
+            test_features = None
+            for signal in torch_X:
+                signal = signal.to(device).float()
+                signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+                _, f = simclr_feature_learner(signal, return_features=True)
+                if test_features is None:
+                    test_features = f.cpu().detach().numpy()
+                else:
+                    test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
             print('Shape of SimCLR Features: ', train_features.shape)
             #Low Noise Labels
             #model = KNeighborsClassifier(n_neighbors=3)
@@ -338,6 +430,75 @@ if __name__ == '__main__':
             high_noise_results['P(mis|correct)'].append(mispred_given_correct_label/num_correctly_labeled)
             high_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
 
+        if(run_simclr_t):
+            from utils.simclr_feature_learner import get_features_for_set as get_simclr_t_features
+            train_features, simclr_feature_learner = get_simclr_features(X, y=y, returnModel=True, bb='Transformer')
+            torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
+            torch_X = torch_X.float()
+            test_features = None
+            for signal in torch_X:
+                signal = signal.to(device).float()
+                signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+                _, f = simclr_feature_learner(signal, return_features=True)
+                if test_features is None:
+                    test_features = f.cpu().detach().numpy()
+                else:
+                    test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+            print('Shape of SimCLR+T Features: ', train_features.shape)
+            #Low Noise Labels
+            #model = KNeighborsClassifier(n_neighbors=3)
+            gc.collect()
+            model = SVC(kernel='poly', degree=3, gamma='scale')
+            model.fit(train_features, np.argmax(y_low_noise_train, axis=-1))
+            y_pred = model.predict(test_features)
+            print("SimCLR+T accuracy low noise: ", accuracy_score(np.argmax(y_low_noise_test,axis=-1), y_pred))
+            num_correctly_labeled = 0
+            num_incorrectly_labeled = 0
+            mispred_given_correct_label = 0
+            mispred_given_incorrect_label = 0
+            for i in range(len(y_test)):
+                if np.argmax(y_test[i]) == np.argmax(y_low_noise_test[i]):
+                    num_correctly_labeled += 1
+                    if np.argmax(y_low_noise_test[i]) != y_pred[i]:
+                        mispred_given_correct_label += 1
+                else:
+                    num_incorrectly_labeled += 1
+                    if np.argmax(y_low_noise_test[i]) != y_pred[i]:
+                        mispred_given_incorrect_label += 1
+            low_noise_results['Features'].append('SimCLR+T')
+            low_noise_results['Data'].append(set)
+            low_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
+            low_noise_results['Acc'].append(accuracy_score(np.argmax(y_low_noise_test,axis=-1), y_pred))
+            low_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
+            low_noise_results['P(mis|correct)'].append(mispred_given_correct_label/num_correctly_labeled)
+            low_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
+            #High Noise Labels
+            #model = KNeighborsClassifier(n_neighbors=3)
+            model = SVC(kernel='poly', degree=5, gamma='scale')
+            model.fit(train_features, np.argmax(y_high_noise_train, axis=-1))
+            y_pred = model.predict(test_features)
+            print("SimCLR+T accuracy high noise: ", accuracy_score(np.argmax(y_high_noise_test,axis=-1), y_pred))
+            num_correctly_labeled = 0
+            num_incorrectly_labeled = 0
+            mispred_given_correct_label = 0
+            mispred_given_incorrect_label = 0
+            for i in range(len(y_test)):
+                if np.argmax(y_test[i]) == np.argmax(y_high_noise_test[i]):
+                    num_correctly_labeled += 1
+                    if np.argmax(y_high_noise_test[i]) != y_pred[i]:
+                        mispred_given_correct_label += 1
+                else:
+                    num_incorrectly_labeled += 1
+                    if np.argmax(y_high_noise_test[i]) != y_pred[i]:
+                        mispred_given_incorrect_label += 1
+            high_noise_results['Features'].append('SimCLR+T')
+            high_noise_results['Data'].append(set)
+            high_noise_results['# Mislabeled'].append(num_incorrectly_labeled)
+            high_noise_results['Acc'].append(accuracy_score(np.argmax(y_high_noise_test,axis=-1), y_pred))
+            high_noise_results['P(mis)'].append((mispred_given_correct_label+mispred_given_incorrect_label)/(num_correctly_labeled+num_incorrectly_labeled))
+            high_noise_results['P(mis|correct)'].append(mispred_given_correct_label/num_correctly_labeled)
+            high_noise_results['P(mis|mislabeled)'].append(mispred_given_incorrect_label/num_incorrectly_labeled)
+    
     result_gram = pd.DataFrame.from_dict(low_noise_results)
     result_gram.to_csv('src/results/experiment3_low_noise_dataframe_{}.csv'.format(str(datetime.now())))
     print(result_gram.to_string())

@@ -17,12 +17,15 @@
 run_trad = True
 run_ae = True
 run_nnclr = True
+run_nnclr_t = True
 run_simclr = True
+run_simclr_t = True
 
 #from utils.import_datasets import get_unimib_data
 from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
 from load_data_time_series.twristar_dataset_demo import e4_load_dataset
 from load_data_time_series.HAR.UCI_HAR.uci_har_load_dataset import uci_har_load_dataset
+from utils.sh_loader import sh_loco_load_dataset
 from scipy.stats import wasserstein_distance
 from scipy.spatial.distance import cdist
 from datetime import datetime
@@ -33,9 +36,10 @@ import json
 import gc
 
 datasets = {
-    'unimib' :  unimib_load_dataset,
+    #'unimib' :  unimib_load_dataset,
     'twister' : e4_load_dataset,
-    'uci har' : uci_har_load_dataset
+    #'uci har' : uci_har_load_dataset,
+    #'sussex huawei' : sh_loco_load_dataset
 }
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -91,7 +95,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0
@@ -109,7 +113,7 @@ if __name__ == '__main__':
             results['Min Dist'].append(np.amin(dist_mat))
             results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
 
-            raw_distances['Traditional'] = dist_mat
+            raw_distances['Traditional '+set] = dist_mat
         
         if(run_ae):        
             from utils.ae_feature_learner import get_features_for_set as get_ae_features
@@ -125,7 +129,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0
@@ -143,13 +147,13 @@ if __name__ == '__main__':
             results['Min Dist'].append(np.amin(dist_mat))
             results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
 
-            raw_distances['Traditional'] = dist_mat
+            raw_distances['AE '+set] = dist_mat
 
         if(run_nnclr):
             print("Shape of X_total: ", X_total.shape)
             from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
             
-            features = get_nnclr_features(X_total, y=y_total, returnModel=False)
+            features = get_nnclr_features(X_total, y=y_total, returnModel=False, bb='CNN')
             features_split = []
             dist_mat = []
             gc.collect()
@@ -161,7 +165,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0
@@ -179,11 +183,47 @@ if __name__ == '__main__':
             results['Min Dist'].append(np.amin(dist_mat))
             results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
 
-            raw_distances['Traditional'] = dist_mat
+            raw_distances['NNCLR '+set] = dist_mat
+
+        if(run_nnclr_t):
+            print("Shape of X_total: ", X_total.shape)
+            from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_t_features
+            
+            features = get_nnclr_t_features(X_total, y=y_total, returnModel=False, bb='Transformer')
+            features_split = []
+            dist_mat = []
+            gc.collect()
+            for l in range(num_labels):
+                w = np.where(y_flat==l)
+                features_split.append(np.array(features[w][:]))
+                print("Instances with label ", l, " : ", len(features_split[l]))
+            features_split = np.array(features_split)
+            print("Shape of feature split: ", features_split.shape)
+            # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
+            for i in features_split:
+                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
+            dist_mat = np.array(dist_mat)
+            inter_sum = 0
+            intra_sum = 0
+            for i in range(len(dist_mat)):
+                for j in range(len(dist_mat[0])):
+                    if i == j:
+                        intra_sum += dist_mat[i][j]
+                    else:
+                        inter_sum += dist_mat[i][j]
+            results['Features'].append('NNCLR+T')
+            results['Data'].append(set)
+            results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
+            results['Avg Intra-Dist'].append(intra_sum/num_labels)
+            results['Max Dist'].append(np.amax(dist_mat))
+            results['Min Dist'].append(np.amin(dist_mat))
+            results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
+
+            raw_distances['NNCLR+T '+set] = dist_mat
 
         if(run_simclr):
             from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
-            features = get_simclr_features(X_total, y=y_total, returnModel=False)
+            features = get_simclr_features(X_total, y=y_total, returnModel=False, bb='CNN')
 
             features_split = []
             dist_mat = []
@@ -196,7 +236,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0
@@ -214,7 +254,42 @@ if __name__ == '__main__':
             results['Min Dist'].append(np.amin(dist_mat))
             results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
 
-            raw_distances['Traditional'] = dist_mat
+            raw_distances['SimCLR '+set] = dist_mat
+
+        if(run_simclr_t):
+            from utils.simclr_feature_learner import get_features_for_set as get_simclr_t_features
+            features = get_simclr_t_features(X_total, y=y_total, returnModel=False, bb='Transformer')
+
+            features_split = []
+            dist_mat = []
+            gc.collect()
+            for l in range(num_labels):
+                w = np.where(y_flat==l)
+                features_split.append(np.array(features[w][:]))
+                print("Instances with label ", l, " : ", len(features_split[l]))
+            features_split = np.array(features_split)
+            print("Shape of feature split: ", features_split.shape)
+            # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
+            for i in features_split:
+                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
+            dist_mat = np.array(dist_mat)
+            inter_sum = 0
+            intra_sum = 0
+            for i in range(len(dist_mat)):
+                for j in range(len(dist_mat[0])):
+                    if i == j:
+                        intra_sum += dist_mat[i][j]
+                    else:
+                        inter_sum += dist_mat[i][j]
+            results['Features'].append('SimCLR')
+            results['Data'].append(set)
+            results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
+            results['Avg Intra-Dist'].append(intra_sum/num_labels)
+            results['Max Dist'].append(np.amax(dist_mat))
+            results['Min Dist'].append(np.amin(dist_mat))
+            results['Silhouette'].append((inter_sum/(num_labels**2 - num_labels))/(intra_sum/num_labels))
+
+            raw_distances['SimCLR '+set] = dist_mat
 
     result_gram = pd.DataFrame.from_dict(results)
     result_gram.to_csv('src/results/experiment2_dataframe_{}.csv'.format(str(datetime.now())))
