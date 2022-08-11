@@ -15,12 +15,12 @@
 from utils.nnclr_feature_learner import NUM_FEATURES
 
 
-run_trad = False
+run_trad = True
 run_ae = False
 run_nnclr = False
 run_nnclr_t = False
-run_simclr = True
-run_simclr_t = True
+run_simclr = False
+run_simclr_t = False
 
 NUM_FEATURES = 64
 
@@ -28,8 +28,9 @@ NUM_FEATURES = 64
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import unimib_load_dataset
-#from load_data_time_series.twristar_dataset_demo import e4_load_dataset
-#from load_data_time_series.HAR.UCI_HAR.uci_har_load_dataset import uci_har_load_dataset
+from load_data_time_series.twristar_dataset_demo import e4_load_dataset
+from load_data_time_series.HAR.UCI_HAR.uci_har_load_dataset import uci_har_load_dataset
+from utils.sh_loader import sh_loco_load_dataset
 from datetime import datetime
 import numpy as np
 import pandas as pd
@@ -38,9 +39,10 @@ import gc
 
 #Dataset are returned in channels-last format
 datasets = {
-    'unimib' :  unimib_load_dataset,
+    #'unimib' :  unimib_load_dataset,
     #'twister' : e4_load_dataset,
-    #'uci har' : uci_har_load_dataset
+    #'uci har' : uci_har_load_dataset,
+    'sussex huawei' : sh_loco_load_dataset
 }
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
