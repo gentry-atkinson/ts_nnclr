@@ -21,7 +21,7 @@ from lightly_plus_time.lightly.loss import NTXentLoss
 from lightly_plus_time.lightly.models.modules import SimCLRProjectionHead
 from lightly_plus_time.lightly.models.simclr import SimCLR
 
-MAX_EPOCHS = 100
+MAX_EPOCHS = 5
 PATIENCE = 5
 
 # class SimCLR(nn.Module):
@@ -80,7 +80,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, retur
     )
 
     criterion = NTXentLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.06)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
     losses = list()
 
@@ -108,15 +108,29 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, retur
                 losses = losses[1:]
         losses.append(avg_loss.cpu().item())
 
-    torch_X = torch.tensor(X).to(device)
-    
-    torch_X = torch_X.float()
-    _, f = model(torch_X, return_features=True)
+    del torch_X
+    del dataloader
+
+    feat = None
+    torch_X = torch.tensor(X)
+    torch_X = torch_X.to(device).float()
+
+    print("Output channels in: ", X[0].shape[0])
+    print("Output samples in: ", X[0].shape[1])
+
+    for signal in torch_X:
+        signal = signal.to(device).float()
+        signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+        _, f = model(signal, return_features=True)
+        if feat is None:
+            feat = f.cpu().detach().numpy()
+        else:
+            feat = np.concatenate((feat, f.cpu().detach().numpy()), axis=0)
 
     if returnModel:
-        return f.cpu().detach().numpy(), model
+        return feat, model
     else:
-        return f.cpu().detach().numpy()
+        return feat
 
 
 

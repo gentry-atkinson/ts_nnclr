@@ -19,9 +19,10 @@ from lightly_plus_time.lightly.models.modules import NNMemoryBankModule
 from lightly_plus_time.lightly.data import TS_NNCLRCollateFunction
 from lightly_plus_time.lightly.data import LightlyDataset
 from lightly_plus_time.lightly.loss import NTXentLoss
+import multiprocessing
 
 
-MAX_EPOCHS = 100
+MAX_EPOCHS = 5
 PATIENCE = 5
 NUM_FEATURES = 64
 
@@ -36,10 +37,10 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
     if bb == 'CNN':
         backbone = nn.Sequential(
             nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-            torch.nn.BatchNorm1d(64),
+            torch.nn.LazyBatchNorm1d(),
             torch.nn.ReLU(),
             nn.Conv1d(in_channels=64, out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-            torch.nn.BatchNorm1d(64),
+            torch.nn.LazyBatchNorm1d(),
             torch.nn.ReLU(),
             nn.Dropout(p=0.1),
             torch.nn.AdaptiveAvgPool1d(1),
@@ -60,7 +61,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
         print("Invalid backbone")
         exit()
     
-    model = NNCLR(backbone=backbone, num_ftrs=64, proj_hidden_dim=64, pred_hidden_dim=64, )
+    model = NNCLR(backbone=backbone, num_ftrs=NUM_FEATURES, proj_hidden_dim=64, pred_hidden_dim=64, )
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
@@ -89,11 +90,11 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
       collate_fn=collate_fn,
       shuffle=True,
       drop_last=False,
-      num_workers=8,
+      num_workers=multiprocessing.cpu_count(),
     )
 
     criterion = NTXentLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.06)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
 
     print("Training NNCLR")
 
@@ -125,32 +126,35 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
                 losses = losses[1:]
         losses.append(avg_loss.cpu().item())
         #print(len(losses), ' ', losses)
-
+    model.train(False)
     print("Training finished for NNCLR")    
 
     del torch_X
     del dataloader
 
-    feat = np.empty((len(X), NUM_FEATURES))
-    for i in range(0, len(X)-20, 20):
-        torch_X = torch.tensor(X[i:i+20, :, :]).to(device)
-        torch_X = torch_X.float()
-        _, f = model(torch_X, return_features=True)
-        #feat.append(f.cpu().detach().numpy())
-        #feat = np.append(feat, f.cpu().detach().numpy(), axis=0)
-        feat[i:i+20] = f.cpu().detach().numpy()
-    else:
-        i+=20
-        torch_X = torch.tensor(X[i:len(X), :, :]).to(device)
-        torch_X = torch_X.float()
-        _, f = model(torch_X, return_features=True)
-        #feat = np.append(feat, f.cpu().detach().numpy(), axis=0) 
-        feat[i:len(X)] = f.cpu().detach().numpy()
+    feat = None
+    torch_X = torch.tensor(X)
+    torch_X = torch_X.to(device).float()
+
+    # print("Output channels in: ", X[0].shape[0])
+    # print("Output samples in: ", X[0].shape[1])
+
+    for signal in torch_X:
+        signal = signal.to(device).float()
+        signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+        (_, _), f = model(signal, return_features=True)
+        if feat is None:
+            feat = f.cpu().detach().numpy()
+        else:
+            feat = np.concatenate((feat, f.cpu().detach().numpy()), axis=0)
+
+    # (_,_), feat = model(torch_X, return_features=True)
+    # feat = feat.cpu().detach().numpy()
 
     print("Shape of NNCLR features before return: ", feat.shape)
     
 
     if returnModel:
-        return np.array(feat), model
+        return feat, model
     else:
-        return np.array(feat)
+        return feat
