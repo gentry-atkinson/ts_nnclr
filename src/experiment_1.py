@@ -20,6 +20,7 @@ run_ae = False
 run_nnclr = False
 run_nnclr_t = False
 run_simclr = True
+run_simclr_t = True
 
 NUM_FEATURES = 64
 
@@ -173,7 +174,35 @@ if __name__ == '__main__':
 
         if(run_simclr):
             from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
-            train_features, simclr_feature_learner = get_simclr_features(X, y=y, returnModel=True)
+            train_features, simclr_feature_learner = get_simclr_features(X, y=y, returnModel=True, bb='CNN')
+            torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
+            torch_X = torch_X.float()
+            test_features = None
+            for signal in torch_X:
+                signal = signal.to(device).float()
+                signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+                _, f = simclr_feature_learner(signal, return_features=True)
+                if test_features is None:
+                    test_features = f.cpu().detach().numpy()
+                else:
+                    test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+            gc.collect()
+            print('Shape of SimCLR Features: ', train_features.shape)
+            print('Shape of SimCLR Test Features: ', test_features.shape)
+            model = KNeighborsClassifier(n_neighbors=3)
+            model.fit(train_features, y)
+            y_pred = model.predict(test_features)
+            print("SimCLR accuracy: ", accuracy_score(y_test, y_pred))
+            results['Features'].append('SimClr')
+            results['Data'].append(set)
+            results['Acc'].append(accuracy_score(y_test, y_pred))
+            results['F1'].append(f1_score(y_test, y_pred, average='weighted'))
+            results['Prec'].append(precision_score(y_test, y_pred, average='weighted'))
+            results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
+
+        if(run_simclr_t):
+            from utils.simclr_feature_learner import get_features_for_set as get_simclr_t_features
+            train_features, simclr_feature_learner = get_simclr_t_features(X, y=y, returnModel=True, bb='Transformer')
             torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
             torch_X = torch_X.float()
             test_features = None

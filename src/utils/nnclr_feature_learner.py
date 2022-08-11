@@ -49,10 +49,10 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
     elif bb == "Transformer":
         backbone = nn.Sequential(
             nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-            torch.nn.BatchNorm1d(64),
+            torch.nn.LazyBatchNorm1d(),
             torch.nn.ReLU(),
             nn.LazyLinear(out_features=64),
-            torch.nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=8) , num_layers=4),
+            torch.nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=16) , num_layers=4),
             torch.nn.ReLU(),
             torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()
