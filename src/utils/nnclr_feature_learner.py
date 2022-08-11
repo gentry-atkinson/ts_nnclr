@@ -22,8 +22,8 @@ from lightly_plus_time.lightly.loss import NTXentLoss
 import multiprocessing
 
 
-MAX_EPOCHS = 5
-PATIENCE = 5
+MAX_EPOCHS = 100
+PATIENCE = 7
 NUM_FEATURES = 64
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='CNN', returnModel=False):
@@ -36,12 +36,12 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
     print("Backbone samples in: ", X[0].shape[1])
     if bb == 'CNN':
         backbone = nn.Sequential(
-            nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-            torch.nn.LazyBatchNorm1d(),
-            torch.nn.ReLU(),
-            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-            torch.nn.LazyBatchNorm1d(),
-            torch.nn.ReLU(),
+            nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
+            nn.LazyBatchNorm1d(),
+            nn.ReLU(),
+            nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
+            nn.LazyBatchNorm1d(),
+            nn.ReLU(),
             nn.Dropout(p=0.1),
             torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()
@@ -62,6 +62,9 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
         exit()
     
     model = NNCLR(backbone=backbone, num_ftrs=NUM_FEATURES, proj_hidden_dim=64, pred_hidden_dim=64, )
+    # nn.init.zeros_(model.weight.data)
+    # nn.init.zeros_(model.bias.data)
+
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)

@@ -10,7 +10,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 #from utils.gen_ts_data import generate_pattern_data_as_array
 
-latent_dim = 32
+latent_dim = 64
 kernel_size = 16
 input_size = (128,1)
 

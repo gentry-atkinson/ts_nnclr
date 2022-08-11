@@ -26,7 +26,7 @@ from load_data_time_series.HAR.UniMiB_SHAR.unimib_shar_adl_load_dataset import u
 from load_data_time_series.twristar_dataset_demo import e4_load_dataset
 from load_data_time_series.HAR.UCI_HAR.uci_har_load_dataset import uci_har_load_dataset
 from utils.sh_loader import sh_loco_load_dataset
-from scipy.stats import wasserstein_distance
+#from scipy.stats import wasserstein_distance
 from scipy.spatial.distance import cdist
 from datetime import datetime
 import numpy as np
@@ -95,7 +95,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, 'cosine')) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0
@@ -129,7 +129,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, 'cosine')) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0
@@ -165,7 +165,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, 'cosine')) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0
@@ -201,7 +201,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, 'cosine')) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0
@@ -236,7 +236,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, 'cosine')) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0
@@ -271,7 +271,7 @@ if __name__ == '__main__':
             print("Shape of feature split: ", features_split.shape)
             # print(np.mean(cdist(features_split[0], features_split[1], wasserstein_distance)))
             for i in features_split:
-                dist_mat.append([np.mean(cdist(i, j, wasserstein_distance)) for j in features_split])
+                dist_mat.append([np.mean(cdist(i, j, 'cosine')) for j in features_split])
             dist_mat = np.array(dist_mat)
             inter_sum = 0
             intra_sum = 0

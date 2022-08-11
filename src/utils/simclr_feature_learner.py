@@ -21,8 +21,8 @@ from lightly_plus_time.lightly.loss import NTXentLoss
 from lightly_plus_time.lightly.models.modules import SimCLRProjectionHead
 from lightly_plus_time.lightly.models.simclr import SimCLR
 
-MAX_EPOCHS = 5
-PATIENCE = 5
+MAX_EPOCHS = 100
+PATIENCE = 7
 
 # class SimCLR(nn.Module):
 #     def __init__(self, backbone):

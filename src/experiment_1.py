@@ -223,7 +223,7 @@ if __name__ == '__main__':
             model.fit(train_features, y)
             y_pred = model.predict(test_features)
             print("SimCLR accuracy: ", accuracy_score(y_test, y_pred))
-            results['Features'].append('SimClr')
+            results['Features'].append('SimClr+T')
             results['Data'].append(set)
             results['Acc'].append(accuracy_score(y_test, y_pred))
             results['F1'].append(f1_score(y_test, y_pred, average='weighted'))
