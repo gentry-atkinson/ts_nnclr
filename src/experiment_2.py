@@ -36,10 +36,10 @@ import json
 import gc
 
 datasets = {
-    #'unimib' :  unimib_load_dataset,
+    'unimib' :  unimib_load_dataset,
     'twister' : e4_load_dataset,
-    #'uci har' : uci_har_load_dataset,
-    #'sussex huawei' : sh_loco_load_dataset
+    'uci har' : uci_har_load_dataset,
+    'sussex huawei' : sh_loco_load_dataset
 }
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
