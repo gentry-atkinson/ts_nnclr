@@ -25,12 +25,13 @@ from lightly_plus_time.lightly.models.simclr import SimCLR
 MAX_EPOCHS = 100
 PATIENCE = 5
 
-class SelfAttention(nn.MultiheadAttention):
-    def __init__(self, ndim=64, nheads=8) -> None:
-        super().__init__(ndim=64, nheads=8)
+class SelfAttention(nn.Module):
+    def __init__(self, ndim=64, nheads=8, dropout=0.0) -> None:
+        super().__init__()
+        self.af = nn.MultiheadAttention(ndim, nheads)
 
     def forward(self, x):
-        out, _ = super()(x, x, x)
+        out, _ = self.af(x, x, x)
         return out
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False,  bb='CNN', returnModel=False):
@@ -65,16 +66,21 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False,  bb='
         #     nn.AdaptiveAvgPool1d(1),
         #     nn.Flatten()
         # )
+        
         backbone = nn.Sequential(
             nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
+            nn.LazyLinear(out_features=128),
             torch.nn.LazyBatchNorm1d(),
-            nn.MultiheadAttention(64, 8),
+            SelfAttention(ndim=128, dropout=0.1),
+            # nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
+            # torch.nn.LazyBatchNorm1d(),
+            # nn.ReLU(),
+            # nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
+            # nn.LazyLinear(out_features=64),
+            # SelfAttention(ndim=64),
             nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
             torch.nn.LazyBatchNorm1d(),
-            nn.MultiheadAttention(64, 8),
-            nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
-            torch.nn.LazyBatchNorm1d(),
-            nn.MultiheadAttention(64, 8),
+            nn.ReLU(),
             torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()
         )
@@ -102,13 +108,14 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False,  bb='
       dataset,
       batch_size=16,
       collate_fn=collate_fn,
-      shuffle=True,
+      shuffle=False,
       drop_last=False,
       num_workers=multiprocessing.cpu_count(),
     )
 
     criterion = NTXentLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.003)
+    sched = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=0.9)
 
     print("Training SimCLR "+bb)
 
@@ -127,8 +134,10 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False,  bb='
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()
+        
         avg_loss = total_loss / len(dataloader)
-        print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
+        print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}, lr: {sched.get_last_lr()}")
+        sched.step()
         #Early Stopping        
         if len(losses) == PATIENCE:
             if avg_loss >= max(losses):
