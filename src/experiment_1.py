@@ -15,11 +15,11 @@
 from utils.nnclr_feature_learner import NUM_FEATURES
 
 
-run_trad = True
-run_ae = True
-run_nnclr = True
+run_trad = False
+run_ae = False
+run_nnclr = False
 run_nnclr_t = True
-run_simclr = True
+run_simclr = False
 run_simclr_t = True
 
 NUM_FEATURES = 64
@@ -39,10 +39,10 @@ import gc
 
 #Dataset are returned in channels-last format
 datasets = {
-    'unimib' :  unimib_load_dataset,
+    #'unimib' :  unimib_load_dataset,
     'twister' : e4_load_dataset,
-    'uci har' : uci_har_load_dataset,
-    'sussex huawei' : sh_loco_load_dataset
+    #'uci har' : uci_har_load_dataset,
+    #'sussex huawei' : sh_loco_load_dataset
 }
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -230,6 +230,6 @@ if __name__ == '__main__':
             results['Prec'].append(precision_score(y_test, y_pred, average='weighted'))
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
 
-        result_gram = pd.DataFrame.from_dict(results)
-        result_gram.to_csv('src/results/experiment1_dataframe_{}.csv'.format(str(datetime.now())))
-        print(result_gram.to_string())
+    result_gram = pd.DataFrame.from_dict(results)
+    result_gram.to_csv('src/results/experiment1_dataframe_{}.csv'.format(str(datetime.now())))
+    print(result_gram.to_string())

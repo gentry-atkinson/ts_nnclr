@@ -291,10 +291,10 @@ if __name__ == '__main__':
 
             raw_distances['SimCLR '+set] = dist_mat
 
-    result_gram = pd.DataFrame.from_dict(results)
-    result_gram.to_csv('src/results/experiment2_dataframe_{}.csv'.format(str(datetime.now())))
+        result_gram = pd.DataFrame.from_dict(results)
+        result_gram.to_csv('src/results/experiment2_dataframe_{}.csv'.format(str(datetime.now())))
 
-    with open('results/experiment_2_raw_distances.txt', 'w') as convert_file:
-     convert_file.write(json.dumps(raw_distances))
+        with open('results/experiment_2_raw_distances.txt', 'w') as convert_file:
+            convert_file.write(json.dumps(raw_distances))
     
     print(result_gram.to_string())

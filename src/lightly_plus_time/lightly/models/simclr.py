@@ -31,8 +31,8 @@ class SimCLR(nn.Module):
 
     def __init__(self,
                  backbone: nn.Module,
-                 num_ftrs: int = 32,
-                 out_dim: int = 128):
+                 num_ftrs: int = 64,
+                 out_dim: int = 64):
 
         super(SimCLR, self).__init__()
 
@@ -86,7 +86,8 @@ class SimCLR(nn.Module):
         """
         
         # forward pass of first input x0
-        f0 = self.backbone(x0).flatten(start_dim=1)
+        #f0 = self.backbone(x0).flatten(start_dim=1)
+        f0 = self.backbone(x0)
         out0 = self.projection_head(f0)
 
         # append features if requested
@@ -98,7 +99,8 @@ class SimCLR(nn.Module):
             return out0
 
         # forward pass of second input x1
-        f1 = self.backbone(x1).flatten(start_dim=1)
+        #f1 = self.backbone(x1).flatten(start_dim=1)
+        f1 = self.backbone(x1)
         out1 = self.projection_head(f1)
 
         # append features if requested

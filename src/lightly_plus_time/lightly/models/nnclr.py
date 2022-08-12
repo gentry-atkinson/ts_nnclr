@@ -222,7 +222,8 @@ class NNCLR(nn.Module):
             return out0
 
         # forward pass of second input x1
-        f1 = self.backbone(x1).flatten(start_dim=1)
+        #f1 = self.backbone(x1).flatten(start_dim=1)
+        f1 = self.backbone(x1)
         z1 = self.projection_mlp(f1)
         p1 = self.prediction_mlp(z1)
 

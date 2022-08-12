@@ -9,6 +9,7 @@ from torch import nn
 #import torchvision
 
 import numpy as np
+import multiprocessing
 from random import choice
 
 from torchsummary import summary
@@ -22,18 +23,15 @@ from lightly_plus_time.lightly.models.modules import SimCLRProjectionHead
 from lightly_plus_time.lightly.models.simclr import SimCLR
 
 MAX_EPOCHS = 100
-PATIENCE = 7
+PATIENCE = 5
 
-# class SimCLR(nn.Module):
-#     def __init__(self, backbone):
-#         super().__init__()
-#         self.backbone = backbone
-#         self.projection_head = SimCLRProjectionHead(512, 512, 128)
+class SelfAttention(nn.MultiheadAttention):
+    def __init__(self, ndim=64, nheads=8) -> None:
+        super().__init__(ndim=64, nheads=8)
 
-#     def forward(self, x):
-#         x = self.backbone(x).flatten(start_dim=1)
-#         z = self.projection_head(x)
-#         return z
+    def forward(self, x):
+        out, _ = super()(x, x, x)
+        return out
 
 def get_features_for_set(X, y=None, with_visual=False, with_summary=False,  bb='CNN', returnModel=False):
     #resnet = torchvision.models.resnet18()
@@ -45,27 +43,42 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False,  bb='
     print("Backbone samples in: ", X[0].shape[1])
     if bb == 'CNN':
         backbone = nn.Sequential(
-            nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-            torch.nn.LazyBatchNorm1d(),
-            torch.nn.ReLU(),
-            nn.Conv1d(in_channels=64, out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-            torch.nn.LazyBatchNorm1d(),
-            torch.nn.ReLU(),
+            nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
+            nn.LazyBatchNorm1d(),
+            nn.ReLU(),
+            nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
+            nn.LazyBatchNorm1d(),
+            nn.ReLU(),
             nn.Dropout(p=0.1),
             torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()
         )
     elif bb == "Transformer":
+        # enc_layer = nn.TransformerEncoderLayer(d_model=64, nhead=16)
+        # backbone = nn.Sequential(
+        #     nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
+        #     torch.nn.LazyBatchNorm1d(),
+        #     torch.nn.ReLU(),
+        #     nn.LazyLinear(out_features=64),
+        #     #nn.TransformerEncoder(enc_layer , num_layers=4),
+        #     nn.ReLU(),
+        #     nn.AdaptiveAvgPool1d(1),
+        #     nn.Flatten()
+        # )
         backbone = nn.Sequential(
             nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
             torch.nn.LazyBatchNorm1d(),
-            torch.nn.ReLU(),
-            nn.LazyLinear(out_features=64),
-            torch.nn.TransformerEncoder(nn.TransformerEncoderLayer(d_model=64, nhead=16) , num_layers=4),
-            torch.nn.ReLU(),
+            nn.MultiheadAttention(64, 8),
+            nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
+            torch.nn.LazyBatchNorm1d(),
+            nn.MultiheadAttention(64, 8),
+            nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
+            torch.nn.LazyBatchNorm1d(),
+            nn.MultiheadAttention(64, 8),
             torch.nn.AdaptiveAvgPool1d(1),
             nn.Flatten()
         )
+        
     else:
         print("Invalid backbone")
         exit()
@@ -91,11 +104,13 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False,  bb='
       collate_fn=collate_fn,
       shuffle=True,
       drop_last=False,
-      num_workers=8,
+      num_workers=multiprocessing.cpu_count(),
     )
 
     criterion = NTXentLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+    print("Training SimCLR "+bb)
 
     losses = list()
 
@@ -116,7 +131,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False,  bb='
         print(f"epoch: {epoch:>02}, loss: {avg_loss:.5f}")
         #Early Stopping        
         if len(losses) == PATIENCE:
-            if avg_loss > max(losses):
+            if avg_loss >= max(losses):
                 print("Early stop at epoch ", epoch+1)
                 break
             else:
