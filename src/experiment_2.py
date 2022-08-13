@@ -274,7 +274,7 @@ if __name__ == '__main__':
             raw_distances['SimCLR '+set] = dist_mat
 
         if(run_simclr_t):
-            if exists('src/features/simclrt_train_'+set+'.npy'):
+            if exists('src/features/simclrt_total_'+set+'.npy'):
                 features = np.load('src/features/simclrt_total_'+set+'.npy')
             else:
                 from utils.simclr_feature_learner import get_features_for_set as get_simclr_t_features
@@ -302,7 +302,7 @@ if __name__ == '__main__':
                         intra_sum += dist_mat[i][j]
                     else:
                         inter_sum += dist_mat[i][j]
-            results['Features'].append('SimCLR')
+            results['Features'].append('SimCLR+T')
             results['Data'].append(set)
             results['Avg Inter-Dist'].append(inter_sum/(num_labels**2 - num_labels))
             results['Avg Intra-Dist'].append(intra_sum/num_labels)
@@ -315,7 +315,8 @@ if __name__ == '__main__':
     result_gram = pd.DataFrame.from_dict(results)
     result_gram.to_csv('src/results/experiment2_dataframe_{}.csv'.format(str(datetime.now())))
 
-    with open('results/experiment_2_raw_distances.txt', 'w') as convert_file:
-        convert_file.write(json.dumps(raw_distances))
+    # with open('src/results/experiment_2_raw_distances.txt', 'w') as convert_file:
+    #     convert_file.write(json.dumps(raw_distances))
+    np.save('src/results/experiment_2_raw_distances.txt', raw_distances)
     
     print(result_gram.to_string())

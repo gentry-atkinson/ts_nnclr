@@ -118,7 +118,7 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
 
     dataloader = torch.utils.data.DataLoader(
       dataset,
-      batch_size=16,
+      batch_size=32,
       collate_fn=collate_fn,
       shuffle=False,
       drop_last=False,
@@ -137,6 +137,8 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
         total_loss = 0  
         for (x0, x1), _ , _ in dataloader:
             #print("Type of x0 in main loop: ", type(x0))
+            #print("Len of x0: ", len(x0))
+            if(len(x0)==1): break
             x0 = x0.to(device)
             x1 = x1.to(device)
             z0, p0 = model(x0)
