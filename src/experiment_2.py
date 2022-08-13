@@ -29,6 +29,7 @@ from utils.sh_loader import sh_loco_load_dataset
 #from scipy.stats import wasserstein_distance
 from scipy.spatial.distance import cdist
 from datetime import datetime
+from os.path import exists
 import numpy as np
 import pandas as pd
 import torch
@@ -79,9 +80,13 @@ if __name__ == '__main__':
         print('Shape of y_total: ', y_total.shape)
         print('Shape of flattened X: ', flattened_X.shape)
 
-        if(run_trad):        
-            from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
-            features = get_trad_features(np.reshape(flattened_X, (flattened_X.shape[0], flattened_X.shape[1])))
+        if(run_trad):
+            if exists('src/features/trad_total_'+set+'.npy'):
+                features = np.load('src/features/trad_total_'+set+'.npy')
+            else:        
+                from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
+                features = get_trad_features(np.reshape(flattened_X, (flattened_X.shape[0], flattened_X.shape[1])))
+                np.save('src/features/trad_total_'+set+'.npy', features)
             features_split = []
             dist_mat = []
             gc.collect()
@@ -115,9 +120,13 @@ if __name__ == '__main__':
 
             raw_distances['Traditional '+set] = dist_mat
         
-        if(run_ae):        
-            from utils.ae_feature_learner import get_features_for_set as get_ae_features
-            features = get_ae_features(X_total, with_visual=False, returnModel=False)
+        if(run_ae):
+            if exists('src/features/ae_total_'+set+'.npy'):
+                features = np.load('src/features/ae_total_'+set+'.npy')
+            else:        
+                from utils.ae_feature_learner import get_features_for_set as get_ae_features
+                features = get_ae_features(X_total, with_visual=False, returnModel=False)
+                np.save('src/features/ae_total_'+set+'.npy', features)
             features_split = []
             dist_mat = []
             gc.collect()
@@ -150,10 +159,12 @@ if __name__ == '__main__':
             raw_distances['AE '+set] = dist_mat
 
         if(run_nnclr):
-            print("Shape of X_total: ", X_total.shape)
-            from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
-            
-            features = get_nnclr_features(X_total, y=y_total, returnModel=False, bb='CNN')
+            if exists('src/features/nnclr_total_'+set+'.npy'):
+                features = np.load('src/features/nnclr_total_'+set+'.npy')
+            else:
+                from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features    
+                features = get_nnclr_features(X_total, y=y_total, returnModel=False, bb='CNN')
+                np.save('src/features/nnclr_total_'+set+'.npy', features)
             features_split = []
             dist_mat = []
             gc.collect()
@@ -186,10 +197,12 @@ if __name__ == '__main__':
             raw_distances['NNCLR '+set] = dist_mat
 
         if(run_nnclr_t):
-            print("Shape of X_total: ", X_total.shape)
-            from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_t_features
-            
-            features = get_nnclr_t_features(X_total, y=y_total, returnModel=False, bb='Transformer')
+            if exists('src/features/nnclrt_total_'+set+'.npy'):
+                features = np.load('src/features/nnclrt_total_'+set+'.npy')
+            else:
+                from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_t_features
+                features = get_nnclr_t_features(X_total, y=y_total, returnModel=False, bb='Transformer')
+                np.save('src/features/nnclrt_total_'+set+'.npy', features)
             features_split = []
             dist_mat = []
             gc.collect()
@@ -222,8 +235,12 @@ if __name__ == '__main__':
             raw_distances['NNCLR+T '+set] = dist_mat
 
         if(run_simclr):
-            from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
-            features = get_simclr_features(X_total, y=y_total, returnModel=False, bb='CNN')
+            if exists('src/features/simclr_total_'+set+'.npy'):
+                features = np.load('src/features/simclr_total_'+set+'.npy')
+            else:
+                from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
+                features = get_simclr_features(X_total, y=y_total, returnModel=False, bb='CNN')
+                np.save('src/features/simclr_total_'+set+'.npy', features)
 
             features_split = []
             dist_mat = []
@@ -257,8 +274,12 @@ if __name__ == '__main__':
             raw_distances['SimCLR '+set] = dist_mat
 
         if(run_simclr_t):
-            from utils.simclr_feature_learner import get_features_for_set as get_simclr_t_features
-            features = get_simclr_t_features(X_total, y=y_total, returnModel=False, bb='Transformer')
+            if exists('src/features/simclrt_train_'+set+'.npy'):
+                features = np.load('src/features/simclrt_total_'+set+'.npy')
+            else:
+                from utils.simclr_feature_learner import get_features_for_set as get_simclr_t_features
+                features = get_simclr_t_features(X_total, y=y_total, returnModel=False, bb='Transformer')
+                np.save('src/features/simclrt_total_'+set+'.npy', features)
 
             features_split = []
             dist_mat = []
@@ -291,10 +312,10 @@ if __name__ == '__main__':
 
             raw_distances['SimCLR '+set] = dist_mat
 
-        result_gram = pd.DataFrame.from_dict(results)
-        result_gram.to_csv('src/results/experiment2_dataframe_{}.csv'.format(str(datetime.now())))
+    result_gram = pd.DataFrame.from_dict(results)
+    result_gram.to_csv('src/results/experiment2_dataframe_{}.csv'.format(str(datetime.now())))
 
-        with open('results/experiment_2_raw_distances.txt', 'w') as convert_file:
-            convert_file.write(json.dumps(raw_distances))
+    with open('results/experiment_2_raw_distances.txt', 'w') as convert_file:
+        convert_file.write(json.dumps(raw_distances))
     
     print(result_gram.to_string())
