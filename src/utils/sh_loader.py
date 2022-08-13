@@ -5,7 +5,12 @@
 
 import numpy as np
 
-path = 'src/data/Sussex_Huawei/'
+DOWN_SAMPLE = True
+
+if DOWN_SAMPLE:
+    path = 'src/data/Sussex_Huawei_DS/'
+else:
+    path = 'src/data/Sussex_Huawei/'
 
 def sh_loco_load_dataset(incl_xyz_accel=True, incl_rms_accel=False):
     X = np.load(path+'x_train.npy')
