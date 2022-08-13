@@ -70,15 +70,16 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
        
         backbone = nn.Sequential(
             nn.Conv1d(in_channels=X[0].shape[0], out_channels=64, kernel_size=8, stride=1, padding='valid', bias=False),
-            nn.LazyLinear(out_features=128),
+            nn.LazyLinear(out_features=64),
             torch.nn.LazyBatchNorm1d(),
-            SelfAttention(ndim=128, dropout=0.1),
+            SelfAttention(ndim=64, dropout=0.1),
             # nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
             # torch.nn.LazyBatchNorm1d(),
             # nn.ReLU(),
             # nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
-            # nn.LazyLinear(out_features=64),
-            # SelfAttention(ndim=64),
+            # nn.LazyLinear(out_features=256),
+            # torch.nn.LazyBatchNorm1d(),
+            # SelfAttention(ndim=256),
             nn.LazyConv1d(out_channels=64, kernel_size=8, stride=1, padding='valid', bias=True),
             torch.nn.LazyBatchNorm1d(),
             nn.ReLU(),
@@ -125,8 +126,8 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
     )
 
     criterion = NTXentLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.003)
-    sched = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=0.9)
+    optimizer = torch.optim.RAdam(model.parameters(), lr=0.003)
+    #sched = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=0.95)
 
     print("Training NNCLR "+bb)
 
@@ -149,8 +150,8 @@ def get_features_for_set(X, y=None, with_visual=False, with_summary=False, bb='C
             optimizer.zero_grad()
         
         avg_loss = total_loss / len(dataloader)
-        print(f"epoch: {epoch+1:>02}, loss: {avg_loss:.5f}, lr: {sched.get_last_lr()}")
-        sched.step()
+        print(f"epoch: {epoch+1:>02}, loss: {avg_loss:.5f}")
+        #sched.step()
         #Early Stopping        
         if len(losses) == PATIENCE:
             if avg_loss >= max(losses):

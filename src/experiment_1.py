@@ -15,11 +15,11 @@
 from utils.nnclr_feature_learner import NUM_FEATURES
 
 
-run_trad = False
-run_ae = False
-run_nnclr = False
+run_trad = True
+run_ae = True
+run_nnclr = True
 run_nnclr_t = True
-run_simclr = False
+run_simclr = True
 run_simclr_t = True
 
 NUM_FEATURES = 64
@@ -32,6 +32,7 @@ from load_data_time_series.twristar_dataset_demo import e4_load_dataset
 from load_data_time_series.HAR.UCI_HAR.uci_har_load_dataset import uci_har_load_dataset
 from utils.sh_loader import sh_loco_load_dataset
 from datetime import datetime
+from os.path import exists
 import numpy as np
 import pandas as pd
 import torch
@@ -80,10 +81,16 @@ if __name__ == '__main__':
         print('Shape of flattened test X: ', flattened_test.shape)
         print('Shape of X_test: ', X_test.shape)
         print('Shape of y_test: ', y_test.shape)
-        if(run_trad):        
-            from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
-            train_features = get_trad_features(np.reshape(flattened_train, (flattened_train.shape[0], flattened_train.shape[1])))
-            test_features = get_trad_features(np.reshape(flattened_test, (flattened_test.shape[0], flattened_test.shape[1])))
+        if(run_trad):
+            if exists('src/features/trad_train_'+set+'.npy'):
+                train_features = np.load('src/features/trad_train_'+set+'.npy')
+                test_features = np.load('src/features/trad_test_'+set+'.npy')
+            else:        
+                from utils.ts_feature_toolkit import get_features_for_set as get_trad_features
+                train_features = get_trad_features(np.reshape(flattened_train, (flattened_train.shape[0], flattened_train.shape[1])))
+                test_features = get_trad_features(np.reshape(flattened_test, (flattened_test.shape[0], flattened_test.shape[1])))
+                np.save('src/features/trad_train_'+set+'.npy', train_features)
+                np.save('src/features/trad_test_'+set+'.npy', test_features)
             gc.collect()
             print('Shape of Traditional Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
@@ -96,10 +103,16 @@ if __name__ == '__main__':
             results['F1'].append(f1_score(y_test, y_pred, average='weighted'))
             results['Prec'].append(precision_score(y_test, y_pred, average='weighted'))
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
-        if(run_ae):        
-            from utils.ae_feature_learner import get_features_for_set as get_ae_features
-            train_features, ae_feature_learner = get_ae_features(X, with_visual=False, returnModel=True)
-            test_features = ae_feature_learner.predict(X_test)
+        if(run_ae):
+            if exists('src/features/ae_train_'+set+'.npy'):
+                train_features = np.load('src/features/ae_train_'+set+'.npy')
+                test_features = np.load('src/features/ae_test_'+set+'.npy')
+            else:        
+                from utils.ae_feature_learner import get_features_for_set as get_ae_features
+                train_features, ae_feature_learner = get_ae_features(X, with_visual=False, returnModel=True)
+                test_features = ae_feature_learner.predict(X_test)
+                np.save('src/features/ae_train_'+set+'.npy', train_features)
+                np.save('src/features/ae_test_'+set+'.npy', test_features)
             gc.collect()
             print('Shape of AE Features: ', train_features.shape)
             model = KNeighborsClassifier(n_neighbors=3)
@@ -113,22 +126,28 @@ if __name__ == '__main__':
             results['Prec'].append(precision_score(y_test, y_pred, average='weighted'))
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
         if(run_nnclr):
-            from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
-            train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True, bb='CNN')
-            torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
-            torch_X = torch_X.float()
-            # _, test_features = nnclr_feature_learner(torch_X, return_features=True)
-            # test_features = test_features.cpu().detach().numpy()
-            # test_features = np.array(test_features)
-            test_features = None
-            for signal in torch_X:
-                signal = signal.to(device).float()
-                signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
-                (_, _), f = nnclr_feature_learner(signal, return_features=True)
-                if test_features is None:
-                    test_features = f.cpu().detach().numpy()
-                else:
-                    test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+            if exists('src/features/nnclr_train_'+set+'.npy'):
+                train_features = np.load('src/features/nnclr_train_'+set+'.npy')
+                test_features = np.load('src/features/nnclr_test_'+set+'.npy')
+            else:
+                from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_features
+                train_features, nnclr_feature_learner = get_nnclr_features(X, y=y, returnModel=True, bb='CNN')
+                torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
+                torch_X = torch_X.float()
+                # _, test_features = nnclr_feature_learner(torch_X, return_features=True)
+                # test_features = test_features.cpu().detach().numpy()
+                # test_features = np.array(test_features)
+                test_features = None
+                for signal in torch_X:
+                    signal = signal.to(device).float()
+                    signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+                    (_, _), f = nnclr_feature_learner(signal, return_features=True)
+                    if test_features is None:
+                        test_features = f.cpu().detach().numpy()
+                    else:
+                        test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+                np.save('src/features/nnclr_train_'+set+'.npy', train_features)
+                np.save('src/features/nnclr_test_'+set+'.npy', test_features)
             gc.collect()
             print('Shape of NNCLR Features: ', train_features.shape)
             print('Shape of NNCLR Test Features: ', test_features.shape)
@@ -144,22 +163,28 @@ if __name__ == '__main__':
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
 
         if(run_nnclr_t):
-            from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_t_features
-            train_features, nnclr_feature_learner = get_nnclr_t_features(X, y=y, returnModel=True, bb='Transformer')
-            torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
-            torch_X = torch_X.float()
-            # _, test_features = nnclr_feature_learner(torch_X, return_features=True)
-            # test_features = test_features.cpu().detach().numpy()
-            # test_features = np.array(test_features)
-            test_features = None
-            for signal in torch_X:
-                signal = signal.to(device).float()
-                signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
-                (_, _), f = nnclr_feature_learner(signal, return_features=True)
-                if test_features is None:
-                    test_features = f.cpu().detach().numpy()
-                else:
-                    test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+            if exists('src/features/nnclrt_train_'+set+'.npy'):
+                train_features = np.load('src/features/nnclrt_train_'+set+'.npy')
+                test_features = np.load('src/features/nnclrt_test_'+set+'.npy')
+            else:
+                from utils.nnclr_feature_learner import get_features_for_set as get_nnclr_t_features
+                train_features, nnclr_feature_learner = get_nnclr_t_features(X, y=y, returnModel=True, bb='Transformer')
+                torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
+                torch_X = torch_X.float()
+                # _, test_features = nnclr_feature_learner(torch_X, return_features=True)
+                # test_features = test_features.cpu().detach().numpy()
+                # test_features = np.array(test_features)
+                test_features = None
+                for signal in torch_X:
+                    signal = signal.to(device).float()
+                    signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+                    (_, _), f = nnclr_feature_learner(signal, return_features=True)
+                    if test_features is None:
+                        test_features = f.cpu().detach().numpy()
+                    else:
+                        test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+                np.save('src/features/nnclrt_train_'+set+'.npy', train_features)
+                np.save('src/features/nnclrt_test_'+set+'.npy', test_features)
             gc.collect()
             print('Shape of NNCLR Features: ', train_features.shape)
             print('Shape of NNCLR Test Features: ', test_features.shape)
@@ -175,19 +200,25 @@ if __name__ == '__main__':
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
 
         if(run_simclr):
-            from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
-            train_features, simclr_feature_learner = get_simclr_features(X, y=y, returnModel=True, bb='CNN')
-            torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
-            torch_X = torch_X.float()
-            test_features = None
-            for signal in torch_X:
-                signal = signal.to(device).float()
-                signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
-                _, f = simclr_feature_learner(signal, return_features=True)
-                if test_features is None:
-                    test_features = f.cpu().detach().numpy()
-                else:
-                    test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+            if exists('src/features/simclr_train_'+set+'.npy'):
+                train_features = np.load('src/features/simclr_train_'+set+'.npy')
+                test_features = np.load('src/features/simclr_test_'+set+'.npy')
+            else:
+                from utils.simclr_feature_learner import get_features_for_set as get_simclr_features
+                train_features, simclr_feature_learner = get_simclr_features(X, y=y, returnModel=True, bb='CNN')
+                torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
+                torch_X = torch_X.float()
+                test_features = None
+                for signal in torch_X:
+                    signal = signal.to(device).float()
+                    signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+                    _, f = simclr_feature_learner(signal, return_features=True)
+                    if test_features is None:
+                        test_features = f.cpu().detach().numpy()
+                    else:
+                        test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+                np.save('src/features/simclr_train_'+set+'.npy', train_features)
+                np.save('src/features/simclr_test_'+set+'.npy', test_features)
             gc.collect()
             print('Shape of SimCLR Features: ', train_features.shape)
             print('Shape of SimCLR Test Features: ', test_features.shape)
@@ -203,19 +234,25 @@ if __name__ == '__main__':
             results['Rec'].append(recall_score(y_test, y_pred, average='weighted'))
 
         if(run_simclr_t):
-            from utils.simclr_feature_learner import get_features_for_set as get_simclr_t_features
-            train_features, simclr_feature_learner = get_simclr_t_features(X, y=y, returnModel=True, bb='Transformer')
-            torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
-            torch_X = torch_X.float()
-            test_features = None
-            for signal in torch_X:
-                signal = signal.to(device).float()
-                signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
-                _, f = simclr_feature_learner(signal, return_features=True)
-                if test_features is None:
-                    test_features = f.cpu().detach().numpy()
-                else:
-                    test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+            if exists('src/features/simclrt_train_'+set+'.npy'):
+                train_features = np.load('src/features/simclrt_train_'+set+'.npy')
+                test_features = np.load('src/features/simclrt_test_'+set+'.npy')
+            else:
+                from utils.simclr_feature_learner import get_features_for_set as get_simclr_t_features
+                train_features, simclr_feature_learner = get_simclr_t_features(X, y=y, returnModel=True, bb='Transformer')
+                torch_X = torch.tensor(np.reshape(X_test, (X_test.shape[0], X_test.shape[2], X_test.shape[1]))).to(device)
+                torch_X = torch_X.float()
+                test_features = None
+                for signal in torch_X:
+                    signal = signal.to(device).float()
+                    signal = torch.reshape(signal, (1, torch_X.shape[1], torch_X.shape[2]))
+                    _, f = simclr_feature_learner(signal, return_features=True)
+                    if test_features is None:
+                        test_features = f.cpu().detach().numpy()
+                    else:
+                        test_features = np.concatenate((test_features, f.cpu().detach().numpy()), axis=0)
+                np.save('src/features/simclrt_train_'+set+'.npy', train_features)
+                np.save('src/features/simclrt_test_'+set+'.npy', test_features)
             gc.collect()
             print('Shape of SimCLR Features: ', train_features.shape)
             print('Shape of SimCLR Test Features: ', test_features.shape)
